@@ -23,9 +23,9 @@ public class GameDisplayGuiForm
 	private JTextField  mSecondPlayerLeg;
 	private JTextField  mSecondPlayerScore;
 	private JLabel      mSPlayerLabel;
-	private JLabel mMainImage;
-	private JLabel fPlayerImage;
-	private JLabel sPlayerImage;
+	private JLabel      mMainImage;
+	private JLabel      fPlayerImage;
+	private JLabel      sPlayerImage;
 
 
 	public GameDisplayGuiForm (PlayerObject firstPlayerName, PlayerObject secondPlayerName)

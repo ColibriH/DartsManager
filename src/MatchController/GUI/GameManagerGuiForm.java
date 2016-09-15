@@ -2,12 +2,15 @@ package MatchController.GUI;
 
 import MatchController.MatchController;
 import MatchController.Constats;
+import Tools.ImageLoader;
 import Tools.ImageViewport;
+import com.sun.prism.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.Image;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,6 +20,7 @@ import java.util.Vector;
 
 // TODO Refactor: check all syntax
 // TODO Refactor: replace all not unappropriated logic from this class
+
 // TODO Create check on name twin (name should be UNIQUE)
 
 /**
@@ -36,9 +40,8 @@ public class GameManagerGuiForm
 	private JPanel            mInnerJPanel;
 	private JPanel            mTablePanel;
 	private JScrollPane       mNewPlayerJScrollPane;
-	private JLabel cntLbl;
 
-	private BufferedImage     mBackGroundImage;
+	private Image             mBackGroundImage;
 
 	private Object []         mNewPlayerTableHeaders  = {"Id", "Name", Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID};
 	private Object [][]       mNewPlayerTableData;
@@ -84,20 +87,15 @@ public class GameManagerGuiForm
 
 		mDefaultTableModel.addRow (new String [] {String.valueOf (lastInsertedId), Name,
 				Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
-
-		cntLbl.setText (String.valueOf (mDefaultTableModel.getRowCount ()));
 	}
 
 
 	private void formComponentsModifications ()
 	{
-
-		// TODO could be in another place
 		// Styling of components
 		// Components options modifications
 		// =====================================================================
 		mJFrame.setResizable (false);
-		setBackGroundImage ();
 		setTableStyle ();
 
 
@@ -171,22 +169,10 @@ public class GameManagerGuiForm
 		mNewPlayerTable.setOpaque(false);
 		mNewPlayerTable.setBackground(new Color(255, 255, 255, 158));
 
+		mBackGroundImage = ImageLoader.getImage (Constats.TABLE_PIC);
+
 		mNewPlayerJScrollPane.setViewport(new ImageViewport (mBackGroundImage));
 		mNewPlayerJScrollPane.setViewportView(mNewPlayerTable);
-	}
-
-
-	private void setBackGroundImage ()
-	{
-		// TODO Refactor using ImageLoader!!!
-		try
-		{
-			mBackGroundImage = ImageIO.read(new File (Constats.TABLE_PIC));
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace ();
-		}
 	}
 
 
@@ -270,7 +256,6 @@ public class GameManagerGuiForm
 	}
 
 
-	// TODO Create united method
 	protected void editNewPlayerInTable ()
 	{
 		int selectedRow     = mNewPlayerTable.getSelectedRow ();
@@ -289,7 +274,7 @@ public class GameManagerGuiForm
 		mDefaultTableModel.setValueAt (getEditedText (currentCellValue), selectedRow, selectedColumn);
 	}
 
-	// TODO Create united method
+
 	protected void deleteNewPlayerFromTable ()
 	{
 		int selectedRow = mNewPlayerTable.getSelectedRow ();
@@ -310,13 +295,13 @@ public class GameManagerGuiForm
 
 	private boolean isDeleteConfirmed ()
 	{
-		int result = JOptionPane.showConfirmDialog ((Component) null, "Are you sure, you want to delete player?",
+		int result = JOptionPane.showConfirmDialog (null, "Are you sure, you want to delete player?",
 		                              "alert", JOptionPane.OK_CANCEL_OPTION);
 		return result == 0;
 	}
 
 
-	public void setVisibility (boolean visibilityFlag)      // TODO Rename variable - flag not suitable here
+	public void setVisibility (boolean visibilityFlag)
 	{
 		mJFrame.setVisible (visibilityFlag);
 	}
