@@ -17,8 +17,6 @@ import java.util.Vector;
 
 // TODO Refactor: check all syntax
 // TODO Refactor: replace all not unappropriated logic from this class
-// TODO Create delete button (for dummy's)
-// TODO Possible to add function for sort (Don`t know for what...)
 // TODO Create check on name twin (name should be UNIQUE)
 
 /**
@@ -38,6 +36,7 @@ public class GameManagerGuiForm
 	private JPanel            mInnerJPanel;
 	private JPanel            mTablePanel;
 	private JScrollPane       mNewPlayerJScrollPane;
+	private JLabel cntLbl;
 
 	private BufferedImage     mBackGroundImage;
 
@@ -61,6 +60,20 @@ public class GameManagerGuiForm
 
 		formComponentsModifications ();
 		newPlayerTableInitialization ();
+
+		mJPanel.requestFocus ();        // Needed!
+		mNewPlayerTable.addMouseMotionListener (new MouseMotionAdapter ()
+		{
+			@Override
+			public void mouseMoved (MouseEvent e)
+			{
+				int columnIndex = mNewPlayerTable.columnAtPoint (e.getPoint());
+				if (isTableInnerButton (columnIndex, false))
+					mNewPlayerTable.setCursor (new Cursor (Cursor.HAND_CURSOR));
+				else
+					mNewPlayerTable.setCursor (new Cursor (Cursor.DEFAULT_CURSOR));
+			}
+		});
 	}
 
 
@@ -71,6 +84,8 @@ public class GameManagerGuiForm
 
 		mDefaultTableModel.addRow (new String [] {String.valueOf (lastInsertedId), Name,
 				Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
+
+		cntLbl.setText (String.valueOf (mDefaultTableModel.getRowCount ()));
 	}
 
 
@@ -151,7 +166,7 @@ public class GameManagerGuiForm
 
 	private void setTableStyle ()
 	{
-		mNewPlayerTable.setForeground(Color.WHITE);
+		mNewPlayerTable.setForeground(Color.BLACK);
 		mNewPlayerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		mNewPlayerTable.setOpaque(false);
 		mNewPlayerTable.setBackground(new Color(255, 255, 255, 158));
@@ -163,12 +178,10 @@ public class GameManagerGuiForm
 
 	private void setBackGroundImage ()
 	{
+		// TODO Refactor using ImageLoader!!!
 		try
 		{
-			mBackGroundImage = ImageIO.read(new File (System.getProperty("user.dir") + File.separator +
-					                                                       Constats.PIC_FOLDER_PATH +
-					                                                       File.separator +
-					                                                       Constats.TABLE_PIC));
+			mBackGroundImage = ImageIO.read(new File (Constats.TABLE_PIC));
 		}
 		catch (IOException e)
 		{
@@ -180,7 +193,7 @@ public class GameManagerGuiForm
 	private void addNewPlayer ()
 	{
 		String playerName = mNewPlayerNameTxtField.getText ();
-		if (mNewPlayerNameTxtFieldDefaultValue.equals (playerName))
+		if (mNewPlayerNameTxtFieldDefaultValue.equals (playerName) || playerName.isEmpty ())
 			return;
 
 		addNewPlayer (playerName);
@@ -188,10 +201,15 @@ public class GameManagerGuiForm
 	}
 
 
-	private boolean isTableInnerButton (int column)
+	private boolean isTableInnerButton (int column, boolean hackFlag)
 	{
-		return mNewPlayerTable.getColumnName (column - 1).equals (Constats.DELETE_BTN_ID) ||
-		       mNewPlayerTable.getColumnName (column - 1).equals (Constats.EDIT_BTN_ID);
+		int hackInt = 0;
+		if (hackFlag)
+			hackInt = 1;
+
+		//TODO resolve issue based on hidden column
+		return mNewPlayerTable.getColumnName (column - hackInt).equals (Constats.DELETE_BTN_ID) ||
+		       mNewPlayerTable.getColumnName (column - hackInt).equals (Constats.EDIT_BTN_ID);
 	}
 
 
@@ -203,7 +221,7 @@ public class GameManagerGuiForm
 		{
 			public boolean isCellEditable (int row, int column)
 			{
-				if (isTableInnerButton (column))
+				if (isTableInnerButton (column, true))
 					return true;
 
 				return false;
@@ -243,6 +261,16 @@ public class GameManagerGuiForm
 	}
 
 
+	private String getEditedText (String oldTxt)
+	{
+		JFrame frame = new JFrame();
+		String result = JOptionPane.showInputDialog(frame, "Enter new name:");
+
+		return  (result.isEmpty ()) ? oldTxt : result;
+	}
+
+
+	// TODO Create united method
 	protected void editNewPlayerInTable ()
 	{
 		int selectedRow     = mNewPlayerTable.getSelectedRow ();
@@ -257,19 +285,11 @@ public class GameManagerGuiForm
 			return;
 		}
 
-		mDefaultTableModel.setValueAt (getEditedText (), selectedRow, selectedColumn);
+		String currentCellValue = (String) mDefaultTableModel.getValueAt (selectedRow, selectedColumn);
+		mDefaultTableModel.setValueAt (getEditedText (currentCellValue), selectedRow, selectedColumn);
 	}
 
-
-	private String getEditedText ()
-	{
-		JFrame frame = new JFrame();
-		String result = JOptionPane.showInputDialog(frame, "Enter new name:");
-
-		return result;
-	}
-
-
+	// TODO Create united method
 	protected void deleteNewPlayerFromTable ()
 	{
 		int selectedRow = mNewPlayerTable.getSelectedRow ();

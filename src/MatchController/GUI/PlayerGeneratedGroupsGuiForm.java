@@ -18,6 +18,7 @@ public class PlayerGeneratedGroupsGuiForm
 	private JFrame                      mJFrame;
 	private JButton                     mGameStartBtn;
 	private JPanel                      mGroupsPanel;
+	private JScrollPane                 mGroupsScrollPane;
 	private JPanel                      mJPanel;
 	private JButton mNextStageBtn;
 

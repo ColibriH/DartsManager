@@ -107,13 +107,11 @@ public class DisplayGroupPanel extends JPanel
 		mSNameLabel.setBackground (new Color(255, 255, 255, 0));
 		mWinnerName.setBackground (new Color(255, 255, 255, 0));
 
-		Image leftImage = ImageLoader.getImage(System.getProperty ("user.dir") + File.separator + Constats.PIC_FOLDER_PATH +
-				                                       File.separator + Constats.LEFT_DART_PIC);
+		Image leftImage = ImageLoader.getImage(Constats.LEFT_DART_PIC);
 		Icon leftIcon = new ImageIcon(leftImage);
 		lArrow = new JLabel(leftIcon);
 
-		Image rightImage = ImageLoader.getImage(System.getProperty ("user.dir") + File.separator + Constats.PIC_FOLDER_PATH +
-				                                       File.separator + Constats.RIGHT_DART_PIC);
+		Image rightImage = ImageLoader.getImage(Constats.RIGHT_DART_PIC);
 		Icon rightIcon = new ImageIcon(rightImage);
 		rArrow = new JLabel(rightIcon);
 	}

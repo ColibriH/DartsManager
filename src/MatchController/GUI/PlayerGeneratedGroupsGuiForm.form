@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="MatchController.GUI.PlayerGeneratedGroupsGuiForm">
-  <grid id="27dc6" binding="mJPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="mJPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="680" height="510"/>
+      <xy x="20" y="20" width="732" height="510"/>
     </constraints>
     <properties>
       <autoscrolls value="false"/>
@@ -11,38 +11,75 @@
     </properties>
     <border type="none"/>
     <children>
-      <grid id="15f02" binding="mGroupsPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+      <grid id="8c811" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="5" bottom="5" right="5"/>
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="2" indent="0" use-parent-layout="false">
-            <minimum-size width="676" height="300"/>
-            <preferred-size width="676" height="300"/>
-            <maximum-size width="676" height="300"/>
-          </grid>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties>
-          <autoscrolls value="false"/>
-          <name value=""/>
-        </properties>
-        <border type="none" title="PlayersGroups"/>
-        <children/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="7f718" class="javax.swing.JButton" binding="mGameStartBtn">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Start"/>
+            </properties>
+          </component>
+        </children>
       </grid>
-      <component id="7f718" class="javax.swing.JButton" binding="mGameStartBtn">
+      <grid id="9d420" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="5" bottom="0" right="5"/>
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties>
-          <text value="Start"/>
-        </properties>
-      </component>
-      <component id="f5f06" class="javax.swing.JButton" binding="mNextStageBtn">
+        <properties/>
+        <border type="none"/>
+        <children>
+          <scrollpane id="61a0c" binding="mGroupsScrollPane">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="673" height="303"/>
+                <maximum-size width="673" height="303"/>
+              </grid>
+            </constraints>
+            <properties>
+              <horizontalScrollBarPolicy value="31"/>
+            </properties>
+            <border type="none" title="PlayersGroups"/>
+            <children>
+              <grid id="6e3ec" binding="mGroupsPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <constraints/>
+                <properties>
+                  <preferredSize width="671" height="300"/>
+                </properties>
+                <border type="none"/>
+                <children/>
+              </grid>
+            </children>
+          </scrollpane>
+        </children>
+      </grid>
+      <grid id="d2653" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="5" bottom="0" right="5"/>
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties>
-          <text value="NextStage"/>
-          <visible value="false"/>
-        </properties>
-      </component>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="f5f06" class="javax.swing.JButton" binding="mNextStageBtn">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="NextStage"/>
+              <visible value="false"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>

@@ -1,6 +1,8 @@
 package GameController.GUI;
 
 import GameController.Object.PlayerObject;
+import MatchController.Constats;
+import Tools.ImageLoader;
 
 import javax.swing.*;
 
@@ -21,6 +23,9 @@ public class GameDisplayGuiForm
 	private JTextField  mSecondPlayerLeg;
 	private JTextField  mSecondPlayerScore;
 	private JLabel      mSPlayerLabel;
+	private JLabel mMainImage;
+	private JLabel fPlayerImage;
+	private JLabel sPlayerImage;
 
 
 	public GameDisplayGuiForm (PlayerObject firstPlayerName, PlayerObject secondPlayerName)
@@ -36,6 +41,15 @@ public class GameDisplayGuiForm
 		mSecondPlayerScore.setText  (String.valueOf (secondPlayerName.mScore));
 
 		formInitialization ();
+		iconsInitialization ();
+	}
+
+
+	private void iconsInitialization ()
+	{
+		mMainImage.setIcon (new ImageIcon (ImageLoader.getImage (Constats.MAIN_BOARD_PIC)));
+		sPlayerImage.setIcon (new ImageIcon (ImageLoader.getImage (Constats.DEFAULT_PLAYER_PIC_RIGHT)));
+		fPlayerImage.setIcon (new ImageIcon (ImageLoader.getImage (Constats.DEFAULT_PLAYER_PIC_LEFT)));
 	}
 
 
