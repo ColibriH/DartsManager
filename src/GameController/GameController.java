@@ -6,6 +6,7 @@ import GameController.Object.PlayerObject;
 import MatchController.MatchController;
 import MatchController.Objects.NewPlayerObject;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -32,8 +33,8 @@ public class GameController
 		mMatchController    = matchController;
 		mPlayers            = convertToPlayerObjectArrayList (new ArrayList <NewPlayerObject> (players));
 
-		mGameControlGuiForm = new GameControlGuiForm (this);
 		mGameDisplayGuiForm = new GameDisplayGuiForm (mPlayers.get (0), mPlayers.get (1));
+		mGameControlGuiForm = new GameControlGuiForm (this);
 	}
 
 
@@ -109,10 +110,21 @@ public class GameController
 
 	private void destroyGuiForms ()
 	{
-		mGameControlGuiForm.destroy ();
 		mGameDisplayGuiForm.destroy ();
+		mGameControlGuiForm.destroy ();
 	}
 
+
+	public Dimension getGameDisplayGuiSize ()
+	{
+		return mGameDisplayGuiForm.getSize ();
+	}
+
+
+	public Point getGameDisplayGuiLocation ()
+	{
+		return mGameDisplayGuiForm.getLocation ();
+	}
 
 	private int getCurrentPlayerScore ()
 	{

@@ -5,6 +5,7 @@ import MatchController.Constats;
 import Tools.ImageLoader;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by vladislavs on 07.09.2016..
@@ -55,11 +56,16 @@ public class GameDisplayGuiForm
 
 	private void formInitialization ()
 	{
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
 		mJFrame = new JFrame ("GameDisplayGuiForm");
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
+		mJFrame.setUndecorated(true);
+		mJFrame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
+		mJFrame.setLocation (dim.width / 2 - mJFrame.getSize ().width / 2, 0);
 	}
 
 
@@ -87,5 +93,17 @@ public class GameDisplayGuiForm
 	{
 		mJFrame.setVisible (false);
 		mJFrame.dispose ();
+	}
+
+
+	public Dimension getSize ()
+	{
+		return mJFrame.getSize ();
+	}
+
+
+	public Point getLocation ()
+	{
+		return mJFrame.getLocation ();
 	}
 }

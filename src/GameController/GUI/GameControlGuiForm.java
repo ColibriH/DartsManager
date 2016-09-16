@@ -3,6 +3,7 @@ package GameController.GUI;
 import GameController.GameController;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -22,6 +23,7 @@ public class GameControlGuiForm
 	private JTextField  mNewScoreTxtField;
 	private JButton     mNewScoreCalculationBtn;
 	private JPanel      mJPanel;
+	private JPanel      mInnerJPanel;
 
 
 	public GameControlGuiForm (GameController gameController)
@@ -57,6 +59,14 @@ public class GameControlGuiForm
 		mJFrame = new JFrame ("GameControlGuiForm");
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
+
+
+		Dimension gameDisplayGuiSize = new Dimension (mGameController.getGameDisplayGuiSize ());
+		Point gameDisplayGuiLocation = new Point (mGameController.getGameDisplayGuiLocation ());
+
+		mJFrame.setLocation (gameDisplayGuiLocation.x, gameDisplayGuiLocation.y + gameDisplayGuiSize.height);
+		//mInnerJPanel.setPreferredSize (new Dimension (gameDisplayGuiSize.width, -1));
+
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
 	}
