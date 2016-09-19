@@ -1,7 +1,7 @@
 package MatchController.GUI;
 
 import MatchController.MatchController;
-import MatchController.Objects.NewPlayerObject;
+import MatchController.Objects.PlayerObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,64 +15,28 @@ import java.util.HashMap;
  */
 public class PlayerGeneratedGroupsGuiForm
 {
-	private JFrame                      mJFrame;
-	private JButton                     mGameStartBtn;
-	private JPanel                      mGroupsPanel;
-	private JScrollPane                 mGroupsScrollPane;
-	private JPanel                      mJPanel;
-	private JButton mNextStageBtn;
+	private final MatchController           mMatchController;
 
-	private final MatchController       mMatchController;
+	private JFrame                          mJFrame;
+	private JButton                         mGameStartBtn;
+	private JPanel                          mGroupsPanel;
+	private JScrollPane                     mGroupsScrollPane;
+	private JPanel                          mJPanel;
+	private JButton                         mNextStageBtn;
 
-	private HashMap <String, String[]>  mPlayerGroupsMap;
-	private ArrayList<NewPlayerObject>  mPlayerList;
+	private HashMap <Integer, Integer[]>    mPlayerGroupsMap;
+	private ArrayList <PlayerObject>        mPlayerList;
 
-	public PlayerGeneratedGroupsGuiForm (MatchController matchController, ArrayList<NewPlayerObject> playerList,
-	                                     HashMap <String, String[]> playerGroupsMap)
+	public PlayerGeneratedGroupsGuiForm (MatchController matchController, ArrayList<PlayerObject> playerList,
+	                                     HashMap <Integer, Integer[]> playerGroupsMap)
 	{
 		mMatchController    = matchController;
 		mPlayerList         = playerList;
 		mPlayerGroupsMap    = new HashMap <> (playerGroupsMap);
 
-		formInitialization ();
-		componentsModification ();
-		addGroupsToPanel ();
-	}
-
-
-	private void addGroupsToPanel ()
-	{
-		// TODO CODE REFACTOR - TO SEPARATE FUNCTIONS!!!!
-
-		// TODO Some Styling and etc
-		// TODO Add some groups names
-
-		for (int i = 1; i < mPlayerGroupsMap.size () + 1; i++)
-		{
-			JPanel playerGroupPanel = new JPanel ();       // TODO Some Styling for panel
-			playerGroupPanel.setLayout (new GridLayout ());
-
-			Integer key = i;
-			String [] playersIds = mPlayerGroupsMap.get (key);
-
-			// TODO ist hack try to solve problem with key
-			if (playersIds == null)
-				playersIds = mPlayerGroupsMap.get (key.toString ());
-
-			mGroupsPanel.add (new DisplayGroupPanel (playersIds, mPlayerList));
-		}
-
-		updateForm ();
-	}
-
-
-	private String getPlayerNameById (String playerId)
-	{
-		for (NewPlayerObject player : mPlayerList)
-			if (player.mId.equals (playerId))
-				return player.mName;
-
-		return "FALSE";      // NOT Possible if correct work!!
+		formInitialization      ();
+		componentsModification  ();
+		addGroupsToPanel        ();
 	}
 
 
@@ -83,14 +47,78 @@ public class PlayerGeneratedGroupsGuiForm
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
-
 		mJFrame.setResizable (false);
+	}
+
+
+	private void addGroupsToPanel ()
+	{
+		addGroupsToMainPanel ();
+		updateForm ();
+	}
+
+
+	private void addGroupsToMainPanel ()
+	{
+		// TODO Add some groups names
+		// TODO Some Styling for panel
+		for (int i = 1; i < mPlayerGroupsMap.size () + 1; i++)
+		{
+			JPanel playerGroupPanel = new JPanel ();
+			playerGroupPanel.setLayout (new GridLayout ());
+
+			mGroupsPanel.add (new DisplayGroupPanel (mPlayerGroupsMap.get (i), mPlayerList));
+		}
 	}
 
 
 	private void componentsModification ()
 	{
-		// Created Events And Listeners
+		addComponentsListener ();
+	}
+
+
+	public void setVisibility (boolean visibilityFlag)
+	{
+		mJFrame.setVisible (visibilityFlag);
+	}
+
+
+	public void displayWinner (int groupId, String winnerName)
+	{
+		Component[] groupPanels = mGroupsPanel.getComponents ();
+
+		((JPanel) groupPanels[groupId - 1]).add (new JLabel ("Winner: " + winnerName));
+	}
+
+
+	// TODO wtf?
+	public void displayWinner (int groupId, String winnerName, boolean isNextStage)
+	{
+		Component[] groupPanels = mGroupsPanel.getComponents ();
+
+		((JPanel) groupPanels[groupId - 1]).add (new JLabel ("Winner: " + winnerName));
+
+		mGameStartBtn.setVisible (false);
+		mNextStageBtn.setVisible (true);
+	}
+
+
+	private void updateForm ()
+	{
+		mJFrame.invalidate();
+		mJFrame.validate();
+		mJFrame.repaint();
+	}
+
+
+	public void destroy ()
+	{
+		mJFrame.dispose ();
+	}
+
+	private void addComponentsListener ()
+	{
 		mGameStartBtn.addActionListener (new ActionListener ()
 		{
 			@Override
@@ -108,44 +136,5 @@ public class PlayerGeneratedGroupsGuiForm
 				mMatchController.nextStageTrigger ();
 			}
 		});
-	}
-
-
-	public void setVisibility (boolean visibilityFlag)      // TODO Rename variable - flag not suitable here
-	{
-		mJFrame.setVisible (visibilityFlag);
-	}
-
-
-	private void updateForm ()
-	{
-		mJFrame.invalidate();
-		mJFrame.validate();
-		mJFrame.repaint();
-	}
-
-
-	public void displayWinner (int groupId, String winnerName)
-	{
-		Component[] groupPanels = mGroupsPanel.getComponents ();
-
-		((JPanel) groupPanels[groupId - 1]).add (new JLabel ("Winner: " + winnerName));
-	}
-
-
-	public void displayWinner (int groupId, String winnerName, boolean isNextStage)
-	{
-		Component[] groupPanels = mGroupsPanel.getComponents ();
-
-		((JPanel) groupPanels[groupId - 1]).add (new JLabel ("Winner: " + winnerName));
-
-		mGameStartBtn.setVisible (false);
-		mNextStageBtn.setVisible (true);
-	}
-
-
-	public void destroy ()
-	{
-		mJFrame.dispose ();
 	}
 }

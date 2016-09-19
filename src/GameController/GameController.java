@@ -2,9 +2,8 @@ package GameController;
 
 import GameController.GUI.GameControlGuiForm;
 import GameController.GUI.GameDisplayGuiForm;
-import GameController.Object.PlayerObject;
+import MatchController.Objects.PlayerObject;
 import MatchController.MatchController;
-import MatchController.Objects.NewPlayerObject;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,21 +27,21 @@ public class GameController
 	private int     mShotsCount = 0;
 	private boolean mLegEndFlag = false;
 
-	public GameController (MatchController matchController, ArrayList <NewPlayerObject> players)
+	public GameController (MatchController matchController, ArrayList <PlayerObject> players)
 	{
 		mMatchController    = matchController;
-		mPlayers            = convertToPlayerObjectArrayList (new ArrayList <NewPlayerObject> (players));
+		mPlayers            = convertToPlayerObjectArrayList (new ArrayList <PlayerObject> (players));
 
 		mGameDisplayGuiForm = new GameDisplayGuiForm (mPlayers.get (0), mPlayers.get (1));
 		mGameControlGuiForm = new GameControlGuiForm (this);
 	}
 
 
-	private ArrayList<PlayerObject> convertToPlayerObjectArrayList (ArrayList<NewPlayerObject> newPlayerObjects)
+	private ArrayList<PlayerObject> convertToPlayerObjectArrayList (ArrayList<PlayerObject> newPlayerObjects)
 	{
 		ArrayList <PlayerObject> playerObjects = new ArrayList <> ();
 
-		for (NewPlayerObject newPlayerObject: newPlayerObjects)
+		for (PlayerObject newPlayerObject: newPlayerObjects)
 			playerObjects.add (new PlayerObject (newPlayerObject));
 
 		return playerObjects;

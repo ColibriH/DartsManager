@@ -1,6 +1,4 @@
-package GameController.Object;
-
-import MatchController.Objects.NewPlayerObject;
+package MatchController.Objects;
 
 /**
  * Created by vladislavs on 07.09.2016..
@@ -8,23 +6,16 @@ import MatchController.Objects.NewPlayerObject;
 public class PlayerObject
 {
 	public String mName;
-	public String mId;
+	public Integer mId;
 
 	public int mLeg       = 0;
 	public int mScore     = 301;
 	public int mPrevScore = 301;
 
-	public PlayerObject (String name, String id)
+	public PlayerObject (String name, Integer id)
 	{
 		mName   = name;
 		mId     = id;
-	}
-
-
-	public PlayerObject (NewPlayerObject newPlayerObject)
-	{
-		mName   = newPlayerObject.mName;
-		mId     = newPlayerObject.mId;
 	}
 
 

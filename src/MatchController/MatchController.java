@@ -1,20 +1,19 @@
 package MatchController;
 
 import GameController.GameController;
-import GameController.Object.PlayerObject;
+import MatchController.Objects.PlayerObject;
 import MatchController.GUI.GameManagerGuiForm;
 import MatchController.GUI.PlayerGeneratedGroupsGuiForm;
 import MatchController.GUI.WinnerGuiForm;
-import MatchController.Objects.NewPlayerArrayList;
-import MatchController.Objects.NewPlayerObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 
 /**
  * Created by vladislavs on 06.09.2016..
  */
+
+// TODo Create FORM controller
 
 // TODo Create data binding to automatic data view if possible
 
@@ -54,59 +53,70 @@ import java.util.Vector;
 
 public class MatchController
 {
-	private GameManagerGuiForm                  gameManagerGuiForm;
-	private PlayerGeneratedGroupsGuiForm        playerGeneratedGroupsGuiForm;
-	private WinnerGuiForm                       winnerGuiForm;
+	private GameManagerGuiForm                            gameManagerGuiForm;
+	private PlayerGeneratedGroupsGuiForm                  playerGeneratedGroupsGuiForm;
+	private WinnerGuiForm                                 winnerGuiForm;
+	private GameController                                mGameController;
 
-	private GameController                      mGameController;
+	private ArrayList <PlayerObject>                      mPlayerList;
+	private HashMap <Integer, Integer[]>                  mPlayerGroupsMap;
+	private HashMap <Integer, PlayerObject>               mStageWinnerHashMap;
 
-	private ArrayList <NewPlayerObject>         mPlayerList;
-	private HashMap <String, String[]>          mPlayerGroupsMap;
+	private int                                           mGroupSequenceNumber;
 
-	private HashMap <Integer, PlayerObject>     mStageWinnerHashMap;
-	private HashMap <String, String[]>          mPlayerNewStageGroupsMap;
-
-	private int                                 mGroupSequenceNumber;
 
 	public MatchController ()
 	{
 		initializeMatchController ();
 	}
 
+
 	private void initializeMatchController ()
 	{
 		mGroupSequenceNumber        = 0;
 		mStageWinnerHashMap         = new HashMap <> ();
-		mPlayerNewStageGroupsMap    = new HashMap <> ();
 		gameManagerGuiForm          = new GameManagerGuiForm (this);
 	}
 
-	// TODO rethink encapsulation
-	public void setPlayerList (ArrayList <Vector> newPlayerList)
+
+	private void setPlayerList (ArrayList <PlayerObject> tablePlayerList)
 	{
-		mPlayerList = NewPlayerArrayList.getNewPlayerArrayList (newPlayerList);
+		mPlayerList =  new ArrayList <> (tablePlayerList);
 	}
 
 
-	// TODO rethink encapsulation
-	public void runActionsAfterPlayerRegistration ()
+	public void runActionsAfterPlayerRegistration (ArrayList <PlayerObject> tablePlayerList)
+	{
+		setPlayerList               (tablePlayerList);
+		matchManagerGuiFormClose    ();
+		initializePlayersGroups     ();
+		displayGameGroups           ();
+	}
+
+
+	private void matchManagerGuiFormClose ()
 	{
 		// TODO Create correct handle of form to close form and reuse of form (if need to go back)
 		gameManagerGuiForm.setVisibility (false);
-
-		// TODO Show some wait screen while generating groups
-
-		mPlayerGroupsMap = GroupGenerator.generateRandomGroups (mPlayerList);
-
-		displayGameGroups();
 	}
 
 
-	// TODO rethink encapsulation
-	public void runActionsAfterGroupDisplay ()
+	private void playerGeneratedGroupsGuiFormClose ()
 	{
 		// TODO Create correct handle of form to close form and reuse of form (if need to go back)
 		playerGeneratedGroupsGuiForm.setVisibility (false);
+	}
+
+
+	private void initializePlayersGroups ()
+	{
+		mPlayerGroupsMap = GroupGenerator.generateRandomGroups (mPlayerList);
+	}
+
+
+	public void runActionsAfterGroupDisplay ()
+	{
+		playerGeneratedGroupsGuiFormClose ();
 		startGame ();
 	}
 
@@ -117,17 +127,12 @@ public class MatchController
 	}
 
 
-	private ArrayList <NewPlayerObject> getGameOpponents ()
+	private ArrayList <PlayerObject> getGameOpponents ()
 	{
-		String [] playersIds = mPlayerGroupsMap.get (getNextPlayersGroupNumber ());
+		ArrayList <PlayerObject> playerObjectsList = new ArrayList <> ();
 
-		// TODO Hack try to solve problem with key
-		if (playersIds == null)
-			playersIds = mPlayerGroupsMap.get (String.valueOf (getNextPlayersGroupNumber ()));
-
-		ArrayList <NewPlayerObject> playerObjectsList = new ArrayList <NewPlayerObject> ();
-
-		for (String playerId : playersIds)
+		Integer [] playersIds = mPlayerGroupsMap.get (getNextPlayersGroupNumber ());
+		for (Integer playerId : playersIds)
 			playerObjectsList.add (getPlayerObjectById (playerId));     // TODO NULL possible - handle this!
 
 		return playerObjectsList;
@@ -140,9 +145,9 @@ public class MatchController
 	}
 
 
-	private NewPlayerObject getPlayerObjectById (String playerId)
+	private PlayerObject getPlayerObjectById (Integer playerId)
 	{
-		for (NewPlayerObject player : mPlayerList)
+		for (PlayerObject player : mPlayerList)
 			if (player.mId.equals (playerId))
 				return player;
 
@@ -150,8 +155,7 @@ public class MatchController
 	}
 
 
-	// TODO rethink encapsulation
-	// TODo refactor
+	// TODO refactor
 	public void runActionsAfterGameController (ArrayList <PlayerObject> playerObjectArrayListResult)
 	{
 		PlayerObject winner = getWinnersPlayerObject (playerObjectArrayListResult);
@@ -210,15 +214,15 @@ public class MatchController
 			PlayerObject currentPlayer = mStageWinnerHashMap.get (i);
 			PlayerObject nextPlayer = mStageWinnerHashMap.get (i + 1);
 
-			String [] newPlayersGroup = {};
+			Integer [] newPlayersGroup = {};
 			if (currentPlayer != null && nextPlayer != null)
-				newPlayersGroup = new String[] {currentPlayer.mId, nextPlayer.mId};
+				newPlayersGroup = new Integer[] {currentPlayer.mId, nextPlayer.mId};
 
 
 			if (i + 1 > winnersHashMapSize)
-				mPlayerGroupsMap.put (String.valueOf (i), new String[]{currentPlayer.mId});
+				mPlayerGroupsMap.put (i, new Integer[]{currentPlayer.mId}); // TODO handle null
 			else
-				mPlayerGroupsMap.put (String.valueOf (i), newPlayersGroup);
+				mPlayerGroupsMap.put (i, newPlayersGroup);
 		}
 
 		mStageWinnerHashMap.clear ();

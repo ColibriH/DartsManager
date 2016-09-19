@@ -1,6 +1,6 @@
 package MatchController;
 
-import MatchController.Objects.NewPlayerObject;
+import MatchController.Objects.PlayerObject;
 
 import java.util.*;
 
@@ -10,13 +10,13 @@ import java.util.*;
 public class GroupGenerator
 {
 
-	public static HashMap <String, String []> generateRandomGroups (ArrayList <NewPlayerObject> mPlayerList)
+	public static HashMap <Integer, Integer []> generateRandomGroups (ArrayList <PlayerObject> mPlayerList)
 	{
 		// TODO GROUP OF ONE PERSON HANDLE????
 		int maxPlayerInGroup = 2;
 		int groupCount = mPlayerList.size () / maxPlayerInGroup;       // Check with 9 or 7 or 5... (even numbers)
 
-		HashMap <String, String []> generatedGroupMap = initializeGroupMap (groupCount);
+		HashMap <Integer, Integer []> generatedGroupMap = initializeGroupMap (groupCount);
 
 		// TODO use linkedarraylist in seperate method
 
@@ -30,7 +30,7 @@ public class GroupGenerator
 		// TODO Bad Code Reafactor!! may use iterator
 		for (int i = 1; i < groupCount + 1; i++)
 		{
-			String [] playersGroupValue = generatedGroupMap.get (i);
+			Integer [] playersGroupValue = generatedGroupMap.get (i);
 
 			playersGroupValue [0] = mPlayerList.get (arr.get (0)).mId;
 			playersGroupValue [1] = mPlayerList.get (arr.get (1)).mId;
@@ -43,14 +43,14 @@ public class GroupGenerator
 	}
 
 
-	private static HashMap <String, String []> initializeGroupMap (int groupCount)
+	private static HashMap <Integer, Integer []> initializeGroupMap (int groupCount)
 	{
-		HashMap groupMap = new HashMap <String, String []> ();
+		HashMap groupMap = new HashMap <Integer, Integer []> ();
 
 		for (int i = 1; i < groupCount + 1; i++)
 		{
-			String [] blankData = {"", ""};
-			groupMap.put (i, blankData);
+			Integer [] blankData = {-1, -1};
+			groupMap.put (i, blankData);    // TODO check warning
 		}
 
 		return groupMap;

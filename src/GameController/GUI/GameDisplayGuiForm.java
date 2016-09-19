@@ -1,6 +1,6 @@
 package GameController.GUI;
 
-import GameController.Object.PlayerObject;
+import MatchController.Objects.PlayerObject;
 import MatchController.Constats;
 import Tools.ImageLoader;
 

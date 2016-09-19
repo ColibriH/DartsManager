@@ -1,6 +1,6 @@
 package MatchController.GUI;
 
-import GameController.Object.PlayerObject;
+import MatchController.Objects.PlayerObject;
 import MatchController.MatchController;
 
 import javax.swing.*;

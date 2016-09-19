@@ -1,13 +1,12 @@
 package MatchController.GUI;
 
 import MatchController.Constats;
-import MatchController.Objects.NewPlayerObject;
+import MatchController.Objects.PlayerObject;
 import Tools.ImageLoader;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -31,9 +30,9 @@ public class DisplayGroupPanel extends JPanel
 	private JLabel rArrow;
 
 
-	public DisplayGroupPanel (String[] playersIds, ArrayList<NewPlayerObject> mPlayerList)
+	public DisplayGroupPanel (Integer[] playersIds, ArrayList<PlayerObject> mPlayerList)
 	{
-		initialization (mPlayerList.get(Integer.parseInt (playersIds[0])).mName, mPlayerList.get(Integer.parseInt (playersIds[1])).mName);
+		initialization (mPlayerList.get (playersIds[0]).mName, mPlayerList.get (playersIds[1]).mName);
 	}
 
 

@@ -2,6 +2,7 @@ package MatchController.GUI;
 
 import MatchController.MatchController;
 import MatchController.Constats;
+import MatchController.Objects.PlayerObject;
 import Tools.ImageLoader;
 import Tools.ImageViewport;
 import com.sun.prism.*;
@@ -16,6 +17,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Vector;
 
 // TODO Refactor: check all syntax
@@ -28,55 +31,56 @@ import java.util.Vector;
  */
 public class GameManagerGuiForm
 {
-	private final MatchController mMatchController;
+	private final String            COLUMN_ID      = "Id";
+	private final String            COLUMN_NAME    = "Name";
 
-	private JFrame            mJFrame;
-	private JTable            mNewPlayerTable;
-	private JTextField        mNewPlayerNameTxtField;
-	private JButton           mNewPlayerAddBtn;
-	private JButton           mMatchStartBtn;
-	private JLabel            mNameLabel;
-	private JPanel            mJPanel;
-	private JPanel            mInnerJPanel;
-	private JPanel            mTablePanel;
-	private JScrollPane       mNewPlayerJScrollPane;
+	private final MatchController   mMatchController;
 
-	private Image             mBackGroundImage;
+	private JFrame                  mJFrame;
+	private JTable                  mNewPlayerTable;
+	private JTextField              mNewPlayerNameTxtField;
+	private JButton                 mNewPlayerAddBtn;
+	private JButton                 mMatchStartBtn;
+	private JLabel                  mNameLabel;
+	private JPanel                  mJPanel;
+	private JPanel                  mInnerJPanel;
+	private JPanel                  mTablePanel;
+	private JScrollPane             mNewPlayerJScrollPane;
+	private Image                   mBackGroundImage;
 
-	private Object []         mNewPlayerTableHeaders  = {"Id", "Name", Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID};
-	private Object [][]       mNewPlayerTableData;
-	private DefaultTableModel mDefaultTableModel;
+	private String                  mNewPlayerNameTxtFieldDefaultValue;
+	private String []               mNewPlayerTableHeaders;
+	private Object [][]             mNewPlayerTableData;
+	private DefaultTableModel       mDefaultTableModel;
 
-	private final String      mNewPlayerNameTxtFieldDefaultValue = mNewPlayerNameTxtField.getText ();   // Start value
-																										// described in
-																										// .form file
+
 
 	public GameManagerGuiForm (MatchController matchController)
 	{
 		mMatchController = matchController;
 
+		frameInitialization ();
+		variableInitialization ();
+		formComponentsModifications ();
+		newPlayerTableInitialization ();
+	}
+
+
+	private void frameInitialization ()
+	{
 		mJFrame = new JFrame ("GameManagerGuiForm");
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
+		mJPanel.requestFocus ();
+	}
 
-		formComponentsModifications ();
-		newPlayerTableInitialization ();
 
-		mJPanel.requestFocus ();        // Needed!
-		mNewPlayerTable.addMouseMotionListener (new MouseMotionAdapter ()
-		{
-			@Override
-			public void mouseMoved (MouseEvent e)
-			{
-				int columnIndex = mNewPlayerTable.columnAtPoint (e.getPoint());
-				if (isTableInnerButton (columnIndex, false))
-					mNewPlayerTable.setCursor (new Cursor (Cursor.HAND_CURSOR));
-				else
-					mNewPlayerTable.setCursor (new Cursor (Cursor.DEFAULT_CURSOR));
-			}
-		});
+	private void variableInitialization ()
+	{
+		mNewPlayerTableHeaders = new String[] {COLUMN_ID, COLUMN_NAME, Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID};
+		mNewPlayerNameTxtFieldDefaultValue = mNewPlayerNameTxtField.getText ();   // Start value described in .form file
 	}
 
 
@@ -92,73 +96,70 @@ public class GameManagerGuiForm
 
 	private void formComponentsModifications ()
 	{
-		// Styling of components
-		// Components options modifications
-		// =====================================================================
+		componentsStyleModifications    ();
+		addComponentsListeners          ();
+	}
+
+
+	private void componentsStyleModifications ()
+	{
 		mJFrame.setResizable (false);
 		setTableStyle ();
+	}
 
 
-		// Components listener initialization
-		// =====================================================================
-		mNewPlayerNameTxtField.addFocusListener (new FocusAdapter ()
+	private ArrayList <PlayerObject> getDataFromTable ()
+	{
+		ArrayList <PlayerObject> returnList = new ArrayList <> ();
+		Vector tableData = mDefaultTableModel.getDataVector ();
+
+		try
 		{
-			@Override
-			public void focusGained (FocusEvent e)
-			{
-				// TODO realization to separate function
-
-				String currentTxtFieldValue = mNewPlayerNameTxtField.getText ();
-
-				if(currentTxtFieldValue.equals (mNewPlayerNameTxtFieldDefaultValue))
-					mNewPlayerNameTxtField.setText ("");
-			}
-
-
-			@Override
-			public void focusLost (FocusEvent e)
-			{
-				// TODO realization to separate function
-
-				if (mNewPlayerNameTxtField.getText ().length () == 0)
-					mNewPlayerNameTxtField.setText (mNewPlayerNameTxtFieldDefaultValue);
-			}
-		});
-
-		mMatchStartBtn.addActionListener (new ActionListener ()
+			for (Object rowData : tableData)
+				returnList.add (getPlayerObjectNewInstance ((Vector) rowData));      // TODO handle null return
+		}
+		catch (Exception e)
 		{
-			@Override
-			public void actionPerformed (ActionEvent e)
-			{
-				// TODO realization to separate function
+			e.printStackTrace ();
+			// TODO Handle exception
+		}
 
-				ArrayList <Vector> newPlayerList = new ArrayList <Vector> (mDefaultTableModel.getDataVector ());
-				mMatchController.setPlayerList (newPlayerList);
-				mMatchController.runActionsAfterPlayerRegistration ();
-			}
-		});
+		return returnList;
+	}
 
-		mNewPlayerAddBtn.addActionListener (new ActionListener ()
+
+	private PlayerObject getPlayerObjectNewInstance (Vector rowData)
+	{
+		try
 		{
-			@Override
-			public void actionPerformed (ActionEvent e)
-			{
-				addNewPlayer ();
-			}
-		});
+			String playerName = (String) rowData.get (getColumnNumberByName (COLUMN_NAME));
+			String playerIdString = (String) rowData.get (getColumnNumberByName (COLUMN_ID));
+			Integer playerId = Integer.parseInt (playerIdString);
 
-		mNewPlayerNameTxtField.addKeyListener (new KeyAdapter ()
+			return new PlayerObject (playerName, playerId);
+		}
+		catch (Exception e)
 		{
-			@Override
-			public void keyPressed (KeyEvent e)
-			{
-				if (e.getKeyCode () == KeyEvent.VK_ENTER)
-				{
-					addNewPlayer ();
-					mNewPlayerNameTxtField.setText ("");
-				}
-			}
-		});
+			e.printStackTrace ();
+			// TODO Handle exception on parsing an etc
+		}
+
+		return null;
+	}
+
+
+	private int getColumnNumberByName (String columnName)
+	{
+		int columnNumber = 0;
+		for (String cName : mNewPlayerTableHeaders)
+		{
+			if (cName.equals (columnName))
+				return columnNumber;
+
+			columnNumber++;
+		}
+
+		return -1;
 	}
 
 
@@ -201,20 +202,15 @@ public class GameManagerGuiForm
 
 	private void newPlayerTableInitialization ()
 	{
-		// Data initialization
-		// =====================================================================
 		mDefaultTableModel = new DefaultTableModel ()
 		{
 			public boolean isCellEditable (int row, int column)
 			{
-				if (isTableInnerButton (column, true))
-					return true;
-
-				return false;
+				return isTableInnerButton (column, true);
 			}
 		};
 
-		mDefaultTableModel.setDataVector(mNewPlayerTableData, mNewPlayerTableHeaders);
+		mDefaultTableModel.setDataVector (mNewPlayerTableData, mNewPlayerTableHeaders);
 		mNewPlayerTable.setModel (mDefaultTableModel);
 
 		mNewPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellRenderer (new ButtonRenderer ());
@@ -223,15 +219,14 @@ public class GameManagerGuiForm
 		mNewPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellEditor (new ButtonEditor (this, new JCheckBox()));
 		mNewPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellEditor (new ButtonEditor (this, new JCheckBox()));
 
-
 		mNewPlayerTable.removeColumn (mNewPlayerTable.getColumn ("Id"));    // To hide Id Column
 
-		mNewPlayerTable.getColumnModel().getColumn(0).setPreferredWidth(mNewPlayerJScrollPane.getWidth () - 103);
-		mNewPlayerTable.getColumnModel().getColumn(1).setPreferredWidth(50);
-		mNewPlayerTable.getColumnModel().getColumn(2).setPreferredWidth(50);
+		mNewPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth (mNewPlayerJScrollPane.getWidth () - 103);
+		mNewPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth (50);
+		mNewPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth (50);
 
-		mNewPlayerTable.getTableHeader().setReorderingAllowed(false);
-		mNewPlayerTable.getTableHeader().setResizingAllowed (false);
+		mNewPlayerTable.getTableHeader ().setReorderingAllowed (false);
+		mNewPlayerTable.getTableHeader ().setResizingAllowed (false);
 
 		// Listener and event`s initialization
 		// =====================================================================
@@ -259,7 +254,7 @@ public class GameManagerGuiForm
 	protected void editNewPlayerInTable ()
 	{
 		int selectedRow     = mNewPlayerTable.getSelectedRow ();
-		int selectedColumn  = mNewPlayerTable.getColumn ("Name").getModelIndex ();
+		int selectedColumn  = mNewPlayerTable.getColumn (COLUMN_NAME).getModelIndex ();
 
 		if (mDefaultTableModel.getRowCount () == 0)
 			return;
@@ -304,5 +299,72 @@ public class GameManagerGuiForm
 	public void setVisibility (boolean visibilityFlag)
 	{
 		mJFrame.setVisible (visibilityFlag);
+	}
+
+
+	private void addComponentsListeners ()
+	{
+		mNewPlayerNameTxtField.addFocusListener (new FocusAdapter ()
+		{
+			@Override
+			public void focusGained (FocusEvent e)
+			{
+				String currentTxtFieldValue = mNewPlayerNameTxtField.getText ();
+				if(currentTxtFieldValue.equals (mNewPlayerNameTxtFieldDefaultValue))
+					mNewPlayerNameTxtField.setText ("");
+			}
+
+
+			@Override
+			public void focusLost (FocusEvent e)
+			{
+				if (mNewPlayerNameTxtField.getText ().length () == 0)
+					mNewPlayerNameTxtField.setText (mNewPlayerNameTxtFieldDefaultValue);
+			}
+		});
+
+		mMatchStartBtn.addActionListener (new ActionListener ()
+		{
+			@Override
+			public void actionPerformed (ActionEvent e)
+			{
+				mMatchController.runActionsAfterPlayerRegistration (getDataFromTable ());
+			}
+		});
+
+		mNewPlayerAddBtn.addActionListener (new ActionListener ()
+		{
+			@Override
+			public void actionPerformed (ActionEvent e)
+			{
+				addNewPlayer ();
+			}
+		});
+
+		mNewPlayerNameTxtField.addKeyListener (new KeyAdapter ()
+		{
+			@Override
+			public void keyPressed (KeyEvent e)
+			{
+				if (e.getKeyCode () == KeyEvent.VK_ENTER)
+				{
+					addNewPlayer ();
+					mNewPlayerNameTxtField.setText ("");
+				}
+			}
+		});
+
+		mNewPlayerTable.addMouseMotionListener (new MouseMotionAdapter ()
+		{
+			@Override
+			public void mouseMoved (MouseEvent e)
+			{
+				int columnIndex = mNewPlayerTable.columnAtPoint (e.getPoint());
+				if (isTableInnerButton (columnIndex, false))
+					mNewPlayerTable.setCursor (new Cursor (Cursor.HAND_CURSOR));
+				else
+					mNewPlayerTable.setCursor (new Cursor (Cursor.DEFAULT_CURSOR));
+			}
+		});
 	}
 }
