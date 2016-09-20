@@ -6,6 +6,7 @@ import MatchController.GUI.GameManagerGuiForm;
 import MatchController.GUI.PlayerGeneratedGroupsGuiForm;
 import MatchController.GUI.WinnerGuiForm;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,8 @@ import java.util.Map;
  * Created by vladislavs on 06.09.2016..
  */
 
+
+// TODO Mark place where used only 2 player in group code
 // TODO more than 2 people in one group -> little bit changes in rules check this! (for this need huge refactor and logic changes)
 
 
@@ -88,24 +91,32 @@ public class MatchController
 	{
 		mPlayersNumberInGroup = playersNumberInGroup;
 
-		setPlayerList                           (tablePlayerList);
-		matchManagerGuiFormClose                ();
-		initializePlayersGroups                 ();
-		ifOnePlayerInGroupPromoteToNextStage    ();
-		displayGameGroups                       ();
+		try
+		{
+			setPlayerList (tablePlayerList);
+			matchManagerGuiFormClose ();
+			initializePlayersGroups ();
+			ifOnePlayerInGroupPromoteToNextStage ();
+			displayGameGroups ();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace ();
+			JOptionPane.showMessageDialog (null, e);
+		}
 	}
 
 
-	private void ifOnePlayerInGroupPromoteToNextStage ()
+	private void ifOnePlayerInGroupPromoteToNextStage () throws Exception
 	{
 		for (Object o : mPlayerGroupsMap.entrySet ())
 		{
-			Map.Entry pair = (Map.Entry) o;
-			ArrayList <Integer> value = (ArrayList <Integer>) pair.getValue (); // TODO handle warning
+			Map.Entry <Integer, ArrayList <Integer>> pair = (Map.Entry <Integer, ArrayList <Integer>>) o;   // Could by cast exception at runtime!
+			ArrayList <Integer> value =  pair.getValue ();
 
 			if (value.size () < mPlayersNumberInGroup)
 			{
-				Integer playerId = (Integer) pair.getKey ();
+				Integer playerId = pair.getKey ();
 
 				mStageWinnerHashMap.put (playerId, getPlayerObjectById (playerId));
 				mPlayerGroupsMap.remove (pair.getKey ());
@@ -136,8 +147,16 @@ public class MatchController
 
 	public void runActionsAfterGroupDisplay ()
 	{
-		playerGeneratedGroupsGuiFormClose ();
-		startGame ();
+		try
+		{
+			playerGeneratedGroupsGuiFormClose ();
+			startGame ();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace ();
+			JOptionPane.showMessageDialog (null, e);
+		}
 	}
 
 
@@ -147,13 +166,13 @@ public class MatchController
 	}
 
 
-	private ArrayList <PlayerObject> getGameOpponents ()
+	private ArrayList <PlayerObject> getGameOpponents () throws Exception
 	{
 		ArrayList <PlayerObject> playerObjectsList = new ArrayList <> ();
 
 		ArrayList <Integer> playersIds = mPlayerGroupsMap.get (getNextPlayersGroupNumber ());
 		for (Integer playerId : playersIds)
-			playerObjectsList.add (getPlayerObjectById (playerId));     // TODO NULL possible - handle this!
+			playerObjectsList.add (getPlayerObjectById (playerId));
 
 		return playerObjectsList;
 	}
@@ -165,37 +184,46 @@ public class MatchController
 	}
 
 
-	private PlayerObject getPlayerObjectById (Integer playerId)
+	private PlayerObject getPlayerObjectById (Integer playerId) throws Exception
 	{
 		for (PlayerObject player : mPlayerList)
 			if (player.mId.equals (playerId))
 				return player;
 
-		return null;      // NOT Possible if correct work!!
+		throw new Exception ("Can`t find player object by id! Bug spotted");
 	}
 
 
 	// TODO refactor
+	// TODO Handle exception
 	public void runActionsAfterGameController (ArrayList <PlayerObject> playerObjectArrayListResult)
 	{
-		PlayerObject winner = getWinnersPlayerObject (playerObjectArrayListResult);
-		mStageWinnerHashMap.put (mGroupSequenceNumber, winner);
-
-		if (mPlayerGroupsMap.size () == mGroupSequenceNumber)
+		try
 		{
-			boolean isFinalStage = groupsStageRotationAndCheckFinalStage ();
-			if (isFinalStage)
+			PlayerObject winner = getWinnersPlayerObject (playerObjectArrayListResult);
+			mStageWinnerHashMap.put (mGroupSequenceNumber, winner);
+
+			if (mPlayerGroupsMap.size () == mGroupSequenceNumber)
 			{
-				winnerGuiForm = new WinnerGuiForm (this, winner);
+				boolean isFinalStage = groupsStageRotationAndCheckFinalStage ();
+				if (isFinalStage)
+				{
+					winnerGuiForm = new WinnerGuiForm (this, winner);
+					return;
+				}
+
+				displayWinner (winner.mName, true);
+
 				return;
 			}
 
-			displayWinner (winner.mName, true);
-
-			return;
+			displayWinner (winner.mName);
 		}
-
-		displayWinner (winner.mName);
+		catch (Exception e)
+		{
+			e.printStackTrace ();
+			JOptionPane.showMessageDialog (null, e);
+		}
 	}
 
 
@@ -221,7 +249,8 @@ public class MatchController
 	}
 
 
-	private boolean groupsStageRotationAndCheckFinalStage ()
+	// TODO split logic
+	private boolean groupsStageRotationAndCheckFinalStage () throws Exception
 	{
 		mPlayerGroupsMap.clear ();
 		int winnersHashMapSize = mStageWinnerHashMap.size ();
@@ -240,8 +269,11 @@ public class MatchController
 				newPlayersGroup.add (currentPlayer.mId);
 				newPlayersGroup.add (nextPlayer.mId);
 			}
+
+			if (currentPlayer == null) throw new Exception ("Can`t retrieve id from current player object");
+
 			if (i + 1 > winnersHashMapSize)
-				mPlayerGroupsMap.put (i, new ArrayList <> (currentPlayer.mId)); // TODO handle null
+				mPlayerGroupsMap.put (i, new ArrayList <> (currentPlayer.mId));
 			else
 				mPlayerGroupsMap.put (i, newPlayersGroup);
 		}
@@ -269,7 +301,7 @@ public class MatchController
 	}
 
 
-	private void startGame ()
+	private void startGame () throws Exception
 	{
 		if (mGameController != null)
 			mGameController = null;

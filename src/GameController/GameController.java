@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by vladislavs on 07.09.2016..
  */
-// TODO DAta binding
+// TODO DAta binf
 // TODO huge refactor need bad code spotted ( code was written in hurry )
 
 public class GameController
