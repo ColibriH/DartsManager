@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by vladislavs on 07.09.2016..
  */
-
+// TODO DAta binding
 // TODO huge refactor need bad code spotted ( code was written in hurry )
 
 public class GameController
@@ -23,29 +23,23 @@ public class GameController
 
 	private ArrayList <PlayerObject>    mPlayers;
 
-	private int     playersSequenceNumber = 1;
-	private int     mShotsCount = 0;
-	private boolean mLegEndFlag = false;
+	private int                         playersSequenceNumber;
+	private int                         mShotsCount;
+	private boolean                     mLegEndFlag;
 
 	public GameController (MatchController matchController, ArrayList <PlayerObject> players)
 	{
-		mMatchController    = matchController;
-		mPlayers            = convertToPlayerObjectArrayList (new ArrayList <PlayerObject> (players));
+		playersSequenceNumber   = 1;
+		mShotsCount             = 0;
+		mLegEndFlag             = false;
 
-		mGameDisplayGuiForm = new GameDisplayGuiForm (mPlayers.get (0), mPlayers.get (1));
-		mGameControlGuiForm = new GameControlGuiForm (this);
+		mMatchController        = matchController;
+		mPlayers                = players;
+
+		mGameDisplayGuiForm     = new GameDisplayGuiForm (mPlayers.get (0), mPlayers.get (1));
+		mGameControlGuiForm     = new GameControlGuiForm (this);
 	}
 
-
-	private ArrayList<PlayerObject> convertToPlayerObjectArrayList (ArrayList<PlayerObject> newPlayerObjects)
-	{
-		ArrayList <PlayerObject> playerObjects = new ArrayList <> ();
-
-		for (PlayerObject newPlayerObject: newPlayerObjects)
-			playerObjects.add (new PlayerObject (newPlayerObject));
-
-		return playerObjects;
-	}
 
 	// TODO Rename function
 	public void calculateScore (int newEarnedScores)

@@ -8,14 +8,20 @@ import MatchController.GUI.WinnerGuiForm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vladislavs on 06.09.2016..
  */
 
-// TODo Create FORM controller
+// TODO more than 2 people in one group -> little bit changes in rules check this! (for this need huge refactor and logic changes)
 
-// TODo Create data binding to automatic data view if possible
+
+
+// TODO Check and put try-catch blocs where is needed
+// TODO Solve all bugs and hacks
+// TODO style players turn
+
 
 // TODO Game Save for unexpected exit
 
@@ -23,28 +29,20 @@ import java.util.HashMap;
 
 // TODO allPlayer places?
 
-// TODO more than 2 people in one group -> little bit changes in rules check this! (for this need huge refactor and logic changes)
-
 // TODO Create documentation
-
-// TODO Check and put try-catch blocs where is needed
 
 // TODO Create huge code refactor
 
-// TODO Solve problem with even player count
-
-// TODO Add edit option to main form
-
 // TODO style configuration
-// TODO Solve all bugs and hacks
+
 // TODO Draw style and component uniqueness
-// TODO style players turn
 
 // TODO Solve problem with player turn sequence
 
 // TODO Create menus, back button
 
 // TODO Create functionality to display next group after each players game
+
 // TODO Create functionality to save each player scores and etc
 
 
@@ -59,11 +57,11 @@ public class MatchController
 	private GameController                                mGameController;
 
 	private ArrayList <PlayerObject>                      mPlayerList;
-	private HashMap <Integer, Integer[]>                  mPlayerGroupsMap;
+	private HashMap <Integer, ArrayList <Integer>>        mPlayerGroupsMap;
 	private HashMap <Integer, PlayerObject>               mStageWinnerHashMap;
 
-	private int                                           mGroupSequenceNumber;
-
+	private Integer                                       mGroupSequenceNumber;
+	private Integer                                       mPlayersNumberInGroup;
 
 	public MatchController ()
 	{
@@ -73,6 +71,7 @@ public class MatchController
 
 	private void initializeMatchController ()
 	{
+		mPlayersNumberInGroup       = 2;
 		mGroupSequenceNumber        = 0;
 		mStageWinnerHashMap         = new HashMap <> ();
 		gameManagerGuiForm          = new GameManagerGuiForm (this);
@@ -85,12 +84,33 @@ public class MatchController
 	}
 
 
-	public void runActionsAfterPlayerRegistration (ArrayList <PlayerObject> tablePlayerList)
+	public void runActionsAfterPlayerRegistration (Integer playersNumberInGroup, ArrayList <PlayerObject> tablePlayerList)
 	{
-		setPlayerList               (tablePlayerList);
-		matchManagerGuiFormClose    ();
-		initializePlayersGroups     ();
-		displayGameGroups           ();
+		mPlayersNumberInGroup = playersNumberInGroup;
+
+		setPlayerList                           (tablePlayerList);
+		matchManagerGuiFormClose                ();
+		initializePlayersGroups                 ();
+		ifOnePlayerInGroupPromoteToNextStage    ();
+		displayGameGroups                       ();
+	}
+
+
+	private void ifOnePlayerInGroupPromoteToNextStage ()
+	{
+		for (Object o : mPlayerGroupsMap.entrySet ())
+		{
+			Map.Entry pair = (Map.Entry) o;
+			ArrayList <Integer> value = (ArrayList <Integer>) pair.getValue (); // TODO handle warning
+
+			if (value.size () < mPlayersNumberInGroup)
+			{
+				Integer playerId = (Integer) pair.getKey ();
+
+				mStageWinnerHashMap.put (playerId, getPlayerObjectById (playerId));
+				mPlayerGroupsMap.remove (pair.getKey ());
+			}
+		}
 	}
 
 
@@ -110,7 +130,7 @@ public class MatchController
 
 	private void initializePlayersGroups ()
 	{
-		mPlayerGroupsMap = GroupGenerator.generateRandomGroups (mPlayerList);
+		mPlayerGroupsMap = GroupGenerator.generateRandomGroups (mPlayersNumberInGroup, mPlayerList);
 	}
 
 
@@ -131,7 +151,7 @@ public class MatchController
 	{
 		ArrayList <PlayerObject> playerObjectsList = new ArrayList <> ();
 
-		Integer [] playersIds = mPlayerGroupsMap.get (getNextPlayersGroupNumber ());
+		ArrayList <Integer> playersIds = mPlayerGroupsMap.get (getNextPlayersGroupNumber ());
 		for (Integer playerId : playersIds)
 			playerObjectsList.add (getPlayerObjectById (playerId));     // TODO NULL possible - handle this!
 
@@ -214,13 +234,14 @@ public class MatchController
 			PlayerObject currentPlayer = mStageWinnerHashMap.get (i);
 			PlayerObject nextPlayer = mStageWinnerHashMap.get (i + 1);
 
-			Integer [] newPlayersGroup = {};
+			ArrayList <Integer> newPlayersGroup =  new ArrayList <> ();
 			if (currentPlayer != null && nextPlayer != null)
-				newPlayersGroup = new Integer[] {currentPlayer.mId, nextPlayer.mId};
-
-
+			{
+				newPlayersGroup.add (currentPlayer.mId);
+				newPlayersGroup.add (nextPlayer.mId);
+			}
 			if (i + 1 > winnersHashMapSize)
-				mPlayerGroupsMap.put (i, new Integer[]{currentPlayer.mId}); // TODO handle null
+				mPlayerGroupsMap.put (i, new ArrayList <> (currentPlayer.mId)); // TODO handle null
 			else
 				mPlayerGroupsMap.put (i, newPlayersGroup);
 		}

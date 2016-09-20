@@ -24,11 +24,11 @@ public class PlayerGeneratedGroupsGuiForm
 	private JPanel                          mJPanel;
 	private JButton                         mNextStageBtn;
 
-	private HashMap <Integer, Integer[]>    mPlayerGroupsMap;
+	private HashMap <Integer, ArrayList <Integer>>    mPlayerGroupsMap;
 	private ArrayList <PlayerObject>        mPlayerList;
 
 	public PlayerGeneratedGroupsGuiForm (MatchController matchController, ArrayList<PlayerObject> playerList,
-	                                     HashMap <Integer, Integer[]> playerGroupsMap)
+	                                     HashMap <Integer, ArrayList <Integer>> playerGroupsMap)
 	{
 		mMatchController    = matchController;
 		mPlayerList         = playerList;
@@ -42,12 +42,15 @@ public class PlayerGeneratedGroupsGuiForm
 
 	private void formInitialization ()
 	{
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
 		mJFrame = new JFrame ("PlayerGeneratedGroupsGuiForm");
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
 		mJFrame.setResizable (false);
+		mJFrame.setLocation (dim.width / 2 - mJFrame.getSize ().width / 2, 0);
 	}
 
 

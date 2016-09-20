@@ -5,20 +5,13 @@ import MatchController.Constats;
 import MatchController.Objects.PlayerObject;
 import Tools.ImageLoader;
 import Tools.ImageViewport;
-import com.sun.prism.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.Image;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Vector;
 
 // TODO Refactor: check all syntax
@@ -46,13 +39,13 @@ public class GameManagerGuiForm
 	private JPanel                  mInnerJPanel;
 	private JPanel                  mTablePanel;
 	private JScrollPane             mNewPlayerJScrollPane;
+	private JTextField mPlayersInGroupTxtField;
 	private Image                   mBackGroundImage;
 
 	private String                  mNewPlayerNameTxtFieldDefaultValue;
 	private String []               mNewPlayerTableHeaders;
 	private Object [][]             mNewPlayerTableData;
 	private DefaultTableModel       mDefaultTableModel;
-
 
 
 	public GameManagerGuiForm (MatchController matchController)
@@ -68,11 +61,14 @@ public class GameManagerGuiForm
 
 	private void frameInitialization ()
 	{
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
 		mJFrame = new JFrame ("GameManagerGuiForm");
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
+		mJFrame.setLocation (dim.width / 2 - mJFrame.getSize ().width / 2, 0);
 		mJPanel.requestFocus ();
 	}
 
@@ -81,16 +77,6 @@ public class GameManagerGuiForm
 	{
 		mNewPlayerTableHeaders = new String[] {COLUMN_ID, COLUMN_NAME, Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID};
 		mNewPlayerNameTxtFieldDefaultValue = mNewPlayerNameTxtField.getText ();   // Start value described in .form file
-	}
-
-
-	private void addNewPlayer (String Name)
-	{
-		// Players Id`s are connected with data model size (to get last id we need to get data model size)
-		int lastInsertedId = mDefaultTableModel.getRowCount ();
-
-		mDefaultTableModel.addRow (new String [] {String.valueOf (lastInsertedId), Name,
-				Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
 	}
 
 
@@ -108,15 +94,15 @@ public class GameManagerGuiForm
 	}
 
 
-	private ArrayList <PlayerObject> getDataFromTable ()
+	private ArrayList <PlayerObject> getPlayersFromTable ()
 	{
-		ArrayList <PlayerObject> returnList = new ArrayList <> ();
+		ArrayList <PlayerObject> returnPlayerList = new ArrayList <> ();
 		Vector tableData = mDefaultTableModel.getDataVector ();
 
 		try
 		{
 			for (Object rowData : tableData)
-				returnList.add (getPlayerObjectNewInstance ((Vector) rowData));      // TODO handle null return
+				returnPlayerList.add (getPlayerObjectNewInstance ((Vector) rowData));      // TODO handle null return
 		}
 		catch (Exception e)
 		{
@@ -124,7 +110,7 @@ public class GameManagerGuiForm
 			// TODO Handle exception
 		}
 
-		return returnList;
+		return returnPlayerList;
 	}
 
 
@@ -177,17 +163,6 @@ public class GameManagerGuiForm
 	}
 
 
-	private void addNewPlayer ()
-	{
-		String playerName = mNewPlayerNameTxtField.getText ();
-		if (mNewPlayerNameTxtFieldDefaultValue.equals (playerName) || playerName.isEmpty ())
-			return;
-
-		addNewPlayer (playerName);
-		mNewPlayerNameTxtField.setText (mNewPlayerNameTxtFieldDefaultValue);
-	}
-
-
 	private boolean isTableInnerButton (int column, boolean hackFlag)
 	{
 		int hackInt = 0;
@@ -200,54 +175,33 @@ public class GameManagerGuiForm
 	}
 
 
-	private void newPlayerTableInitialization ()
-	{
-		mDefaultTableModel = new DefaultTableModel ()
-		{
-			public boolean isCellEditable (int row, int column)
-			{
-				return isTableInnerButton (column, true);
-			}
-		};
-
-		mDefaultTableModel.setDataVector (mNewPlayerTableData, mNewPlayerTableHeaders);
-		mNewPlayerTable.setModel (mDefaultTableModel);
-
-		mNewPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellRenderer (new ButtonRenderer ());
-		mNewPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellRenderer (new ButtonRenderer ());
-
-		mNewPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellEditor (new ButtonEditor (this, new JCheckBox()));
-		mNewPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellEditor (new ButtonEditor (this, new JCheckBox()));
-
-		mNewPlayerTable.removeColumn (mNewPlayerTable.getColumn ("Id"));    // To hide Id Column
-
-		mNewPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth (mNewPlayerJScrollPane.getWidth () - 103);
-		mNewPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth (50);
-		mNewPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth (50);
-
-		mNewPlayerTable.getTableHeader ().setReorderingAllowed (false);
-		mNewPlayerTable.getTableHeader ().setResizingAllowed (false);
-
-		// Listener and event`s initialization
-		// =====================================================================
-		mNewPlayerTable.addKeyListener (new KeyAdapter ()
-		{
-			@Override
-			public void keyPressed (KeyEvent e)
-			{
-				if (e.getKeyCode () == KeyEvent.VK_DELETE)
-					deleteNewPlayerFromTable ();
-			}
-		});
-	}
-
-
 	private String getEditedText (String oldTxt)
 	{
 		JFrame frame = new JFrame();
-		String result = JOptionPane.showInputDialog(frame, "Enter new name:");
+		String result = JOptionPane.showInputDialog (frame, "Enter new name:");
 
 		return  (result.isEmpty ()) ? oldTxt : result;
+	}
+
+
+	private void addNewPlayer (String Name)
+	{
+		// Players Id`s are connected with data model size (to get last id we need to get data model size)
+		int lastInsertedId = mDefaultTableModel.getRowCount ();
+
+		mDefaultTableModel.addRow (new String [] {String.valueOf (lastInsertedId), Name,
+				Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
+	}
+
+
+	private void addNewPlayer ()
+	{
+		String playerName = mNewPlayerNameTxtField.getText ();
+		if (mNewPlayerNameTxtFieldDefaultValue.equals (playerName) || playerName.isEmpty ())
+			return;
+
+		addNewPlayer (playerName);
+		mNewPlayerNameTxtField.setText (mNewPlayerNameTxtFieldDefaultValue);
 	}
 
 
@@ -302,6 +256,69 @@ public class GameManagerGuiForm
 	}
 
 
+	//TODO create separate model class
+	//TODO same to table
+	private void newPlayerTableInitialization ()
+	{
+		mDefaultTableModel = new DefaultTableModel ()
+		{
+			public boolean isCellEditable (int row, int column)
+			{
+				return isTableInnerButton (column, true);
+			}
+		};
+
+		mDefaultTableModel.setDataVector (mNewPlayerTableData, mNewPlayerTableHeaders);
+		mNewPlayerTable.setModel (mDefaultTableModel);
+
+		mNewPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellRenderer (new ButtonRenderer ());
+		mNewPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellRenderer (new ButtonRenderer ());
+
+		mNewPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellEditor (new ButtonEditor (this, new JCheckBox ()));
+		mNewPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellEditor (new ButtonEditor (this, new JCheckBox ()));
+
+		mNewPlayerTable.removeColumn (mNewPlayerTable.getColumn ("Id"));    // To hide Id Column
+
+		mNewPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth (mNewPlayerJScrollPane.getWidth () - 103);
+		mNewPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth (50);
+		mNewPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth (50);
+
+		mNewPlayerTable.getTableHeader ().setReorderingAllowed (false);
+		mNewPlayerTable.getTableHeader ().setResizingAllowed (false);
+	}
+
+
+	private boolean isPlayersInGroupNumberCorrect ()
+	{
+		String digitRegEx = "[0-9]+";
+		String playersInGroup = mPlayersInGroupTxtField.getText ();
+
+		return playersInGroup.matches (digitRegEx);
+	}
+
+
+	private void tryToRegisterPlayers ()
+	{
+		ArrayList <PlayerObject> createdPlayers = getPlayersFromTable ();
+
+		if (! isPlayersInGroupNumberCorrect ())
+		{
+			JOptionPane.showMessageDialog (null, "Number of players in group is incorrect.");
+			return;
+		}
+
+		Integer playersNumberInGroup = Integer.parseInt (mPlayersInGroupTxtField.getText ());
+
+		if (createdPlayers.size () < playersNumberInGroup)
+		{
+			JOptionPane.showMessageDialog (null, "Number of players have to be at least " + playersNumberInGroup + ".");
+			return;
+		}
+
+		mMatchController.runActionsAfterPlayerRegistration (playersNumberInGroup, createdPlayers);
+	}
+
+
 	private void addComponentsListeners ()
 	{
 		mNewPlayerNameTxtField.addFocusListener (new FocusAdapter ()
@@ -328,7 +345,7 @@ public class GameManagerGuiForm
 			@Override
 			public void actionPerformed (ActionEvent e)
 			{
-				mMatchController.runActionsAfterPlayerRegistration (getDataFromTable ());
+				tryToRegisterPlayers ();
 			}
 		});
 
@@ -364,6 +381,17 @@ public class GameManagerGuiForm
 					mNewPlayerTable.setCursor (new Cursor (Cursor.HAND_CURSOR));
 				else
 					mNewPlayerTable.setCursor (new Cursor (Cursor.DEFAULT_CURSOR));
+			}
+		});
+
+
+		mNewPlayerTable.addKeyListener (new KeyAdapter ()
+		{
+			@Override
+			public void keyPressed (KeyEvent e)
+			{
+				if (e.getKeyCode () == KeyEvent.VK_DELETE)
+					deleteNewPlayerFromTable ();
 			}
 		});
 	}

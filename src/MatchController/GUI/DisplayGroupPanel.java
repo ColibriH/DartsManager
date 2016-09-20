@@ -30,9 +30,9 @@ public class DisplayGroupPanel extends JPanel
 	private JLabel rArrow;
 
 
-	public DisplayGroupPanel (Integer[] playersIds, ArrayList<PlayerObject> mPlayerList)
+	public DisplayGroupPanel (ArrayList <Integer> playersIds, ArrayList<PlayerObject> mPlayerList)
 	{
-		initialization (mPlayerList.get (playersIds[0]).mName, mPlayerList.get (playersIds[1]).mName);
+		initialization (mPlayerList.get (playersIds.get (0)).mName, mPlayerList.get (playersIds.get (1)).mName);
 	}
 
 
