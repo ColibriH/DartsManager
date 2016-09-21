@@ -273,7 +273,7 @@ public class MatchController
 			if (currentPlayer == null) throw new Exception ("Can`t retrieve id from current player object");
 
 			if (i + 1 > winnersHashMapSize)
-				mPlayerGroupsMap.put (i, new ArrayList <> (currentPlayer.mId));
+				mPlayerGroupsMap.put (i, new ArrayList <Integer> (){{add (currentPlayer.mId);}});
 			else
 				mPlayerGroupsMap.put (i, newPlayersGroup);
 		}

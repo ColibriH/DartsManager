@@ -12,52 +12,39 @@ import java.awt.*;
  */
 public class GameDisplayGuiForm
 {
-	private JFrame      mJFrame;
-	private JPanel      mJPanel;
+	private JFrame          mJFrame;
+	private JPanel          mJPanel;
 
-	private JTextField  mFirstPlayerName;
-	private JTextField  mFirstPlayerLeg;
-	private JTextField  mFirstPlayerScore;
-	private JLabel      mFPlayerLabel;
+	private JTextField      mFirstPlayerName;
+	private JTextField      mFirstPlayerLeg;
+	private JTextField      mFirstPlayerScore;
+	private JLabel          mFPlayerLabel;
 
-	private JTextField  mSecondPlayerName;
-	private JTextField  mSecondPlayerLeg;
-	private JTextField  mSecondPlayerScore;
-	private JLabel      mSPlayerLabel;
-	private JLabel      mMainImage;
-	private JLabel      fPlayerImage;
-	private JLabel      sPlayerImage;
+	private JTextField      mSecondPlayerName;
+	private JTextField      mSecondPlayerLeg;
+	private JTextField      mSecondPlayerScore;
+	private JLabel          mSPlayerLabel;
+	private JLabel          mMainImage;
+	private JLabel          fPlayerImage;
+	private JLabel          sPlayerImage;
+
+	private PlayerObject    mPlayer;
+	private PlayerObject    mPlayerOpponent;
 
 
-	public GameDisplayGuiForm (PlayerObject firstPlayerName, PlayerObject secondPlayerName)
+	public GameDisplayGuiForm (PlayerObject firstPlayer, PlayerObject secondPlayer)
 	{
-		mSPlayerLabel.setText       (firstPlayerName.mName);
-		mFirstPlayerName.setText    (firstPlayerName.mName);
-		mFirstPlayerLeg.setText     (String.valueOf (firstPlayerName.mLeg));
-		mFirstPlayerScore.setText   (String.valueOf (firstPlayerName.mScore));
-
-		mFPlayerLabel.setText       (secondPlayerName.mName);
-		mSecondPlayerName.setText   (secondPlayerName.mName);
-		mSecondPlayerLeg.setText    (String.valueOf (secondPlayerName.mLeg));
-		mSecondPlayerScore.setText  (String.valueOf (secondPlayerName.mScore));
+		mPlayer         = firstPlayer;
+		mPlayerOpponent = secondPlayer;
 
 		formInitialization ();
 		iconsInitialization ();
-	}
-
-
-	private void iconsInitialization ()
-	{
-		mMainImage.setIcon (new ImageIcon (ImageLoader.getImage (Constats.MAIN_BOARD_PIC)));
-		sPlayerImage.setIcon (new ImageIcon (ImageLoader.getImage (Constats.DEFAULT_PLAYER_PIC_RIGHT)));
-		fPlayerImage.setIcon (new ImageIcon (ImageLoader.getImage (Constats.DEFAULT_PLAYER_PIC_LEFT)));
+		playerTableInitialization ();
 	}
 
 
 	private void formInitialization ()
 	{
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-
 		mJFrame = new JFrame ("GameDisplayGuiForm");
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
@@ -65,34 +52,55 @@ public class GameDisplayGuiForm
 		mJFrame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
+
+		setMJFrameLocation ();
+	}
+
+
+	private void setMJFrameLocation ()
+	{
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
 		mJFrame.setLocation (dim.width / 2 - mJFrame.getSize ().width / 2, 0);
 	}
 
 
-	public void setPlayerScore (int playerNumber, int scores)
+	private void iconsInitialization ()
 	{
-		if (playerNumber == 1)
-			mFirstPlayerScore.setText (String.valueOf (scores));
-
-		if (playerNumber == 2)
-			mSecondPlayerScore.setText (String.valueOf (scores));
+		mMainImage.setIcon      (new ImageIcon (ImageLoader.getImage   (Constats.MAIN_BOARD_PIC)));
+		sPlayerImage.setIcon    (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_RIGHT)));
+		fPlayerImage.setIcon    (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_LEFT)));
 	}
 
 
-	public void updateGameLegData (PlayerObject fPlayer, PlayerObject sPlayer)
+	private void playerTableInitialization ()
 	{
-		mFirstPlayerLeg.setText     (String.valueOf (fPlayer.mLeg));
-		mFirstPlayerScore.setText   (String.valueOf (301));
+		mSPlayerLabel.setText       (mPlayer.mName);
+		mFirstPlayerName.setText    (mPlayer.mName);
+		mFirstPlayerLeg.setText     (String.valueOf (mPlayer.mLeg));
+		mFirstPlayerScore.setText   (String.valueOf (mPlayer.mScore));
 
-		mSecondPlayerLeg.setText    (String.valueOf (sPlayer.mLeg));
-		mSecondPlayerScore.setText  (String.valueOf (301));
+		mFPlayerLabel.setText       (mPlayerOpponent.mName);
+		mSecondPlayerName.setText   (mPlayerOpponent.mName);
+		mSecondPlayerLeg.setText    (String.valueOf (mPlayerOpponent.mLeg));
+		mSecondPlayerScore.setText  (String.valueOf (mPlayerOpponent.mScore));
 	}
 
 
-	public void destroy ()
+	public void updatePlayerData ()
 	{
-		mJFrame.setVisible (false);
-		mJFrame.dispose ();
+		mFirstPlayerScore.setText (String.valueOf (mPlayer.mScore));
+		mSecondPlayerScore.setText (String.valueOf (mPlayerOpponent.mScore));
+	}
+
+
+	public void updateGameLegData ()
+	{
+		mFirstPlayerLeg.setText     (String.valueOf (mPlayer.mLeg));
+		mFirstPlayerScore.setText   (String.valueOf (mPlayer.mScore));
+
+		mSecondPlayerLeg.setText    (String.valueOf (mPlayerOpponent.mLeg));
+		mSecondPlayerScore.setText  (String.valueOf (mPlayerOpponent.mScore));
 	}
 
 
@@ -105,5 +113,12 @@ public class GameDisplayGuiForm
 	public Point getLocation ()
 	{
 		return mJFrame.getLocation ();
+	}
+
+
+	public void destroy ()
+	{
+		mJFrame.setVisible (false);
+		mJFrame.dispose ();
 	}
 }

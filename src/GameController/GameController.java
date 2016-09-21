@@ -11,95 +11,150 @@ import java.util.ArrayList;
 /**
  * Created by vladislavs on 07.09.2016..
  */
-// TODO DAta binf
-// TODO huge refactor need bad code spotted ( code was written in hurry )
+
+// TODO May me can split on game logic and rule logic and GUI logic
 
 public class GameController
 {
+	private final Integer               MAX_PLAYER_SHOTS    = 3;
+	private final Integer               WINING_SCORES_COUNT = 0;
+	private final Integer               WINING_LEG_COUNT    = 3;
+	private final Integer               PLAYER_START_SCORES = 301;
+
 	private final MatchController       mMatchController;
 
 	private GameControlGuiForm          mGameControlGuiForm;
 	private GameDisplayGuiForm          mGameDisplayGuiForm;
 
-	private ArrayList <PlayerObject>    mPlayers;
+	private PlayerObject                mCurrentPlayer;
+	private PlayerObject                mPlayer;
+	private PlayerObject                mOpponentPlayer;
 
-	private int                         playersSequenceNumber;
-	private int                         mShotsCount;
-	private boolean                     mLegEndFlag;
+	private Integer                     mCurrentPlayerShots;
 
-	public GameController (MatchController matchController, ArrayList <PlayerObject> players)
+
+	public GameController (MatchController matchController, ArrayList <PlayerObject> playersList)
 	{
-		playersSequenceNumber   = 1;
-		mShotsCount             = 0;
-		mLegEndFlag             = false;
-
+		mCurrentPlayerShots     = 0;
 		mMatchController        = matchController;
-		mPlayers                = players;
+		mPlayer                 = playersList.get (0);
+		mOpponentPlayer         = playersList.get (1);
 
-		mGameDisplayGuiForm     = new GameDisplayGuiForm (mPlayers.get (0), mPlayers.get (1));
+		startGame ();
+	}
+
+
+	private void startGame ()
+	{
+		setCurrentPlayer (mPlayer);
+
+		mGameDisplayGuiForm     = new GameDisplayGuiForm (mCurrentPlayer, mOpponentPlayer);
 		mGameControlGuiForm     = new GameControlGuiForm (this);
 	}
 
 
-	// TODO Rename function
-	public void calculateScore (int newEarnedScores)
+	private void setCurrentPlayer (PlayerObject player)
+	{
+		mCurrentPlayer = player;
+	}
+
+
+	public void handleScoreInputFromControlGuiForm (int newEarnedScores)
 	{
 		updatePlayerScore (newEarnedScores);
 
-		if (! mLegEndFlag)
-		{
-			mGameDisplayGuiForm.setPlayerScore (playersSequenceNumber, getCurrentPlayerScore ());
-			mShotsCount++;
-
-			rotatePlayerSequence ();
-		}
-		else
-		{
+		if (hasPlayerWonLeg ())
 			beginNewLeg ();
-		}
+		else
+			beginRotation ();
+	}
+
+
+	private void updatePlayerScore (int newEarnedScores)
+	{
+		mCurrentPlayer.mPrevScore = mCurrentPlayer.mScore;
+		mCurrentPlayer.mScore -= newEarnedScores;
+
+		checkAndChangeScoreBasedOnRules ();
+	}
+
+
+	private void checkAndChangeScoreBasedOnRules ()
+	{
+		if (isScoreNegativeOrNumberOne (mCurrentPlayer.mScore))
+			mCurrentPlayer.mScore = mCurrentPlayer.mPrevScore;
 	}
 
 
 	private void beginNewLeg ()
 	{
 		gameLegUpdate ();
-		mGameDisplayGuiForm.updateGameLegData (mPlayers.get (0), mPlayers.get (1));
+		mGameDisplayGuiForm.updateGameLegData ();
 	}
 
 
 	private void gameLegUpdate ()
 	{
-		PlayerObject tmpObj = new PlayerObject (mPlayers.get (playersSequenceNumber - 1));
-		tmpObj.mLeg += 1;
-
-		mPlayers.set (playersSequenceNumber - 1, tmpObj);
+		addWinningLegForCurrentPlayer ();
 		gameLegRuleCheck ();
+		resetCurrentPlayerShots ();
 		resetPlayersScore ();
-		mLegEndFlag = false;
+	}
+
+
+	private void beginRotation ()
+	{
+		mGameDisplayGuiForm.updatePlayerData ();
+		playerShotsRotation ();
+		rotatePlayersSequence ();
+	}
+
+
+	private void playerShotsRotation ()
+	{
+		mCurrentPlayerShots++;
+	}
+
+
+	private boolean hasPlayerWonLeg ()
+	{
+		return mCurrentPlayer.mScore.equals (WINING_SCORES_COUNT);
+	}
+
+
+	private void addWinningLegForCurrentPlayer ()
+	{
+		mCurrentPlayer.mLeg ++;
 	}
 
 
 	private void resetPlayersScore ()
 	{
-		for (PlayerObject playerObject : mPlayers)
-			playerObject.mScore = 301;
+		mPlayer.mScore          = PLAYER_START_SCORES;
+		mOpponentPlayer.mScore  = PLAYER_START_SCORES;
 	}
 
 
-	// TODO Rethink place of function
 	private void gameLegRuleCheck ()
 	{
-		for (PlayerObject playerObject : mPlayers)
+		if (mCurrentPlayer.mLeg.equals (WINING_LEG_COUNT))
 		{
-			if (playerObject.mLeg == 3)
-			{
-				destroyGuiForms ();
-				mMatchController.runActionsAfterGameController (mPlayers);
-				return;
-			}
+			destroyGuiForms ();
+			mMatchController.runActionsAfterGameController (getPlayersAsArrayList ());
 		}
 	}
 
+
+	private ArrayList <PlayerObject> getPlayersAsArrayList ()
+	{
+		return new ArrayList <PlayerObject> ()
+		{
+			{
+				add (mPlayer);
+				add (mOpponentPlayer);
+			}
+		};
+	}
 
 	private void destroyGuiForms ()
 	{
@@ -108,6 +163,37 @@ public class GameController
 	}
 
 
+	private boolean isScoreNegativeOrNumberOne (Integer scores)
+	{
+		return (scores == 1 || scores < 0);
+	}
+
+
+	private void rotatePlayersSequence ()
+	{
+		if (mCurrentPlayerShots.equals (MAX_PLAYER_SHOTS))
+		{
+			assignCurrentPlayer ();
+			resetCurrentPlayerShots ();
+		}
+	}
+
+
+	private void assignCurrentPlayer ()
+	{
+		if (mCurrentPlayer.equals (mPlayer))                mCurrentPlayer = mOpponentPlayer;
+		else if (mCurrentPlayer.equals (mOpponentPlayer))   mCurrentPlayer = mPlayer;
+	}
+
+
+	private void resetCurrentPlayerShots ()
+	{
+		mCurrentPlayerShots = 0;
+	}
+
+
+	// Communication methods between forms
+	// =============================================================================================================
 	public Dimension getGameDisplayGuiSize ()
 	{
 		return mGameDisplayGuiForm.getSize ();
@@ -117,44 +203,5 @@ public class GameController
 	public Point getGameDisplayGuiLocation ()
 	{
 		return mGameDisplayGuiForm.getLocation ();
-	}
-
-	private int getCurrentPlayerScore ()
-	{
-		return mPlayers.get (playersSequenceNumber - 1).mScore;
-	}
-
-
-	// TODO Refactor name of function
-	private void updatePlayerScore (int newEarnedScores)
-	{
-		PlayerObject tmpObj = new PlayerObject (mPlayers.get (playersSequenceNumber - 1));
-		tmpObj.mPrevScore = tmpObj.mScore;
-		tmpObj.mScore -= newEarnedScores;
-
-		int currentPlayerScore = tmpObj.mScore;
-
-		if (currentPlayerScore == 0)
-		{
-			mLegEndFlag = true;
-		}
-		else if (currentPlayerScore == 1 || currentPlayerScore < 0)
-		{
-			tmpObj.mScore = tmpObj.mPrevScore;
-		}
-
-		mPlayers.set (playersSequenceNumber - 1, tmpObj);
-	}
-
-
-	private void rotatePlayerSequence ()
-	{
-		if (mShotsCount == 3)
-		{
-			if (playersSequenceNumber == 1) playersSequenceNumber = 2;
-			else if (playersSequenceNumber == 2) playersSequenceNumber = 1;
-
-			mShotsCount = 0;
-		}
 	}
 }

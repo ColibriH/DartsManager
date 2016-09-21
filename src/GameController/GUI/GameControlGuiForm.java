@@ -13,8 +13,6 @@ import java.awt.event.KeyEvent;
  * Created by vladislavs on 07.09.2016..
  */
 
-// TODO Provide input only for digits to txt field
-
 public class GameControlGuiForm
 {
 	private final GameController mGameController;
@@ -29,28 +27,7 @@ public class GameControlGuiForm
 	public GameControlGuiForm (GameController gameController)
 	{
 		mGameController = gameController;
-
 		formInitialization ();
-		mNewScoreCalculationBtn.addActionListener (new ActionListener ()
-		{
-			@Override
-			public void actionPerformed (ActionEvent e)
-			{
-				sendScoresToController ();
-			}
-		});
-		mNewScoreTxtField.addKeyListener (new KeyAdapter ()
-		{
-			@Override
-			public void keyPressed (KeyEvent e)
-			{
-				if (e.getKeyCode () == KeyEvent.VK_ENTER)
-				{
-					sendScoresToController ();
-					mNewScoreTxtField.setText ("");
-				}
-			}
-		});
 	}
 
 
@@ -59,25 +36,83 @@ public class GameControlGuiForm
 		mJFrame = new JFrame ("GameControlGuiForm");
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
+		mJFrame.pack ();
+		mJFrame.setVisible (true);
+
+		componentsModification ();
+	}
 
 
+	private void componentsModification ()
+	{
+		setMJFrameLocation ();
+		addComponentsListeners ();
+	}
+
+
+	private void setMJFrameLocation ()
+	{
 		Dimension gameDisplayGuiSize = new Dimension (mGameController.getGameDisplayGuiSize ());
 		Point gameDisplayGuiLocation = new Point (mGameController.getGameDisplayGuiLocation ());
 
 		mJFrame.setLocation (gameDisplayGuiLocation.x, gameDisplayGuiLocation.y + gameDisplayGuiSize.height);
-		//mInnerJPanel.setPreferredSize (new Dimension (gameDisplayGuiSize.width, -1));
+	}
 
-		mJFrame.pack ();
-		mJFrame.setVisible (true);
+
+	private void addComponentsListeners ()
+	{
+		mNewScoreCalculationBtn.addActionListener (new ActionListener ()
+		{
+			@Override
+			public void actionPerformed (ActionEvent e)
+			{
+				inputHandler ();
+			}
+		});
+		mNewScoreTxtField.addKeyListener (new KeyAdapter ()
+		{
+			@Override
+			public void keyPressed (KeyEvent e)
+			{
+				if (e.getKeyCode () == KeyEvent.VK_ENTER)
+					inputHandler ();
+			}
+		});
+	}
+
+
+	private void inputHandler ()
+	{
+		if (isInputInCorrectFormat ())
+		{
+			sendScoresToController ();
+			mNewScoreTxtField.setText ("");
+		}
+		else
+		{
+			JOptionPane.showMessageDialog (null, "Input should be only positive digits");
+		}
 	}
 
 
 	private void sendScoresToController ()
 	{
-		// TODO Add try - catch for parsing and predict catch block
-		// TODO check for negative value!!!
-		int newEarnedScores = Integer.valueOf (mNewScoreTxtField.getText ());
-		mGameController.calculateScore (newEarnedScores);
+		try
+		{
+			int newEarnedScores = Integer.valueOf (mNewScoreTxtField.getText ());
+			mGameController.handleScoreInputFromControlGuiForm (newEarnedScores);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace ();
+			JOptionPane.showMessageDialog (null, e);
+		}
+	}
+
+
+	private boolean isInputInCorrectFormat ()
+	{
+		return mNewScoreTxtField.getText ().matches ("[0-9]+");
 	}
 
 

@@ -8,9 +8,9 @@ public class PlayerObject
 	public String mName;
 	public Integer mId;
 
-	public int mLeg       = 0;
-	public int mScore     = 301;
-	public int mPrevScore = 301;
+	public Integer mLeg       = 0;
+	public Integer mScore     = 301;
+	public Integer mPrevScore = 301;
 
 	public PlayerObject (String name, Integer id)
 	{
