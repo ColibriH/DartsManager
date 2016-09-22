@@ -9,48 +9,54 @@ import java.io.*;
  */
 public class ImageLoader
 {
-	private ImageLoader ()
+	public static Image getImage (String filePath)
 	{
+		InputStream inputStream = openFile (filePath);
+
+		if (inputStream == null)
+			return null;
+
+		return getImageFormStream (inputStream);
 	}
 
 
-	// TODO REFACTOR
-	public static Image getImage (String filePath)
+	private static Image getImageFormStream (InputStream inputStream)
 	{
-		Image returnValue = null;
-		InputStream is = null;
+		BufferedInputStream bufferedInputStream = new BufferedInputStream (inputStream);
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream ();
 
 		try
 		{
-			is = new FileInputStream (filePath);
+			int ch = bufferedInputStream.read ();
+
+			while (ch != - 1)
+			{
+				byteArrayOutputStream.write (ch);
+				ch = bufferedInputStream.read ();
+			}
+
+			return Toolkit.getDefaultToolkit ().createImage (byteArrayOutputStream.toByteArray ());
+		}
+		catch (IOException exception)
+		{
+			System.err.println ("Error loading image from stream.");
+		}
+
+		return null;
+	}
+
+
+	private static FileInputStream openFile (String filePath)
+	{
+		try
+		{
+			return new FileInputStream (filePath);
 		}
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace ();
 		}
 
-		if (is != null)
-		{
-			BufferedInputStream bis = new BufferedInputStream (is);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream ();
-			try
-			{
-				int ch = bis.read ();
-
-				while (ch != - 1)
-				{
-					baos.write (ch);
-					ch = bis.read ();
-				}
-
-				returnValue = Toolkit.getDefaultToolkit ().createImage (baos.toByteArray ());
-			}
-			catch (IOException exception)
-			{
-				System.err.println ("Error loading: " + filePath);
-			}
-		}
-
-		return returnValue;
+		return null;
 	}
 }

@@ -12,20 +12,23 @@ import java.util.ArrayList;
 /**
  * Created by vladislavs on 13.09.2016..
  */
+// TODO Add some groups names
+// TODO display winner name
 
-//TODO REFACTOR CODE
 public class DisplayGroupPanel extends JPanel
 {
 	private JPanel mFirstPlayerPanel   = new JPanel ();
 	private JPanel mSecondPlayerPanel  = new JPanel ();
 	private JPanel mWinnerPanel        = new JPanel ();
 	private JPanel mVersusPanel        = new JPanel ();
+	private JPanel mPlayingTxtPanel    = new JPanel ();
 
 	private JLabel mNameLabel          = new JLabel ();
 	private JLabel mSNameLabel         = new JLabel ();
-	private JLabel mWinnerName         = new JLabel ("Name3");
+	private JLabel mWinnerName         = new JLabel ();
 
-	private JLabel vs                  = new JLabel ("VS");
+	private JLabel mPlayingLabel       = new JLabel ("Group to play!");
+	private JLabel vsLabel             = new JLabel ("VS");
 	private JLabel lArrow;
 	private JLabel rArrow;
 
@@ -38,74 +41,104 @@ public class DisplayGroupPanel extends JPanel
 
 	private void initialization (String fPlayer, String sPlayer)
 	{
-
-		// TODO refactor multiple players
-
+		setMainPanelLayout ();
+		setPanelsLayout ();
 		panelStyling ();
-
-		mNameLabel.setText (fPlayer);
-		mSNameLabel.setText (sPlayer);
-
 		labelStyling ();
+		setPlayersNames (fPlayer, sPlayer);
+		buildPanel ();
+	}
 
-		mVersusPanel.setLayout (new GridLayout (1,3, -1, -1));
-		mFirstPlayerPanel.setLayout (new GridLayout (1,2, -1, -1));
-		mSecondPlayerPanel.setLayout (new GridLayout (1,2, -1, -1));
-		mWinnerPanel.setLayout (new GridLayout (1,2, -1, -1));
 
-		mVersusPanel.add (lArrow);
-		mVersusPanel.add (vs);
-		mVersusPanel.add (rArrow);
-
-		mFirstPlayerPanel.add (mNameLabel);
-
-		mSecondPlayerPanel.add (mSNameLabel);
-
-		mWinnerPanel.add (new Label ("Winner:"));
-		mWinnerPanel.add (mWinnerName);
-
-		mWinnerPanel.setVisible (false);
-
+	private void setMainPanelLayout ()
+	{
 		GroupLayout groupLayout = new GroupLayout (this);
 		this.setLayout (groupLayout);
 
 		groupLayout.setAutoCreateGaps(true);
 		groupLayout.setAutoCreateContainerGaps(true);
 
-		groupLayout.setHorizontalGroup(
-				groupLayout.createSequentialGroup()
-						.addComponent(mFirstPlayerPanel)
-						.addGroup (groupLayout.createParallelGroup (GroupLayout.Alignment.LEADING)
-								           .addComponent(mVersusPanel)
-								           .addComponent(mWinnerPanel))
-						.addComponent(mSecondPlayerPanel)
+		groupLayout.setHorizontalGroup
+		(
+				groupLayout.createSequentialGroup ()
+						.addComponent (mFirstPlayerPanel)
+						.addGroup
+						(
+								groupLayout.createParallelGroup (GroupLayout.Alignment.LEADING)
+								           .addComponent (mPlayingTxtPanel)
+								           .addComponent (mVersusPanel)
+								           .addComponent (mWinnerPanel)
+						)
+						.addComponent (mSecondPlayerPanel)
 
 		);
-		groupLayout.setVerticalGroup(
-				groupLayout.createSequentialGroup()
-						.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								          .addComponent(mFirstPlayerPanel)
-								          .addComponent(mVersusPanel)
-								          .addComponent(mSecondPlayerPanel))
-
-						.addComponent(mWinnerPanel)
+		groupLayout.setVerticalGroup
+		(
+				groupLayout.createSequentialGroup ()
+						.addComponent (mPlayingTxtPanel)
+						.addGroup
+						(
+								groupLayout.createParallelGroup (GroupLayout.Alignment.BASELINE)
+								          .addComponent (mFirstPlayerPanel)
+								          .addComponent (mVersusPanel)
+								          .addComponent (mSecondPlayerPanel)
+						)
+						.addComponent (mWinnerPanel)
 		);
+	}
+
+
+	private void buildPanel ()
+	{
+		mVersusPanel        .add (lArrow);
+		mPlayingTxtPanel    .add (mPlayingLabel);
+		mVersusPanel        .add (vsLabel);
+		mVersusPanel        .add (rArrow);
+		mFirstPlayerPanel   .add (mNameLabel);
+		mSecondPlayerPanel  .add (mSNameLabel);
+		mWinnerPanel        .add (new Label ("Winner:"));
+		mWinnerPanel        .add (mWinnerName);
+	}
+
+
+	private void setPanelsLayout ()
+	{
+		mVersusPanel        .setLayout (new GridLayout (1, 3, -1, -1));
+		mFirstPlayerPanel   .setLayout (new GridLayout (1, 2, -1, -1));
+		mSecondPlayerPanel  .setLayout (new GridLayout (1, 2, -1, -1));
+		mWinnerPanel        .setLayout (new GridLayout (1, 2, -1, -1));
+		mPlayingTxtPanel    .setLayout (new GridLayout (1, 2, -1, -1));
+	}
+
+
+	private void setPlayersNames (String fPlayer, String sPlayer)
+	{
+		mNameLabel.setText (fPlayer);
+		mSNameLabel.setText (sPlayer);
 	}
 
 
 	private void labelStyling ()
 	{
-		vs.setHorizontalAlignment (SwingConstants.CENTER);
+		mWinnerPanel.setVisible (false);
 
-		mNameLabel.setOpaque (true);
-		mSNameLabel.setOpaque (false);
-		mWinnerName.setOpaque (false);
+		vsLabel         .setHorizontalAlignment (SwingConstants.CENTER);
+		mPlayingLabel   .setHorizontalAlignment (SwingConstants.CENTER);
+
+		mNameLabel  .setOpaque (true);
+		mSNameLabel .setOpaque (false);
+		mWinnerName .setOpaque (false);
+
+		mNameLabel  .setBackground (new Color(255, 255, 255, 0));
+		mSNameLabel .setBackground (new Color(255, 255, 255, 0));
+		mWinnerName .setBackground (new Color(255, 255, 255, 0));
+
+		setImages ();
+	}
 
 
-		mNameLabel.setBackground (new Color(255, 255, 255, 0));
-		mSNameLabel.setBackground (new Color(255, 255, 255, 0));
-		mWinnerName.setBackground (new Color(255, 255, 255, 0));
-
+	private void setImages ()
+	{
 		Image leftImage = ImageLoader.getImage(Constats.LEFT_DART_PIC);
 		Icon leftIcon = new ImageIcon(leftImage);
 		lArrow = new JLabel(leftIcon);
@@ -116,13 +149,14 @@ public class DisplayGroupPanel extends JPanel
 	}
 
 
-	private static Color hex2Rgb(String colorStr)
+	private static Color hex2Rgb (String colorStr)
 	{
-		// TODO check pattern
-		return new Color(
-				Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
-				Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
-				Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
+		// TODO Check colorStr pattern.
+		return new Color (
+				Integer.valueOf (colorStr.substring (1, 3), 16),
+				Integer.valueOf (colorStr.substring (3, 5), 16),
+				Integer.valueOf (colorStr.substring (5, 7), 16)
+		);
 	}
 
 
@@ -145,18 +179,23 @@ public class DisplayGroupPanel extends JPanel
 		g2d.fillRect (0, 0, width, height);
 	}
 
+
 	private void panelStyling ()
 	{
-		this.setBorder(new EtchedBorder (EtchedBorder.LOWERED));
+		this.setBorder (new EtchedBorder (EtchedBorder.LOWERED));
 
-		mFirstPlayerPanel.setOpaque (false);
-		mSecondPlayerPanel.setOpaque (false);
-		mWinnerPanel.setOpaque (false);
-		mVersusPanel.setOpaque (false);
+		mFirstPlayerPanel   .setOpaque (false);
+		mSecondPlayerPanel  .setOpaque (false);
+		mWinnerPanel        .setOpaque (false);
+		mVersusPanel        .setOpaque (false);
+		mPlayingTxtPanel    .setOpaque (false);
 
-		mFirstPlayerPanel.setBackground (new Color(255, 255, 255, 0));
-		mSecondPlayerPanel.setBackground (new Color(255, 255, 255, 0));
-		mWinnerPanel.setBackground (new Color(255, 255, 255, 0));
-		mVersusPanel.setBackground (new Color(255, 255, 255, 0));
+		mFirstPlayerPanel   .setBackground (new Color(255, 255, 255, 0));
+		mSecondPlayerPanel  .setBackground (new Color(255, 255, 255, 0));
+		mWinnerPanel        .setBackground (new Color(255, 255, 255, 0));
+		mVersusPanel        .setBackground (new Color(255, 255, 255, 0));
+		mPlayingTxtPanel    .setBackground (new Color(255, 255, 255, 0));
+
+		mPlayingTxtPanel.setVisible (false);
 	}
 }

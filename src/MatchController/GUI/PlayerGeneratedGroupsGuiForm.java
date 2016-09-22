@@ -15,17 +15,18 @@ import java.util.HashMap;
  */
 public class PlayerGeneratedGroupsGuiForm
 {
-	private final MatchController           mMatchController;
+	private final MatchController                       mMatchController;
 
-	private JFrame                          mJFrame;
-	private JButton                         mGameStartBtn;
-	private JPanel                          mGroupsPanel;
-	private JScrollPane                     mGroupsScrollPane;
-	private JPanel                          mJPanel;
-	private JButton                         mNextStageBtn;
+	private JFrame                                      mJFrame;
+	private JButton                                     mGameStartBtn;
+	private JPanel                                      mGroupsPanel;
+	private JScrollPane                                 mGroupsScrollPane;
+	private JPanel                                      mJPanel;
+	private JButton                                     mNextStageBtn;
 
-	private HashMap <Integer, ArrayList <Integer>>    mPlayerGroupsMap;
-	private ArrayList <PlayerObject>        mPlayerList;
+	private HashMap <Integer, ArrayList <Integer>>      mPlayerGroupsMap;
+	private ArrayList <PlayerObject>                    mPlayerList;
+
 
 	public PlayerGeneratedGroupsGuiForm (MatchController matchController, ArrayList<PlayerObject> playerList,
 	                                     HashMap <Integer, ArrayList <Integer>> playerGroupsMap)
@@ -36,25 +37,31 @@ public class PlayerGeneratedGroupsGuiForm
 
 		formInitialization      ();
 		componentsModification  ();
-		addGroupsToPanel        ();
+		addGroupsToPanelAndUpdateFrame ();
 	}
 
 
 	private void formInitialization ()
 	{
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-
 		mJFrame = new JFrame ("PlayerGeneratedGroupsGuiForm");
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
 		mJFrame.setResizable (false);
+
+		setMJFrameLocation ();
+	}
+
+
+	private void setMJFrameLocation ()
+	{
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		mJFrame.setLocation (dim.width / 2 - mJFrame.getSize ().width / 2, 0);
 	}
 
 
-	private void addGroupsToPanel ()
+	private void addGroupsToPanelAndUpdateFrame ()
 	{
 		addGroupsToMainPanel ();
 		updateForm ();
@@ -63,20 +70,14 @@ public class PlayerGeneratedGroupsGuiForm
 
 	private void addGroupsToMainPanel ()
 	{
-		// TODO Add some groups names
-		// TODO Some Styling for panel
 		for (int i = 1; i < mPlayerGroupsMap.size () + 1; i++)
-		{
-			JPanel playerGroupPanel = new JPanel ();
-			playerGroupPanel.setLayout (new GridLayout ());
-
 			mGroupsPanel.add (new DisplayGroupPanel (mPlayerGroupsMap.get (i), mPlayerList));
-		}
 	}
 
 
 	private void componentsModification ()
 	{
+		// Could be style method
 		addComponentsListener ();
 	}
 
@@ -87,7 +88,8 @@ public class PlayerGeneratedGroupsGuiForm
 	}
 
 
-	public void displayWinner (int groupId, String winnerName)
+	// TODO wtf?
+	public void displayWinnerPanelInGroup (int groupId, String winnerName)
 	{
 		Component[] groupPanels = mGroupsPanel.getComponents ();
 
@@ -119,6 +121,7 @@ public class PlayerGeneratedGroupsGuiForm
 	{
 		mJFrame.dispose ();
 	}
+
 
 	private void addComponentsListener ()
 	{

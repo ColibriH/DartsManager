@@ -16,7 +16,7 @@ public class GroupGenerator
 		List <Integer> shuffledList = getShuffledList (playerList);
 
 		int maxPlayerInGroup = playersNumberInGroup;
-		int groupCount = playerList.size () / maxPlayerInGroup;       // Check with 9 or 7 or 5... (even numbers)
+		int groupCount = playerList.size () / maxPlayerInGroup;
 
 		if (isOdd (playerList.size ()))
 			groupCount++;
@@ -34,15 +34,16 @@ public class GroupGenerator
 
 		for (int i = 0; i < maxPlayerInGroup; i++)
 			if (shuffledList.size () != 0)
-				playersGroupValue.add (getPlayerFromShuffledList (playerList, shuffledList));
+				playersGroupValue.add (getPlayerFromShuffledListAndRemove (playerList, shuffledList));
 
 		return playersGroupValue;
 	}
 
 
-	private static Integer getPlayerFromShuffledList (ArrayList <PlayerObject> playerList, List <Integer> shuffledList)
+	private static Integer getPlayerFromShuffledListAndRemove (ArrayList <PlayerObject> playerList, List <Integer> shuffledList)
 	{
-		Integer pId = playerList.get (shuffledList.get (0)).mId;
+		Integer playerIdFromShuffledList = shuffledList.get (0);
+		Integer pId = playerList.get (playerIdFromShuffledList).mId;
 		shuffledList.remove (0);
 
 		return pId;

@@ -14,9 +14,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
-// TODO Refactor: check all syntax
-// TODO Refactor: replace all not unappropriated logic from this class
-
 // TODO Create check on name twin (name should be UNIQUE)
 
 /**
@@ -61,14 +58,26 @@ public class GameManagerGuiForm
 
 	private void frameInitialization ()
 	{
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-
 		mJFrame = new JFrame ("GameManagerGuiForm");
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
+
+		setMJFrameLocation ();
+		setEntryComponentFocus ();
+	}
+
+
+	private void setMJFrameLocation ()
+	{
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		mJFrame.setLocation (dim.width / 2 - mJFrame.getSize ().width / 2, 0);
+	}
+
+
+	private void setEntryComponentFocus ()
+	{
 		mJPanel.requestFocus ();
 	}
 
