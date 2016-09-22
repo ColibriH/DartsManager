@@ -1,6 +1,7 @@
 package MatchController;
 
 import GameController.GameController;
+import MatchController.GUI.DisplayGroupPanel;
 import MatchController.Objects.PlayerObject;
 import MatchController.GUI.GameManagerGuiForm;
 import MatchController.GUI.PlayerGeneratedGroupsGuiForm;
@@ -16,7 +17,6 @@ import java.util.Map;
  */
 
 // TODO style players turn
-// TODO Create functionality to display next group after each players game
 
 // TODO Create menus, back button
 
@@ -41,7 +41,7 @@ import java.util.Map;
 public class MatchController
 {
 	private GameManagerGuiForm                            gameManagerGuiForm;
-	private PlayerGeneratedGroupsGuiForm                  playerGeneratedGroupsGuiForm;
+	private PlayerGeneratedGroupsGuiForm mPlayerGeneratedGroupsGuiForm;
 	private WinnerGuiForm                                 winnerGuiForm;
 	private GameController                                mGameController;
 
@@ -62,7 +62,7 @@ public class MatchController
 	private void initializeNewMatch ()
 	{
 		mPlayersNumberInGroup       = 2;
-		mCurrentPlayingGroupNumber = 0;
+		mCurrentPlayingGroupNumber  = 0;
 		mStageWinnerHashMap         = new HashMap <> ();
 		gameManagerGuiForm          = new GameManagerGuiForm (this);
 	}
@@ -123,7 +123,7 @@ public class MatchController
 	private void playerGeneratedGroupsGuiFormClose ()
 	{
 		// TODO Create correct handle of form to close form and reuse of form (if need to go back)
-		playerGeneratedGroupsGuiForm.setVisibility (false);
+		mPlayerGeneratedGroupsGuiForm.setVisibility (false);
 	}
 
 
@@ -150,7 +150,7 @@ public class MatchController
 
 	private void displayGameGroups()
 	{
-		playerGeneratedGroupsGuiForm = new PlayerGeneratedGroupsGuiForm (this, mPlayerList, mPlayerGroupsMap);
+		mPlayerGeneratedGroupsGuiForm = new PlayerGeneratedGroupsGuiForm (this, mPlayerList, mPlayerGroupsMap, mCurrentPlayingGroupNumber);
 	}
 
 
@@ -158,7 +158,7 @@ public class MatchController
 	{
 		ArrayList <PlayerObject> playerObjectsList = new ArrayList <> ();
 
-		ArrayList <Integer> playersIds = mPlayerGroupsMap.get (getNextPlayersGroupNumber ());
+		ArrayList <Integer> playersIds = mPlayerGroupsMap.get (mCurrentPlayingGroupNumber);
 		for (Integer playerId : playersIds)
 			playerObjectsList.add (getPlayerObjectById (playerId));
 
@@ -166,13 +166,7 @@ public class MatchController
 	}
 
 
-	private int getNextPlayersGroupNumber ()
-	{
-		return ++ mCurrentPlayingGroupNumber;
-	}
-
-
-	private PlayerObject getPlayerObjectById (Integer playerId) throws Exception
+	public PlayerObject getPlayerObjectById (Integer playerId) throws Exception
 	{
 		for (PlayerObject player : mPlayerList)
 			if (player.mId.equals (playerId))
@@ -182,23 +176,47 @@ public class MatchController
 	}
 
 
+	public void setPlayersGeneratedGroupLink (ArrayList <Integer> pIds, DisplayGroupPanel dgp)
+	{
+		try
+		{
+			for (Integer pId : pIds)
+				getPlayerObjectById (pId).setDisplayGroupPanel (dgp);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace ();
+		}
+	}
+
+
 	public void runActionsAfterGameController (ArrayList <PlayerObject> playerObjectArrayListResult)
 	{
 		try
 		{
 			PlayerObject winner = getWinnersPlayerObject (playerObjectArrayListResult);
+			resetPlayerLegData (playerObjectArrayListResult);
 			mStageWinnerHashMap.put (mCurrentPlayingGroupNumber, winner);
+
+			mCurrentPlayingGroupNumber++;
 
 			if (ifLastGroupPlayed ())
 				handleLastGroupPlayedState (winner);
 			else
-				displayWinner (winner.mName);
+				displayWinner (winner);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace ();
 			JOptionPane.showMessageDialog (null, e);
 		}
+	}
+
+
+	private void resetPlayerLegData (ArrayList<PlayerObject> playerObjectArrayList)
+	{
+		for (PlayerObject player : playerObjectArrayList)
+			player.mLeg = 0;
 	}
 
 
@@ -211,7 +229,7 @@ public class MatchController
 		else
 		{
 			groupsStageRotation ();
-			displayWinner (winner.mName, true);
+			displayWinnerAndNextStage (winner);
 		}
 	}
 
@@ -234,24 +252,25 @@ public class MatchController
 	}
 
 
-	private void displayWinner (String winnerName)
+	private void displayWinner (PlayerObject winner)
 	{
-		playerGeneratedGroupsGuiForm.displayWinnerPanelInGroup (mCurrentPlayingGroupNumber, winnerName);
-		playerGeneratedGroupsGuiForm.setVisibility (true);
+		mPlayerGeneratedGroupsGuiForm.displayWinnerPanelInGroup (winner);
+		mPlayerGeneratedGroupsGuiForm.setVisibility (true);
 	}
 
 
-	private void  displayWinner (String winnerName, boolean isNextStage)
+	private void  displayWinnerAndNextStage (PlayerObject winner)
 	{
-		playerGeneratedGroupsGuiForm.displayWinner (mCurrentPlayingGroupNumber, winnerName, isNextStage);
-		playerGeneratedGroupsGuiForm.setVisibility (true);
+		mPlayerGeneratedGroupsGuiForm.displayWinnerAndNextStage (winner);
+		mPlayerGeneratedGroupsGuiForm.setVisibility (true);
 	}
 
 
 	public void nextStageTrigger ()
 	{
-		playerGeneratedGroupsGuiForm.destroy ();
+		mPlayerGeneratedGroupsGuiForm.destroy ();
 		mCurrentPlayingGroupNumber = 0;
+
 		displayGameGroups();
 	}
 
@@ -262,7 +281,7 @@ public class MatchController
 
 		int winnersHashMapSize = mStageWinnerHashMap.size ();
 
-		for (int i = 1; i < winnersHashMapSize; i = i + 1)
+		for (int i = 0; i < winnersHashMapSize - 1; i++)
 		{
 			PlayerObject currentPlayer  = mStageWinnerHashMap.get (i);
 			PlayerObject nextPlayer     = mStageWinnerHashMap.get (i + 1);
@@ -312,6 +331,12 @@ public class MatchController
 			winnerGuiForm = null;
 
 		initializeNewMatch ();
+	}
+
+
+	public Integer getCurrentPlayingGroupNumber ()
+	{
+		return mCurrentPlayingGroupNumber;
 	}
 
 

@@ -21,7 +21,7 @@ public class GroupGenerator
 		if (isOdd (playerList.size ()))
 			groupCount++;
 
-		for (int i = 1; i < groupCount + 1; i++)
+		for (int i = 0; i < groupCount; i++)
 			generatedGroupMap.put (i, getOneCreatedGroup (maxPlayerInGroup, playerList, shuffledList));
 
 		return generatedGroupMap;

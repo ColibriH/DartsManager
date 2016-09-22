@@ -96,7 +96,6 @@ public class DisplayGroupPanel extends JPanel
 		mVersusPanel        .add (rArrow);
 		mFirstPlayerPanel   .add (mNameLabel);
 		mSecondPlayerPanel  .add (mSNameLabel);
-		mWinnerPanel        .add (new Label ("Winner:"));
 		mWinnerPanel        .add (mWinnerName);
 	}
 
@@ -120,10 +119,9 @@ public class DisplayGroupPanel extends JPanel
 
 	private void labelStyling ()
 	{
-		mWinnerPanel.setVisible (false);
-
 		vsLabel         .setHorizontalAlignment (SwingConstants.CENTER);
 		mPlayingLabel   .setHorizontalAlignment (SwingConstants.CENTER);
+		mWinnerName     .setHorizontalAlignment (SwingConstants.CENTER);
 
 		mNameLabel  .setOpaque (true);
 		mSNameLabel .setOpaque (false);
@@ -197,5 +195,19 @@ public class DisplayGroupPanel extends JPanel
 		mPlayingTxtPanel    .setBackground (new Color(255, 255, 255, 0));
 
 		mPlayingTxtPanel.setVisible (false);
+		mWinnerPanel.setVisible (false);
+	}
+
+
+	public void showWinner (String winnerName)
+	{
+		mWinnerName.setText ("Winner: " + winnerName);
+		mWinnerPanel.setVisible (true);
+	}
+
+
+	public void setCurretPlayingGroup (boolean visibilityState)
+	{
+		mPlayingTxtPanel.setVisible (visibilityState);
 	}
 }

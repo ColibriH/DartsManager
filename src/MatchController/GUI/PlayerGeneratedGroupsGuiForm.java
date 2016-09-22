@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vladislavs on 06.09.2016..
@@ -26,14 +27,16 @@ public class PlayerGeneratedGroupsGuiForm
 
 	private HashMap <Integer, ArrayList <Integer>>      mPlayerGroupsMap;
 	private ArrayList <PlayerObject>                    mPlayerList;
+	private Integer                                     mCurrentPlayingGroupNumber;
 
 
 	public PlayerGeneratedGroupsGuiForm (MatchController matchController, ArrayList<PlayerObject> playerList,
-	                                     HashMap <Integer, ArrayList <Integer>> playerGroupsMap)
+	                                     HashMap <Integer, ArrayList <Integer>> playerGroupsMap, Integer currentPlayingGroupNumber)
 	{
-		mMatchController    = matchController;
-		mPlayerList         = playerList;
-		mPlayerGroupsMap    = new HashMap <> (playerGroupsMap);
+		mCurrentPlayingGroupNumber  = currentPlayingGroupNumber;
+		mMatchController            = matchController;
+		mPlayerList                 = playerList;
+		mPlayerGroupsMap            = new HashMap <> (playerGroupsMap);
 
 		formInitialization      ();
 		componentsModification  ();
@@ -63,15 +66,53 @@ public class PlayerGeneratedGroupsGuiForm
 
 	private void addGroupsToPanelAndUpdateFrame ()
 	{
-		addGroupsToMainPanel ();
+		addGroupsToMainPanelAndLinkGroupWithPlayer ();
+		setCurrentPlayingGroup ();
 		updateForm ();
 	}
 
 
-	private void addGroupsToMainPanel ()
+	private void setCurrentPlayingGroup ()
 	{
-		for (int i = 1; i < mPlayerGroupsMap.size () + 1; i++)
-			mGroupsPanel.add (new DisplayGroupPanel (mPlayerGroupsMap.get (i), mPlayerList));
+		mCurrentPlayingGroupNumber = mMatchController.getCurrentPlayingGroupNumber ();
+		hideCurrentPlayingGroupPanelForAllGroups ();
+		setCurrentPlayingGroup (mPlayerGroupsMap.get (mCurrentPlayingGroupNumber).get (0), true);
+	}
+
+
+	private void setCurrentPlayingGroup (Integer firstPlayerId, boolean state)
+	{
+		try
+		{
+			mMatchController.getPlayerObjectById (firstPlayerId).getDisplayGroupPanel ().setCurretPlayingGroup (state);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace ();
+		}
+	}
+
+
+	private void hideCurrentPlayingGroupPanelForAllGroups ()
+	{
+		for (Object o : mPlayerGroupsMap.entrySet ())
+		{
+			Map.Entry pair = (Map.Entry) o;
+			setCurrentPlayingGroup (((ArrayList <Integer>) pair.getValue ()).get (0), false);
+		}
+	}
+
+
+	private void addGroupsToMainPanelAndLinkGroupWithPlayer ()
+	{
+		for (int i = 0; i < mPlayerGroupsMap.size (); i++)
+		{
+			ArrayList <Integer> playersIds = mPlayerGroupsMap.get (i);
+			DisplayGroupPanel dgp = new DisplayGroupPanel (playersIds, mPlayerList);
+
+			mGroupsPanel.add (dgp);
+			mMatchController.setPlayersGeneratedGroupLink (playersIds, dgp);
+		}
 	}
 
 
@@ -88,24 +129,32 @@ public class PlayerGeneratedGroupsGuiForm
 	}
 
 
-	// TODO wtf?
-	public void displayWinnerPanelInGroup (int groupId, String winnerName)
+	public void displayWinnerPanelInGroup (PlayerObject winner)
 	{
-		Component[] groupPanels = mGroupsPanel.getComponents ();
-
-		((JPanel) groupPanels[groupId - 1]).add (new JLabel ("Winner: " + winnerName));
+		setCurrentPlayingGroup ();
+		showWinner (winner);
 	}
 
 
-	// TODO wtf?
-	public void displayWinner (int groupId, String winnerName, boolean isNextStage)
+	public void displayWinnerAndNextStage (PlayerObject winner)
 	{
-		Component[] groupPanels = mGroupsPanel.getComponents ();
-
-		((JPanel) groupPanels[groupId - 1]).add (new JLabel ("Winner: " + winnerName));
-
+		hideCurrentPlayingGroupPanelForAllGroups ();
+		showWinner (winner);
 		mGameStartBtn.setVisible (false);
 		mNextStageBtn.setVisible (true);
+	}
+
+
+	private void showWinner (PlayerObject winner)
+	{
+		try
+		{
+			mMatchController.getPlayerObjectById (winner.mId).getDisplayGroupPanel ().showWinner (winner.mName);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace ();
+		}
 	}
 
 
@@ -120,6 +169,12 @@ public class PlayerGeneratedGroupsGuiForm
 	public void destroy ()
 	{
 		mJFrame.dispose ();
+	}
+
+
+	public void setCurrentPlayingGroupNumber (Integer mCurrentPlayingGroupNumber)
+	{
+		this.mCurrentPlayingGroupNumber = mCurrentPlayingGroupNumber;
 	}
 
 
