@@ -24,12 +24,16 @@ public class GameDisplayGuiForm
 	private JTextField      mSecondPlayerLeg;
 	private JTextField      mSecondPlayerScore;
 	private JLabel          mSPlayerLabel;
+
 	private JLabel          mMainImage;
 	private JLabel          fPlayerImage;
 	private JLabel          sPlayerImage;
+	private JLabel          mMPlayerArrow;
+	private JLabel          mOpponentPlayerArrow;
 
 	private PlayerObject    mPlayer;
 	private PlayerObject    mPlayerOpponent;
+
 
 
 	public GameDisplayGuiForm (PlayerObject firstPlayer, PlayerObject secondPlayer)
@@ -67,9 +71,33 @@ public class GameDisplayGuiForm
 
 	private void iconsInitialization ()
 	{
-		mMainImage.setIcon      (new ImageIcon (ImageLoader.getImage   (Constats.MAIN_BOARD_PIC)));
-		sPlayerImage.setIcon    (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_RIGHT)));
-		fPlayerImage.setIcon    (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_LEFT)));
+		initializePlayerTurnArrows ();
+
+		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.MAIN_BOARD_PIC)), mMainImage);
+		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_RIGHT)), sPlayerImage);
+		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_LEFT)), fPlayerImage);
+	}
+
+
+	private void initializePlayerTurnArrows ()
+	{
+		ImageIcon arrow = new ImageIcon (ImageLoader.getImage   (Constats.TURN_ARROW_PIC));
+
+		setIconToLabel (arrow, mOpponentPlayerArrow);
+		setIconToLabel (arrow, mMPlayerArrow);
+
+		mOpponentPlayerArrow    .setVisible (false);
+		mMPlayerArrow           .setVisible (false);
+
+		mPlayer         .setTurnArrow (mMPlayerArrow);
+		mPlayerOpponent .setTurnArrow (mOpponentPlayerArrow);
+	}
+
+
+	private void setIconToLabel (ImageIcon imageIcon, JLabel label)
+	{
+		if (imageIcon != null)
+			label.setIcon (imageIcon);
 	}
 
 

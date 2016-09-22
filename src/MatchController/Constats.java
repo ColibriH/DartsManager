@@ -21,6 +21,7 @@ public class Constats
 	public static final String LEFT_DART_PIC                = PIC_FOLDER_FULL_PATH + "dart_left.png";
 
 	public static final String MAIN_BOARD_PIC               = PIC_FOLDER_FULL_PATH + "board.png";
+	public static final String TURN_ARROW_PIC               = PIC_FOLDER_FULL_PATH + "turn_arrow.png";
 	public static final String DEFAULT_PLAYER_PIC_LEFT      = PIC_FOLDER_FULL_PATH + "def_player_left.png";
 	public static final String DEFAULT_PLAYER_PIC_RIGHT     = PIC_FOLDER_FULL_PATH + "def_player_right.png";
 

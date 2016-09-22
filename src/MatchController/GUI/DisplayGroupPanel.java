@@ -12,8 +12,10 @@ import java.util.ArrayList;
 /**
  * Created by vladislavs on 13.09.2016..
  */
+
 // TODO Add some groups names
-// TODO display winner name
+// TODO set better style
+// TODO set preferred size to mPanel
 
 public class DisplayGroupPanel extends JPanel
 {

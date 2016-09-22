@@ -175,7 +175,22 @@ public class GameController
 		{
 			assignCurrentPlayer ();
 			resetCurrentPlayerShots ();
+			showCurrentPlayerTurn ();
 		}
+	}
+
+
+	public void showCurrentPlayerTurn ()
+	{
+		hidePlayersArrows ();
+		mCurrentPlayer.getTurnArrow ().setVisible (true);
+	}
+
+
+	private void hidePlayersArrows ()
+	{
+		mPlayer         .getTurnArrow ().setVisible (false);
+		mOpponentPlayer .getTurnArrow ().setVisible (false);
 	}
 
 
