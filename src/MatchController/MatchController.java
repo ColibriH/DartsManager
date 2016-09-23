@@ -16,12 +16,12 @@ import java.util.Map;
  * Created by vladislavs on 06.09.2016..
  */
 
-// TODO style players turn
-
 // TODO Create menus, back button
-
-// TODO Check and put try-catch blocs where is needed
 // TODO Create documentation
+
+// TODO Finish Styling // Recreate group display for tournament
+
+// TODO Test for 3 people, 6, 9, 12
 
 // TODO more than 2 people in one group -> little bit changes in rules check this! (for this need huge refactor and logic changes) AND Create more game types
 
@@ -41,7 +41,7 @@ import java.util.Map;
 public class MatchController
 {
 	private GameManagerGuiForm                            gameManagerGuiForm;
-	private PlayerGeneratedGroupsGuiForm mPlayerGeneratedGroupsGuiForm;
+	private PlayerGeneratedGroupsGuiForm                  mPlayerGeneratedGroupsGuiForm;
 	private WinnerGuiForm                                 winnerGuiForm;
 	private GameController                                mGameController;
 
@@ -321,7 +321,7 @@ public class MatchController
 	{
 		return (playerObjectArrayListResult.get (0).mLeg > playerObjectArrayListResult.get (1).mLeg) ?
 				playerObjectArrayListResult.get (0) :
-				playerObjectArrayListResult.get (1);    // TODO Refactor bad code
+				playerObjectArrayListResult.get (1);
 	}
 
 
