@@ -50,6 +50,8 @@ public class GameController
 
 		mGameDisplayGuiForm     = new GameDisplayGuiForm (mCurrentPlayer, mOpponentPlayer);
 		mGameControlGuiForm     = new GameControlGuiForm (this);
+
+		showCurrentPlayerTurn (true);
 	}
 
 
@@ -183,7 +185,13 @@ public class GameController
 	public void showCurrentPlayerTurn ()
 	{
 		hidePlayersArrows ();
-		mCurrentPlayer.getTurnArrow ().setVisible (true);
+		showCurrentPlayerTurn (true);
+	}
+
+
+	private void showCurrentPlayerTurn (boolean state)
+	{
+		mCurrentPlayer.getTurnArrow ().setVisible (state);
 	}
 
 

@@ -10,6 +10,9 @@ import java.awt.*;
 /**
  * Created by vladislavs on 07.09.2016..
  */
+
+// TODO Add more styling
+
 public class GameDisplayGuiForm
 {
 	private JFrame          mJFrame;
