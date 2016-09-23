@@ -24,6 +24,7 @@ public class Constats
 	public static final String TURN_ARROW_PIC               = PIC_FOLDER_FULL_PATH + "turn_arrow.png";
 	public static final String DEFAULT_PLAYER_PIC_LEFT      = PIC_FOLDER_FULL_PATH + "def_player_left.png";
 	public static final String DEFAULT_PLAYER_PIC_RIGHT     = PIC_FOLDER_FULL_PATH + "def_player_right.png";
+	public static final String WINNER_PIC                   = PIC_FOLDER_FULL_PATH + "winner.png";
 
 	public static final String DELETE_BTN_ID                = "Delete";
 	public static final String EDIT_BTN_ID                  = "Edit";
