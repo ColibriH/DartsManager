@@ -22,7 +22,6 @@ public class MenuGuiForm
 	private JButton optionsButton;
 	private JButton eachVsEachButton;
 	private JPanel mCtrBtnPanel;
-	private JPanel mMenuTitlePanel;
 
 
 	public MenuGuiForm ()
@@ -62,8 +61,29 @@ public class MenuGuiForm
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
+		mJPanel.setLayout (new BorderLayout ());
 
 		setMJFrameLocation ();
+		setStyle ();
+	}
+
+
+	private void setStyle ()
+	{
+		createLayerPane ();
+	}
+
+
+	private void createLayerPane ()
+	{
+		JLayeredPane layeredPane = new JLayeredPane ();
+		layeredPane.setOpaque (true);
+		layeredPane.setBackground (Color.RED);
+		layeredPane.setPreferredSize(new Dimension(800, 600));
+		layeredPane.setBorder(BorderFactory.createLineBorder(Color.green));
+
+
+		mJPanel.add (layeredPane, BorderLayout.CENTER);
 	}
 
 

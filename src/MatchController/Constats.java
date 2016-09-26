@@ -29,5 +29,5 @@ public class Constats
 	public static final String DELETE_BTN_ID                = "Delete";
 	public static final String EDIT_BTN_ID                  = "Edit";
 
-	public static final String TEST                         = PIC_FOLDER_FULL_PATH + "test.gif";
+	public static final String TEST                         = PIC_FOLDER_FULL_PATH + "menuBG.jpg";
 }
