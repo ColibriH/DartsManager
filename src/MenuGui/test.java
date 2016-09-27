@@ -38,15 +38,21 @@ public class test
 
 		JPanel bg = new JPanel ();
 		bg.setBackground (Color.darkGray);
-		bg.setPreferredSize (new Dimension (20, 20));
 		bg.setBounds (0, 0, 20, 20);
 
 		lp.add (bg, 0);
 
-		JPanel c = new JPanel ();
-		c.setBackground (Color.green);
-		c.setPreferredSize (new Dimension (100, 30));
-		c.setBounds (10, 10, 100, 30);
+		JLayeredPane c = new JLayeredPane ();
+		c.setBackground (Color.CYAN);
+		c.setOpaque (true);
+		//c.setPreferredSize(new Dimension(80, 50));
+		c.setBounds (10, 10, 60, 30);
+		//c.setBorder(BorderFactory.createLineBorder(Color.green));
+
+		JPanel btnBg = new JPanel ();
+		btnBg.setBackground (Color.green);
+		btnBg.setBounds (0, 0, 50, 20);
+		c.add (btnBg, 1);
 
 		lp.add (c, 1);
 

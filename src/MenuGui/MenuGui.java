@@ -5,6 +5,7 @@ import MatchController.Constats;
 import Tools.ImageLoader;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -100,16 +101,54 @@ public class MenuGui
 		mJPanel.add (mLayeredPane, BorderLayout.CENTER);
 
 		mBackGroundPanel.setLayout (new BorderLayout ());
-		mBackGroundPanel.setBounds (0, 0, MAIN_WIDTH, MAIN_HEIGHT);   // 10 - is additional size for layered pane
+		mBackGroundPanel.setBounds (0, 0, MAIN_WIDTH, MAIN_HEIGHT);
 		mBackGroundPanel.setBackground (Color.ORANGE);
 		mBackGroundImg.setIcon (new ImageIcon (ImageLoader.getImage (Constats.TEST)));
 		mBackGroundPanel.add (mBackGroundImg);
 		mLayeredPane.add (mBackGroundPanel, 1);
 
-		mCtrBtnPanel.setLayout (new FlowLayout ());
-		mCtrBtnPanel.setBackground (Color.green);
+		mCtrBtnPanel.setLayout (new GridBagLayout ());
+
+		GridBagConstraints gridBagConstraints = new GridBagConstraints ();
+		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+
+		mCtrBtnPanel.setBackground (new Color (255, 255, 0, 0));
+
 		Point mBackGroundPanelStartPoint = getBackGroundPanelStartPoint ();
-		mCtrBtnPanel.setBounds (mBackGroundPanelStartPoint.x, mBackGroundPanelStartPoint.y, 270, 410);
+		mCtrBtnPanel.setBounds (mBackGroundPanelStartPoint.x, mBackGroundPanelStartPoint.y, 270, 325);
+
+		tournamentButton.setPreferredSize (new Dimension (250, 50));
+		tournamentButton.setText ("tournamentButton");
+		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 0;
+		gridBagConstraints.insets  = new Insets (5, 0, 5, 0);
+		mCtrBtnPanel.add (tournamentButton, gridBagConstraints);
+
+		exitButton.setPreferredSize (new Dimension (250, 50));
+		exitButton.setText ("exitButton");
+		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 1;
+		gridBagConstraints.insets  = new Insets (5, 0, 5, 0);
+		mCtrBtnPanel.add (exitButton, gridBagConstraints);
+
+		optionsButton.setPreferredSize (new Dimension (250, 50));
+		optionsButton.setText ("optionsButton");
+		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 2;
+		gridBagConstraints.insets  = new Insets (5, 0, 5, 0);
+		mCtrBtnPanel.add (optionsButton, gridBagConstraints);
+
+		eachVsEachButton.setPreferredSize (new Dimension (250, 50));
+		eachVsEachButton.setText ("eachVsEachButton");
+		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 3;
+		gridBagConstraints.insets  = new Insets (5, 0, 5, 0);
+		mCtrBtnPanel.add (eachVsEachButton, gridBagConstraints);
+
 		mLayeredPane.add (mCtrBtnPanel, 0);
 	}
 
@@ -166,6 +205,6 @@ public class MenuGui
 
 	public Point getBackGroundPanelStartPoint ()
 	{
-		return new Point (mBackGroundPanel.getWidth () / 2 - 130, mBackGroundPanel.getHeight () / 2 - 205);  // Magic numbers additional based on bg // TODO how to make auto?
+		return new Point (mBackGroundPanel.getWidth () / 2 - 130, mBackGroundPanel.getHeight () / 2 - 120);  // Magic numbers additional based on bg // TODO how to make auto?
 	}
 }
