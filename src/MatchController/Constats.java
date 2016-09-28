@@ -29,7 +29,7 @@ public class Constats
 	public static final String DELETE_BTN_ID                = "Delete";
 	public static final String EDIT_BTN_ID                  = "Edit";
 
-	public static final String BTN_TEXTURE_PIC              = PIC_FOLDER_FULL_PATH + "btn_texture.jpg";
+	public static final String BTN_TEXTURE_PIC              = PIC_FOLDER_FULL_PATH + "chalk_borders.png";
 	public static final String MENU_BG_PIC                  = PIC_FOLDER_FULL_PATH + "menuBG.jpg";
 	public static final String CORNER_BG_PIC                = PIC_FOLDER_FULL_PATH + "corner_img.png";
 }

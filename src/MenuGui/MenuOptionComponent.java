@@ -5,6 +5,7 @@ import Tools.ImageLoader;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 // TODO change to mel bg anf white mel border for btn
@@ -27,7 +28,7 @@ public class MenuOptionComponent extends JPanel
 
 		setLayout (new BorderLayout ());
 
-		JLabel mCornerIcon = new JLabel (new ImageIcon (ImageLoader.getImage (Constats.CORNER_BG_PIC)));
+	//	JLabel mCornerIcon = new JLabel (new ImageIcon (ImageLoader.getImage (Constats.CORNER_BG_PIC)));
 		JLabel mBtnBg      = new JLabel (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC)));
 
 		JLayeredPane mJLayeredPane = new JLayeredPane ();
@@ -35,10 +36,10 @@ public class MenuOptionComponent extends JPanel
 		mJLayeredPane.setBackground (new Color (255, 255, 0 ,0));
 		mJLayeredPane.setPreferredSize(new Dimension(width, height));
 
-		JPanel mCornerIconsPanel = new JPanel (new BorderLayout ());
-		mCornerIconsPanel.setBackground (new Color (255, 255, 0, 0));
-		mCornerIconsPanel.setBounds (0, 0, 20, 20);
-		mCornerIconsPanel.add (mCornerIcon);
+		//JPanel mCornerIconsPanel = new JPanel (new BorderLayout ());
+		//mCornerIconsPanel.setBackground (new Color (255, 255, 0, 0));
+		//mCornerIconsPanel.setBounds (0, 0, 20, 20);
+		//mCornerIconsPanel.add (mCornerIcon);
 
 
 		JPanel mBtnBgPanel = new JPanel (new BorderLayout ());
@@ -56,7 +57,7 @@ public class MenuOptionComponent extends JPanel
 		mBtn.setBounds (10, 10, width - 10, height - 10);
 
 
-		mJLayeredPane.add (mCornerIconsPanel, 0);
+		//mJLayeredPane.add (mCornerIconsPanel, 0);
 		mJLayeredPane.add (btn, 1);
 		mJLayeredPane.add (mBtnPanel, 2);
 		mJLayeredPane.add (mBtnBgPanel, 3);
@@ -70,6 +71,7 @@ public class MenuOptionComponent extends JPanel
 	{
 		mBtn.setOpaque (false);
 		mBtn.setBackground (new Color (255, 255, 0 ,0));
+		mBtn.setBorder (new EmptyBorder (0, 0, 0, 0));
 		//mBtn.set
 	}
 
