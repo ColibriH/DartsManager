@@ -8,9 +8,13 @@ import java.io.File;
 public class Constats
 {
 	public static final String PIC_FOLDER_PATH  = "pic_";
+	public static final String FONT_FOLDER_PATH  = "font_";
+	public static final String FONT_FOLDER_FULL_PATH = System.getProperty("user.dir") + File.separator +
+																				Constats.FONT_FOLDER_PATH +
+																				File.separator;
 
 	private static final String PIC_FOLDER_FULL_PATH = System.getProperty("user.dir") + File.separator +
-																				Constats.PIC_FOLDER_PATH +
+																				Constats.FONT_FOLDER_PATH +
 																				File.separator;
 
 	public static final String TABLE_PIC                    = PIC_FOLDER_FULL_PATH + "table_pic.jpeg";
@@ -33,4 +37,6 @@ public class Constats
 	public static final String BTN_FILLER_PIC               = PIC_FOLDER_FULL_PATH + "chalk_filler.png";
 	public static final String MENU_BG_PIC                  = PIC_FOLDER_FULL_PATH + "menuBG.jpg";
 	public static final String CORNER_BG_PIC                = PIC_FOLDER_FULL_PATH + "corner_img.png";
+	public static final String CHALK_FONT1                  = FONT_FOLDER_FULL_PATH + "erasdust.ttf";
+	public static final String CHALK_FONT2                  = FONT_FOLDER_FULL_PATH + "Eraser.ttf";
 }

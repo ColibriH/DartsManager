@@ -2,6 +2,7 @@ package MenuGui;
 
 import MatchController.MatchController;
 import MatchController.Constats;
+import Tools.FontLoader;
 import Tools.ImageLoader;
 
 import javax.swing.*;
@@ -27,18 +28,19 @@ public class MenuGui
 	private JPanel          mBackGroundPanel;
 	private JLayeredPane    mLayeredPane;
 
-	private MenuOptionComponent         tournamentButton;
-	private MenuOptionComponent         exitButton;
-	private MenuOptionComponent         optionsButton;
-	private MenuOptionComponent         eachVsEachButton;
+	private JButton         tournamentButton;
+	private JButton         exitButton;
+	private JButton         optionsButton;
+	private JButton         eachVsEachButton;
 
 	private JLabel          mBackGroundImg;
 
 
 	public MenuGui ()
 	{
+		FontLoader.loadFont ();
+
 		variableInitialization ();
-		formComponentsModifications ();
 		frameInitialization ();
 	}
 
@@ -46,16 +48,26 @@ public class MenuGui
 	private void variableInitialization ()
 	{
 		mJFrame             = new JFrame ();
+		mJPanel             = new JPanel ()
+		{
+			Image bg = ImageLoader.getImage (Constats.MENU_BG_PIC);
 
-		mJPanel             = new JPanel ();
+			@Override
+			protected void paintComponent(Graphics g)
+			{
+				super.paintComponent(g);
+				g.drawImage(bg, 0, 0, bg.getWidth(null), bg.getHeight(null), this);
+			}
+		};
+
 		mLayeredPane        = new JLayeredPane ();
 		mBackGroundPanel    = new JPanel ();
 		mCtrBtnPanel        = new JPanel ();
 
-		tournamentButton    = new MenuOptionComponent (250, 50, new JButton ());
-		exitButton          = new MenuOptionComponent (250, 50, new JButton ());
-		optionsButton       = new MenuOptionComponent (250, 50, new JButton ());
-		eachVsEachButton    = new MenuOptionComponent (250, 50, new JButton ());
+		tournamentButton    = new JButton ();
+		exitButton          = new JButton ();
+		optionsButton       = new JButton ();
+		eachVsEachButton    = new JButton ();
 
 		mBackGroundImg      = new JLabel ();
 	}
@@ -70,7 +82,7 @@ public class MenuGui
 
 	private void addComponentsListeners ()
 	{
-		exitButton.getButton ().addActionListener (new ActionListener ()
+		exitButton.addActionListener (new ActionListener ()
 		{
 			@Override
 			public void actionPerformed (ActionEvent e)
@@ -79,7 +91,7 @@ public class MenuGui
 			}
 		});
 
-		tournamentButton.getButton ().addActionListener (new ActionListener ()
+		tournamentButton.addActionListener (new ActionListener ()
 		{
 			@Override
 			public void actionPerformed (ActionEvent e)
@@ -93,63 +105,92 @@ public class MenuGui
 
 	private void addComponentsOptions ()
 	{
-		mJPanel.setLayout (new BorderLayout ());
-		mJPanel.setPreferredSize (new Dimension (MAIN_WIDTH - 10, MAIN_HEIGHT - 10));
-
-		mLayeredPane.setPreferredSize (new Dimension (MAIN_WIDTH, MAIN_HEIGHT));
-		mLayeredPane.setOpaque (true);
-		mJPanel.add (mLayeredPane, BorderLayout.CENTER);
-
-		mBackGroundPanel.setLayout (new BorderLayout ());
-		mBackGroundPanel.setBounds (0, 0, MAIN_WIDTH, MAIN_HEIGHT);
-		mBackGroundPanel.setBackground (Color.ORANGE);
-		mBackGroundImg.setIcon (new ImageIcon (ImageLoader.getImage (Constats.MENU_BG_PIC)));
-		mBackGroundPanel.add (mBackGroundImg);
-		mLayeredPane.add (mBackGroundPanel, 1);
-
-		mCtrBtnPanel.setLayout (new GridBagLayout ());
-
 		GridBagConstraints gridBagConstraints = new GridBagConstraints ();
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraints.insets = new Insets (90, 10, 0 ,0);
+
+		mJPanel.setLayout (new GridBagLayout ());
+		mJPanel.setPreferredSize (new Dimension (MAIN_WIDTH - 10, MAIN_HEIGHT - 10));
+		mJPanel.add (mCtrBtnPanel, gridBagConstraints);
 
 		mCtrBtnPanel.setBackground (new Color (255, 255, 0, 0));
-
-		Point mBackGroundPanelStartPoint = getBackGroundPanelStartPoint ();
-		mCtrBtnPanel.setBounds (mBackGroundPanelStartPoint.x, mBackGroundPanelStartPoint.y, 270, 325);
+		mCtrBtnPanel.setLayout (new GridBagLayout ());
+		mCtrBtnPanel.setOpaque (false);
+		mCtrBtnPanel.setPreferredSize (new Dimension (270, 325));
 
 		tournamentButton.setPreferredSize (new Dimension (250, 50));
-	//	tournamentButton.setText ("tournamentButton");
+		tournamentButton.setText ("Tournament");
+		//tournamentButton.setFont (FontLoader.ge.getAllFonts ()[1]);
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
 		gridBagConstraints.insets  = new Insets (5, 0, 5, 0);
+
+		tournamentButton.setBackground (new Color (255, 255, 0, 0));
+		tournamentButton.setHorizontalTextPosition (SwingConstants.CENTER);
+		tournamentButton.setOpaque (false);
+		tournamentButton.setBorder (new EmptyBorder (0, 0, 0, 0));
+		tournamentButton.setBorderPainted (false);
+		tournamentButton.setContentAreaFilled (false);
+		tournamentButton.setFocusPainted (false);
+		tournamentButton.setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC)));
+		tournamentButton.setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC)));
+
 		mCtrBtnPanel.add (tournamentButton, gridBagConstraints);
 
 		exitButton.setPreferredSize (new Dimension (250, 50));
-	//	exitButton.setText ("exitButton");
+		exitButton.setText ("Exit");
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 1;
 		gridBagConstraints.insets  = new Insets (5, 0, 5, 0);
+
+		exitButton.setBackground (new Color (255, 255, 0, 0));
+		exitButton.setHorizontalTextPosition (SwingConstants.CENTER);
+		exitButton.setOpaque (false);
+		exitButton.setBorder (new EmptyBorder (0, 0, 0, 0));
+		exitButton.setBorderPainted (false);
+		exitButton.setContentAreaFilled (false);
+		exitButton.setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC)));
+		exitButton.setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC)));
+
 		mCtrBtnPanel.add (exitButton, gridBagConstraints);
 
 		optionsButton.setPreferredSize (new Dimension (250, 50));
-		//optionsButton.setText ("optionsButton");
+		optionsButton.setText ("Settings");
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 2;
 		gridBagConstraints.insets  = new Insets (5, 0, 5, 0);
+
+		optionsButton.setBackground (new Color (255, 255, 0, 0));
+		optionsButton.setHorizontalTextPosition (SwingConstants.CENTER);
+		optionsButton.setOpaque (true);
+		optionsButton.setBorder (new EmptyBorder (0, 0, 0, 0));
+		optionsButton.setBorderPainted (false);
+		optionsButton.setContentAreaFilled (false);
+		optionsButton.setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC)));
+		optionsButton.setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC)));
+
 		mCtrBtnPanel.add (optionsButton, gridBagConstraints);
 
 		eachVsEachButton.setPreferredSize (new Dimension (250, 50));
-		//eachVsEachButton.setText ("eachVsEachButton");
+		eachVsEachButton.setHorizontalTextPosition (SwingConstants.CENTER);
+		eachVsEachButton.setText ("Each Vs Each");
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 3;
 		gridBagConstraints.insets  = new Insets (5, 0, 5, 0);
-		mCtrBtnPanel.add (eachVsEachButton, gridBagConstraints);
 
-		mLayeredPane.add (mCtrBtnPanel, 0);
+		eachVsEachButton.setBackground (new Color (255, 255, 0, 0));
+		eachVsEachButton.setOpaque (false);
+		eachVsEachButton.setBorder (new EmptyBorder (0, 0, 0, 0));
+		eachVsEachButton.setBorderPainted (false);
+		eachVsEachButton.setContentAreaFilled (false);
+		eachVsEachButton.setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC)));
+		eachVsEachButton.setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC)));
+
+		mCtrBtnPanel.add (eachVsEachButton, gridBagConstraints);
 	}
 
 
@@ -157,6 +198,9 @@ public class MenuGui
 	{
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
+
+		formComponentsModifications ();
+
 		mJFrame.pack ();
 		mJFrame.setResizable (false);
 		mJFrame.setVisible (true);
@@ -205,6 +249,6 @@ public class MenuGui
 
 	public Point getBackGroundPanelStartPoint ()
 	{
-		return new Point (mBackGroundPanel.getWidth () / 2 - 130, mBackGroundPanel.getHeight () / 2 - 120);  // Magic numbers additional based on bg // TODO how to make auto?
+		return new Point (MAIN_WIDTH / 2 - 135, MAIN_HEIGHT / 2 - 120);  // Magic numbers additional based on bg // TODO how to make auto?
 	}
 }
