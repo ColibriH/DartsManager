@@ -16,6 +16,7 @@ import java.util.ArrayList;
 // TODO Add some groups names
 // TODO set better style
 // TODO set preferred size to mPanel
+// TODO refactor
 
 public class DisplayGroupPanel extends JPanel
 {

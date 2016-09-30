@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * Created by vladislavs on 07.09.2016..
  */
 
+// TODO Refactor
 // TODO May me can split on game logic and rule logic and GUI logic
 
 public class GameController

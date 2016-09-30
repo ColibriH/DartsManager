@@ -3,6 +3,7 @@ package MatchController.GUI;
 import MatchController.MatchController;
 import MatchController.Constats;
 import MatchController.Objects.PlayerObject;
+import MenuGui.MenuGui;
 import Tools.ImageLoader;
 import Tools.ImageViewport;
 
@@ -14,6 +15,13 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
+// TODO Set BackGround of mPanel as dartBoard with two side windows
+// TODO set Board at the middle
+// TODO set font + underline
+// TODO change font of table
+// TODO change button style
+// TODO thing on input style
+// TODO Borders of table hide
 // TODO Create check on name twin (name should be UNIQUE)
 
 /**
@@ -37,6 +45,7 @@ public class GameManagerGuiForm
 	private JPanel                  mTablePanel;
 	private JScrollPane             mNewPlayerJScrollPane;
 	private JTextField mPlayersInGroupTxtField;
+	private JButton backButton;
 	private Image                   mBackGroundImage;
 
 	private String                  mNewPlayerNameTxtFieldDefaultValue;
@@ -111,12 +120,11 @@ public class GameManagerGuiForm
 		try
 		{
 			for (Object rowData : tableData)
-				returnPlayerList.add (getPlayerObjectNewInstance ((Vector) rowData));      // TODO handle null return
+				returnPlayerList.add (getPlayerObjectNewInstance ((Vector) rowData));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace ();
-			// TODO Handle exception
 		}
 
 		return returnPlayerList;
@@ -136,7 +144,6 @@ public class GameManagerGuiForm
 		catch (Exception e)
 		{
 			e.printStackTrace ();
-			// TODO Handle exception on parsing an etc
 		}
 
 		return null;
@@ -346,6 +353,16 @@ public class GameManagerGuiForm
 			{
 				if (mNewPlayerNameTxtField.getText ().length () == 0)
 					mNewPlayerNameTxtField.setText (mNewPlayerNameTxtFieldDefaultValue);
+			}
+		});
+
+		backButton.addActionListener (new ActionListener ()
+		{
+			@Override
+			public void actionPerformed (ActionEvent e)
+			{
+				// TODO main form destroy
+				new MenuGui ();
 			}
 		});
 

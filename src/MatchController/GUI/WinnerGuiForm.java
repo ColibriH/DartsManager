@@ -13,6 +13,9 @@ import java.awt.event.ActionListener;
 /**
  * Created by vladislavs on 09.09.2016..
  */
+
+//TODO Make better style
+
 public class WinnerGuiForm
 {
 	private MatchController mMatchController;

@@ -172,12 +172,6 @@ public class PlayerGeneratedGroupsGuiForm
 	}
 
 
-	public void setCurrentPlayingGroupNumber (Integer mCurrentPlayingGroupNumber)
-	{
-		this.mCurrentPlayingGroupNumber = mCurrentPlayingGroupNumber;
-	}
-
-
 	private void addComponentsListener ()
 	{
 		mGameStartBtn.addActionListener (new ActionListener ()

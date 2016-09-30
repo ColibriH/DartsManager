@@ -14,7 +14,7 @@ public class Constats
 																				File.separator;
 
 	private static final String PIC_FOLDER_FULL_PATH = System.getProperty("user.dir") + File.separator +
-																				Constats.FONT_FOLDER_PATH +
+																				Constats.PIC_FOLDER_PATH +
 																				File.separator;
 
 	public static final String TABLE_PIC                    = PIC_FOLDER_FULL_PATH + "table_pic.jpeg";
