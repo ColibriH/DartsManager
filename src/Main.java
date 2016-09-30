@@ -1,10 +1,10 @@
-import MenuGui.MenuGui;
+import MainController.MainController;
 
 /**
  * Created by vladislavs on 06.09.2016..
  */
 
-// TODO Create menus, back button
+// TODO check memory leak
 // TODO Create documentation
 
 // TODO Finish Styling // Recreate group display for tournament
@@ -22,6 +22,8 @@ import MenuGui.MenuGui;
 // TODO style configuration
 //===================================
 
+// TODO In game menu
+
 // TODO Global Refactor: split logic
 // TODO Global End Refactor
 
@@ -29,6 +31,6 @@ public class Main
 {
 	public static void main (String[] args)
 	{
-		new MenuGui ();
+		MainController.openMenuGui ();
 	}
 }

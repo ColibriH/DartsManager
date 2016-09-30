@@ -3,7 +3,6 @@ package MatchController.GUI;
 import MatchController.MatchController;
 import MatchController.Constats;
 import MatchController.Objects.PlayerObject;
-import MenuGui.MenuGui;
 import Tools.ImageLoader;
 import Tools.ImageViewport;
 
@@ -285,6 +284,10 @@ public class GameManagerGuiForm
 		};
 
 		mDefaultTableModel.setDataVector (mNewPlayerTableData, mNewPlayerTableHeaders);
+
+		if (mMatchController.getPlayerList () != null)
+			populateTableModelWithOldPlayers (mMatchController.getPlayerList ());
+
 		mNewPlayerTable.setModel (mDefaultTableModel);
 
 		mNewPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellRenderer (new ButtonRenderer ());
@@ -301,6 +304,13 @@ public class GameManagerGuiForm
 
 		mNewPlayerTable.getTableHeader ().setReorderingAllowed (false);
 		mNewPlayerTable.getTableHeader ().setResizingAllowed (false);
+	}
+
+
+	private void populateTableModelWithOldPlayers (ArrayList <PlayerObject> playerObjectArrayList)
+	{
+		for (PlayerObject playerObject : playerObjectArrayList)
+			mDefaultTableModel.addRow (new String [] {String.valueOf (playerObject.mId), playerObject.mName, Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
 	}
 
 
@@ -361,8 +371,7 @@ public class GameManagerGuiForm
 			@Override
 			public void actionPerformed (ActionEvent e)
 			{
-				// TODO main form destroy
-				new MenuGui ();
+				mMatchController.openMenuGuiForm ();
 			}
 		});
 
@@ -420,5 +429,10 @@ public class GameManagerGuiForm
 					deleteNewPlayerFromTable ();
 			}
 		});
+	}
+
+	public void destroy ()
+	{
+		mJFrame.dispose ();
 	}
 }

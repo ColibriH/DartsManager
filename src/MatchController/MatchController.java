@@ -1,6 +1,7 @@
 package MatchController;
 
 import GameController.GameController;
+import MainController.MainController;
 import MatchController.GUI.DisplayGroupPanel;
 import MatchController.Objects.PlayerObject;
 import MatchController.GUI.GameManagerGuiForm;
@@ -20,9 +21,9 @@ import java.util.Map;
 
 public class MatchController
 {
-	private GameManagerGuiForm                            gameManagerGuiForm;
+	private GameManagerGuiForm                            mGameManagerGuiForm;
 	private PlayerGeneratedGroupsGuiForm                  mPlayerGeneratedGroupsGuiForm;
-	private WinnerGuiForm                                 winnerGuiForm;
+	private WinnerGuiForm                                 mWinnerGuiForm;
 	private GameController                                mGameController;
 
 	private ArrayList <PlayerObject>                      mPlayerList;
@@ -39,12 +40,29 @@ public class MatchController
 	}
 
 
-	private void initializeNewMatch ()
+	public void initializeNewMatch ()
 	{
 		mPlayersNumberInGroup       = 2;
 		mCurrentPlayingGroupNumber  = 0;
 		mStageWinnerHashMap         = new HashMap <> ();
-		gameManagerGuiForm          = new GameManagerGuiForm (this);
+		whetherToKeepOldPlayerList ();
+		mGameManagerGuiForm = new GameManagerGuiForm (this);
+	}
+
+
+	private void whetherToKeepOldPlayerList ()
+	{
+		if (mPlayerList != null)
+			if (! keepPlayers ())
+				mPlayerList = null;
+	}
+
+
+	private boolean keepPlayers ()
+	{
+		int result = JOptionPane.showConfirmDialog (null, "Do you want to keep old player list?",
+		                                            "alert", JOptionPane.OK_CANCEL_OPTION);
+		return result == 0;
 	}
 
 
@@ -95,8 +113,8 @@ public class MatchController
 
 	private void matchManagerGuiFormClose ()
 	{
-		// TODO Create correct handle of form to close form and reuse of form (if need to go back)
-		gameManagerGuiForm.setVisibility (false);
+		mGameManagerGuiForm.destroy ();
+		mGameManagerGuiForm = null;
 	}
 
 
@@ -128,7 +146,7 @@ public class MatchController
 	}
 
 
-	private void displayGameGroups()
+	private void displayGameGroups ()
 	{
 		mPlayerGeneratedGroupsGuiForm = new PlayerGeneratedGroupsGuiForm (this, mPlayerList, mPlayerGroupsMap, mCurrentPlayingGroupNumber);
 	}
@@ -216,7 +234,7 @@ public class MatchController
 
 	private void showMatchWinner (PlayerObject winner)
 	{
-		winnerGuiForm = new WinnerGuiForm (this, winner);
+		mWinnerGuiForm = new WinnerGuiForm (this, winner);
 	}
 
 
@@ -304,10 +322,16 @@ public class MatchController
 	}
 
 
+	public ArrayList <PlayerObject> getPlayerList ()
+	{
+		return mPlayerList;
+	}
+
+
 	public void newMatch ()
 	{
-		if (winnerGuiForm != null)
-			winnerGuiForm = null;
+		if (mWinnerGuiForm != null)
+			mWinnerGuiForm = null;
 
 		initializeNewMatch ();
 	}
@@ -325,5 +349,21 @@ public class MatchController
 			mGameController = null;
 
 		mGameController = new GameController (this, getGameOpponents ());
+	}
+
+
+	public void openMenuGuiForm ()
+	{
+		mGameManagerGuiForm.destroy ();
+		mGameManagerGuiForm = null;
+		MainController.openMenuGui ();
+	}
+
+
+	public void openGameManagerGuiForm ()
+	{
+		mPlayerGeneratedGroupsGuiForm.destroy ();
+		mPlayerGeneratedGroupsGuiForm = null;
+		mGameManagerGuiForm = new GameManagerGuiForm (this);
 	}
 }

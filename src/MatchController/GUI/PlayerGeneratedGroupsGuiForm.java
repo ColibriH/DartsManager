@@ -24,6 +24,7 @@ public class PlayerGeneratedGroupsGuiForm
 	private JScrollPane                                 mGroupsScrollPane;
 	private JPanel                                      mJPanel;
 	private JButton                                     mNextStageBtn;
+	private JButton backButton;
 
 	private HashMap <Integer, ArrayList <Integer>>      mPlayerGroupsMap;
 	private ArrayList <PlayerObject>                    mPlayerList;
@@ -189,6 +190,15 @@ public class PlayerGeneratedGroupsGuiForm
 			public void actionPerformed (ActionEvent e)
 			{
 				mMatchController.nextStageTrigger ();
+			}
+		});
+
+		backButton.addActionListener (new ActionListener ()
+		{
+			@Override
+			public void actionPerformed (ActionEvent e)
+			{
+				mMatchController.openGameManagerGuiForm ();
 			}
 		});
 	}

@@ -1,5 +1,6 @@
 package MenuGui;
 
+import MainController.MainController;
 import MatchController.MatchController;
 import Tools.FontLoader;
 
@@ -90,8 +91,8 @@ public class MenuGui
 
 		mJPanel.add (mCtrBtnPanel, gridBagConstraints);
 		addButton (tournamentButton, gridBagConstraints, 0);
-		addButton (optionsButton, gridBagConstraints, 1);
-		addButton (eachVsEachButton, gridBagConstraints, 2);
+		addButton (eachVsEachButton, gridBagConstraints, 1);
+		addButton (optionsButton, gridBagConstraints, 2);
 		addButton (exitButton, gridBagConstraints, 3);
 	}
 
@@ -126,7 +127,7 @@ public class MenuGui
 			@Override
 			public void actionPerformed (ActionEvent e)
 			{
-				new MatchController ();
+				MainController.startMatch ();
 				destroy ();
 			}
 		});
