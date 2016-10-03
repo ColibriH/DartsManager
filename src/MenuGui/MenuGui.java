@@ -1,7 +1,6 @@
 package MenuGui;
 
 import MainController.MainController;
-import MatchController.MatchController;
 import Tools.FontLoader;
 
 import javax.swing.*;
@@ -23,7 +22,7 @@ public class MenuGui
 
 	private JFrame                  mJFrame;
 	private JPanel                  mCtrBtnPanel;
-	private MenuContentMainPanel    mJPanel;
+	private MenuGui.ImagedPanel mJPanel;
 
 	private MenuButton              tournamentButton;
 	private MenuButton              exitButton;
@@ -42,7 +41,7 @@ public class MenuGui
 	private void variableInitialization ()
 	{
 		mJFrame             = new JFrame ();
-		mJPanel             = new MenuContentMainPanel ();
+		mJPanel             = new MenuGui.ImagedPanel ();
 		mCtrBtnPanel        = new JPanel ();
 		tournamentButton    = new MenuButton ("Tournament",     MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
 		exitButton          = new MenuButton ("Exit",           MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
