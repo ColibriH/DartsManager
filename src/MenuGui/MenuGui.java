@@ -1,6 +1,7 @@
 package MenuGui;
 
 import MainController.MainController;
+import MatchController.Constats;
 import Tools.FontLoader;
 
 import javax.swing.*;
@@ -13,8 +14,6 @@ import java.awt.event.ActionListener;
  */
 public class MenuGui
 {
-	private final int MAIN_WIDTH            = 600;
-	private final int MAIN_HEIGHT           = 800;
 	private final int MENU_BUTTON_WIDTH     = 250;
 	private final int MENU_BUTTON_HEIGHT    = 50;
 	private final int CTR_PANEL_WIDTH       = 270;
@@ -22,7 +21,7 @@ public class MenuGui
 
 	private JFrame                  mJFrame;
 	private JPanel                  mCtrBtnPanel;
-	private MenuGui.ImagedPanel mJPanel;
+	private ImagedPanel             mJPanel;
 
 	private MenuButton              tournamentButton;
 	private MenuButton              exitButton;
@@ -41,7 +40,7 @@ public class MenuGui
 	private void variableInitialization ()
 	{
 		mJFrame             = new JFrame ();
-		mJPanel             = new MenuGui.ImagedPanel ();
+		mJPanel             = new ImagedPanel ();
 		mCtrBtnPanel        = new JPanel ();
 		tournamentButton    = new MenuButton ("Tournament",     MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
 		exitButton          = new MenuButton ("Exit",           MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
@@ -73,7 +72,7 @@ public class MenuGui
 	private void setComponentOptions ()
 	{
 		mJPanel.setLayout (new GridBagLayout ());
-		mJPanel.setPreferredSize (new Dimension (MAIN_WIDTH - 10, MAIN_HEIGHT - 10));
+		mJPanel.setPreferredSize (new Dimension (Constats.MAIN_WIDTH - 10, Constats.MAIN_HEIGHT - 10));
 
 		mCtrBtnPanel.setBackground (new Color (255, 255, 0, 0));
 		mCtrBtnPanel.setLayout (new GridBagLayout ());

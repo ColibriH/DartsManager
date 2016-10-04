@@ -7,7 +7,7 @@ import java.io.File;
  */
 public class Constats
 {
-	public static final int MAIN_WIDTH            = 620;
+	public static final int MAIN_WIDTH            = 600;
 	public static final int MAIN_HEIGHT           = 800;
 
 	public static final String PIC_FOLDER_PATH  = "pic_";
@@ -40,9 +40,6 @@ public class Constats
 	public static final String BTN_FILLER_PIC               = PIC_FOLDER_FULL_PATH + "chalk_filler.png";
 	public static final String MENU_BG_PIC                  = PIC_FOLDER_FULL_PATH + "menuBG.jpg";
 	public static final String CORNER_BG_PIC                = PIC_FOLDER_FULL_PATH + "corner_img.png";
-	public static final String OPEN_BOARD_PIC               = PIC_FOLDER_FULL_PATH + "dart_open_board.png";
-
 	public static final String CHALK_FONT1                  = FONT_FOLDER_FULL_PATH + "erasdust.ttf";
 	public static final String CHALK_FONT2                  = FONT_FOLDER_FULL_PATH + "Eraser.ttf";
-
 }

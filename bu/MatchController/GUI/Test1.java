@@ -69,7 +69,7 @@ public class Test1
 		panelGbc.gridy = 0;
 		panelGbc.insets  = new Insets (5, 0, 5, 0);
 
-		//mBtnPanel
+		mBtnPanel
 	}
 
 

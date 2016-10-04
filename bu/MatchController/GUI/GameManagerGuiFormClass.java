@@ -4,8 +4,6 @@ import MatchController.MatchController;
 import MatchController.Constats;
 import MatchController.Objects.PlayerObject;
 import MenuGui.ImagedPanel;
-import Tools.ImageLoader;
-import Tools.ImageViewport;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -60,24 +58,71 @@ public class GameManagerGuiFormClass
 	public GameManagerGuiFormClass (MatchController matchController)
 	{
 		mMatchController = matchController;
-
-		componentInitialization ();
-		componentStyling ();
-
-		initialization ();
-		variableInitialization ();
-		formComponentsModifications ();
-		newPlayerTableInitialization ();
+		initializeVariables ();
+		initializeComponents ();
+		addComponentsListeners ();
+		buildMainFrame ();
 	}
 
 
-	private void componentStyling ()
+	private void mainPanelBuilder ()
 	{
-		mJFrame.setPreferredSize ();
+		GridBagConstraints mPanelGbc = new GridBagConstraints ();
+		mJPanel.setLayout (new GridBagLayout ());
+
+		controlPanelBuilder ();
+		tablePanelBuilder ();
+
+		addComponentToPanel (mJPanel, mControlJPanel,   0, 0, new Insets (0, 0, 0, 0), mPanelGbc);
+		addComponentToPanel (mJPanel, mTableJPanel,     1, 0, new Insets (0, 0, 0, 0), mPanelGbc);
 	}
 
 
-	private void componentInitialization ()
+	private void tablePanelBuilder ()
+	{
+		GridBagConstraints tablePanelGbc = new GridBagConstraints ();
+		mTableJPanel.setLayout (new GridBagLayout ());
+		mTableJScrollPane = new JScrollPane (mPlayerTable);
+
+		newPlayerTableInitialization ();
+		setTableStyle ();
+
+		addComponentToPanel (mTableJPanel, mTableJScrollPane,     0, 0, new Insets (0, 0, 0, 0), tablePanelGbc);
+	}
+
+
+	private void controlPanelBuilder ()
+	{
+		GridBagConstraints ctrPanelGbc = new GridBagConstraints ();
+		mControlJPanel.setLayout (new GridBagLayout ());
+
+		addComponentToPanel (mControlJPanel, new Label ("Number of players in group: "), 0, 0, new Insets (0, 0, 0, 0), ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField,                    1, 0, new Insets (0, 0, 0, 0), ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, new Label ("Name"),                         0, 1, new Insets (0, 0, 0, 0), ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,                        1, 1, new Insets (0, 0, 0, 0), ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayerAddBtn,                              0, 2, new Insets (0, 0, 0, 0), ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mBackButton,                                0, 3, new Insets (0, 0, 0, 0), ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mMatchStartBtn,                             1, 3, new Insets (0, 0, 0, 0), ctrPanelGbc);
+	}
+
+
+	private void buildMainFrame ()
+	{
+		mJFrame.setPreferredSize (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT));
+		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
+		mJFrame.setContentPane (mJPanel);
+		mJFrame.setResizable (false);
+		setMJFrameLocation ();
+
+		mainPanelBuilder ();
+
+		mJFrame.pack ();
+		mJFrame.setVisible (true);
+		setEntryComponentFocus ();
+	}
+	
+
+	private void initializeComponents ()
 	{
 		// TODO add image
 		//mBackGroundImage
@@ -102,43 +147,6 @@ public class GameManagerGuiFormClass
 	}
 
 
-	private void initialization ()
-	{
-		componentCreation ();
-
-		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
-		mJFrame.pack ();
-		mJFrame.setVisible (true);
-
-		setMJFrameLocation ();
-		setEntryComponentFocus ();
-	}
-
-
-	private void componentCreation ()
-	{
-		GridBagConstraints mainPanelGbc = new GridBagConstraints ();
-
-		addMainPanel ();
-		addControlPanel (mainPanelGbc);
-		addTablePanel (mainPanelGbc);
-	}
-
-
-	//TODO refactor
-	private void addTablePanel (GridBagConstraints mainPanelGbc)
-	{
-		mainPanelGbc.fill = GridBagConstraints.HORIZONTAL;
-		mainPanelGbc.gridx = 1;
-		mainPanelGbc.gridy = 0;
-		mainPanelGbc.insets  = new Insets (5, 0, 5, 0);
-
-		mTableJPanel = new JPanel ();
-		mTableJPanel.setLayout (new BorderLayout ());
-		mTableJScrollPane = new JScrollPane (mPlayerTable);
-	}
-
-
 	private void addComponentToPanel (JPanel parent, Component child, int xPos, int yPos, Insets insets, GridBagConstraints gbc)
 	{
 		gbc.fill    = GridBagConstraints.HORIZONTAL;
@@ -147,19 +155,6 @@ public class GameManagerGuiFormClass
 		gbc.insets  = insets;
 
 		parent.add (child, gbc);
-	}
-
-
-	private void addControlPanel (GridBagConstraints mainPanelGbc)
-	{
-
-	}
-
-
-	private void addMainPanel ()
-	{
-		mJPanel = new ImagedPanel ();
-		mJPanel.setLayout (new GridBagLayout ());
 	}
 
 
@@ -176,24 +171,10 @@ public class GameManagerGuiFormClass
 	}
 
 
-	private void variableInitialization ()
+	private void initializeVariables ()
 	{
 		mPlayerTableHeaders = new String[] {COLUMN_ID, COLUMN_NAME, Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID};
 		mPlayerNameTxtFieldDefaultValue = mPlayerNameTxtField.getText ();   // Start value described in .form file
-	}
-
-
-	private void formComponentsModifications ()
-	{
-		componentsStyleModifications    ();
-		addComponentsListeners          ();
-	}
-
-
-	private void componentsStyleModifications ()
-	{
-		mJFrame.setResizable (false);
-		setTableStyle ();
 	}
 
 
@@ -257,10 +238,10 @@ public class GameManagerGuiFormClass
 		mPlayerTable.setOpaque(false);
 		mPlayerTable.setBackground(new Color(255, 255, 255, 158));
 
-		mBackGroundImage = ImageLoader.getImage (Constats.TABLE_PIC);
+		//mBackGroundImage = ImageLoader.getImage (Constats.TABLE_PIC);
 
-		mTableJScrollPane.setViewport(new ImageViewport (mBackGroundImage));
-		mTableJScrollPane.setViewportView(mPlayerTable);
+		//mTableJScrollPane.setViewport(new ImageViewport (mBackGroundImage));
+		//mTableJScrollPane.setViewportView(mPlayerTable);
 	}
 
 

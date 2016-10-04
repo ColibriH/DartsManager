@@ -3,13 +3,12 @@ package MatchController.GUI;
 import MatchController.MatchController;
 import MatchController.Constats;
 import MatchController.Objects.PlayerObject;
+import MenuGui.ImagedPanel;
 import Tools.ImageLoader;
-import Tools.ImageViewport;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.Image;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -31,49 +30,155 @@ public class GameManagerGuiForm
 	private final String            COLUMN_ID      = "Id";
 	private final String            COLUMN_NAME    = "Name";
 
-	private final MatchController   mMatchController;
+	private final MatchController mMatchController;
 
-	private JFrame                  mJFrame;
-	private JTable                  mNewPlayerTable;
-	private JTextField              mNewPlayerNameTxtField;
-	private JButton                 mNewPlayerAddBtn;
+	private JFrame mJFrame;
+
+	private ImagedPanel             mJPanel;
+	private JPanel                  mTableJPanel;
+	private JPanel                  mControlJPanel;
+
+	private JTable                  mPlayerTable;
+	private JTextField              mPlayerNameTxtField;
+	private JButton                 mPlayerAddBtn;
 	private JButton                 mMatchStartBtn;
 	private JLabel                  mNameLabel;
-	private JPanel                  mJPanel;
-	private JPanel                  mInnerJPanel;
-	private JPanel                  mTablePanel;
-	private JScrollPane             mNewPlayerJScrollPane;
-	private JTextField mPlayersInGroupTxtField;
-	private JButton backButton;
+
+	private JScrollPane             mTableJScrollPane;
+	private JTextField              mPlayersInGroupTxtField;
+	private JButton                 mBackButton;
 	private Image                   mBackGroundImage;
 
-	private String                  mNewPlayerNameTxtFieldDefaultValue;
-	private String []               mNewPlayerTableHeaders;
-	private Object [][]             mNewPlayerTableData;
+	private String                  mPlayerNameTxtFieldDefaultValue;
+	private String []               mPlayerTableHeaders;
+	private Object [][]             mPlayerTableData;
 	private DefaultTableModel       mDefaultTableModel;
 
 
 	public GameManagerGuiForm (MatchController matchController)
 	{
+		mBackGroundImage = ImageLoader.getImage (Constats.OPEN_BOARD_PIC);
 		mMatchController = matchController;
-
-		frameInitialization ();
-		variableInitialization ();
-		formComponentsModifications ();
-		newPlayerTableInitialization ();
+		initializeVariables ();
+		initializeComponents ();
+		addComponentsListeners ();
+		buildMainFrame ();
 	}
 
 
-	private void frameInitialization ()
+	private void mainPanelBuilder ()
 	{
-		mJFrame = new JFrame ("GameManagerGuiForm");
-		mJFrame.setContentPane (mJPanel);
+		GridBagConstraints mPanelGbc = new GridBagConstraints ();
+		mJPanel.setLayout (new GridBagLayout ());
+		mJPanel.setPreferredSize (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT));
+		mJPanel.setBackground (Color.BLUE);
+
+		controlPanelBuilder ();
+		tablePanelBuilder ();
+
+		addComponentToPanel (mJPanel, mControlJPanel,   0, 0, new Insets (0, 0, 0, 0), mPanelGbc, GridBagConstraints.LINE_START);
+	//	addComponentToPanel (mJPanel, mTableJPanel,     1, 0, new Insets (0, 0, 0, 0), mPanelGbc, GridBagConstraints.LINE_END);
+	}
+
+
+	private void tablePanelBuilder ()
+	{
+		GridBagConstraints tablePanelGbc = new GridBagConstraints ();
+		mTableJPanel.setLayout (new GridBagLayout ());
+		mTableJScrollPane = new JScrollPane (mPlayerTable);
+
+		newPlayerTableInitialization ();
+		setTableStyle ();
+
+		addComponentToPanel (mTableJPanel, mTableJScrollPane,     0, 0, new Insets (0, 0, 0, 0), tablePanelGbc, GridBagConstraints.CENTER);
+	}
+
+
+	private void controlPanelBuilder ()
+	{
+		GridBagConstraints ctrPanelGbc = new GridBagConstraints ();
+		mControlJPanel.setLayout (new GridBagLayout ());
+
+		controlPanelComponentStyling ();
+
+		addComponentToPanel (mControlJPanel, new Label ("Number of players in group: "), 0, 0, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
+		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField,                    1, 0, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
+		addComponentToPanel (mControlJPanel, new Label ("Name"),                         0, 1, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
+		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,                        1, 1, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
+		addComponentToPanel (mControlJPanel, mPlayerAddBtn,                              1, 2, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
+		addComponentToPanel (mControlJPanel, mBackButton,                                0, 3, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
+		addComponentToPanel (mControlJPanel, mMatchStartBtn,                             1, 3, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
+	}
+
+
+	private void controlPanelComponentStyling ()
+	{
+		mPlayersInGroupTxtField.setEditable (false);
+		mPlayersInGroupTxtField.setText ("2");
+
+		mPlayerNameTxtField.setText (mPlayerNameTxtFieldDefaultValue);
+
+		mPlayerAddBtn.setText ("Add player");
+		mPlayerAddBtn.setPreferredSize (new Dimension (32, 25));
+
+		mBackButton.setText ("Back");
+		mBackButton.setPreferredSize (new Dimension (25, 25));
+
+		mMatchStartBtn.setText ("Start Match");
+		mMatchStartBtn.setPreferredSize (new Dimension (25, 25));
+	}
+
+
+	private void buildMainFrame ()
+	{
+		//mJFrame.setPreferredSize (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT));
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
+		mJFrame.setContentPane (mJPanel);
+		//mJFrame.setResizable (false);
+		setMJFrameLocation ();
+
+		mainPanelBuilder ();
+
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
-
-		setMJFrameLocation ();
 		setEntryComponentFocus ();
+	}
+	
+
+	private void initializeComponents ()
+	{
+		// TODO add image
+		//mBackGroundImage
+
+		mJFrame                 = new JFrame ();
+
+		mJPanel                 = new ImagedPanel (mBackGroundImage);
+		mControlJPanel          = new JPanel ();
+		mTableJPanel            = new JPanel ();
+
+		mPlayerTable            = new JTable ();
+		mTableJScrollPane       = new JScrollPane (mPlayerTable);
+
+		mPlayerAddBtn           = new JButton ();
+		mMatchStartBtn          = new JButton ();
+		mBackButton             = new JButton ();
+
+		mNameLabel              = new JLabel ();
+
+		mPlayersInGroupTxtField = new JTextField ();
+		mPlayerNameTxtField     = new JTextField ();
+	}
+
+
+	private void addComponentToPanel (JPanel parent, Component child, int xPos, int yPos, Insets insets, GridBagConstraints gbc, int anchor)
+	{
+		gbc.fill    = GridBagConstraints.HORIZONTAL;
+		gbc.gridx   = xPos;
+		gbc.gridy   = yPos;
+		gbc.insets  = insets;
+		gbc.anchor  = anchor;
+
+		parent.add (child, gbc);
 	}
 
 
@@ -90,28 +195,14 @@ public class GameManagerGuiForm
 	}
 
 
-	private void variableInitialization ()
+	private void initializeVariables ()
 	{
-		mNewPlayerTableHeaders = new String[] {COLUMN_ID, COLUMN_NAME, Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID};
-		mNewPlayerNameTxtFieldDefaultValue = mNewPlayerNameTxtField.getText ();   // Start value described in .form file
+		mPlayerTableHeaders = new String[] {COLUMN_ID, COLUMN_NAME, Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID};
+		mPlayerNameTxtFieldDefaultValue = "Enter New Player Name ...";
 	}
 
 
-	private void formComponentsModifications ()
-	{
-		componentsStyleModifications    ();
-		addComponentsListeners          ();
-	}
-
-
-	private void componentsStyleModifications ()
-	{
-		mJFrame.setResizable (false);
-		setTableStyle ();
-	}
-
-
-	private ArrayList <PlayerObject> getPlayersFromTable ()
+	private ArrayList<PlayerObject> getPlayersFromTable ()
 	{
 		ArrayList <PlayerObject> returnPlayerList = new ArrayList <> ();
 		Vector tableData = mDefaultTableModel.getDataVector ();
@@ -152,7 +243,7 @@ public class GameManagerGuiForm
 	private int getColumnNumberByName (String columnName)
 	{
 		int columnNumber = 0;
-		for (String cName : mNewPlayerTableHeaders)
+		for (String cName : mPlayerTableHeaders)
 		{
 			if (cName.equals (columnName))
 				return columnNumber;
@@ -166,15 +257,15 @@ public class GameManagerGuiForm
 
 	private void setTableStyle ()
 	{
-		mNewPlayerTable.setForeground(Color.BLACK);
-		mNewPlayerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		mNewPlayerTable.setOpaque(false);
-		mNewPlayerTable.setBackground(new Color(255, 255, 255, 158));
+		mPlayerTable.setForeground(Color.BLACK);
+		mPlayerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		mPlayerTable.setOpaque(false);
+		mPlayerTable.setBackground(new Color(255, 255, 255, 158));
 
-		mBackGroundImage = ImageLoader.getImage (Constats.TABLE_PIC);
+		//mBackGroundImage = ImageLoader.getImage (Constats.TABLE_PIC);
 
-		mNewPlayerJScrollPane.setViewport(new ImageViewport (mBackGroundImage));
-		mNewPlayerJScrollPane.setViewportView(mNewPlayerTable);
+		//mTableJScrollPane.setViewport(new ImageViewport (mBackGroundImage));
+		//mTableJScrollPane.setViewportView(mPlayerTable);
 	}
 
 
@@ -185,8 +276,8 @@ public class GameManagerGuiForm
 			hackInt = 1;
 
 		//TODO resolve issue based on hidden column
-		return mNewPlayerTable.getColumnName (column - hackInt).equals (Constats.DELETE_BTN_ID) ||
-		       mNewPlayerTable.getColumnName (column - hackInt).equals (Constats.EDIT_BTN_ID);
+		return mPlayerTable.getColumnName (column - hackInt).equals (Constats.DELETE_BTN_ID) ||
+				mPlayerTable.getColumnName (column - hackInt).equals (Constats.EDIT_BTN_ID);
 	}
 
 
@@ -211,19 +302,19 @@ public class GameManagerGuiForm
 
 	private void addNewPlayer ()
 	{
-		String playerName = mNewPlayerNameTxtField.getText ();
-		if (mNewPlayerNameTxtFieldDefaultValue.equals (playerName) || playerName.isEmpty ())
+		String playerName = mPlayerNameTxtField.getText ();
+		if (mPlayerNameTxtFieldDefaultValue.equals (playerName) || playerName.isEmpty ())
 			return;
 
 		addNewPlayer (playerName);
-		mNewPlayerNameTxtField.setText (mNewPlayerNameTxtFieldDefaultValue);
+		mPlayerNameTxtField.setText (mPlayerNameTxtFieldDefaultValue);
 	}
 
 
 	protected void editNewPlayerInTable ()
 	{
-		int selectedRow     = mNewPlayerTable.getSelectedRow ();
-		int selectedColumn  = mNewPlayerTable.getColumn (COLUMN_NAME).getModelIndex ();
+		int selectedRow     = mPlayerTable.getSelectedRow ();
+		int selectedColumn  = mPlayerTable.getColumn (COLUMN_NAME).getModelIndex ();
 
 		if (mDefaultTableModel.getRowCount () == 0)
 			return;
@@ -241,7 +332,7 @@ public class GameManagerGuiForm
 
 	protected void deleteNewPlayerFromTable ()
 	{
-		int selectedRow = mNewPlayerTable.getSelectedRow ();
+		int selectedRow = mPlayerTable.getSelectedRow ();
 
 		if (mDefaultTableModel.getRowCount () == 0)
 			return;
@@ -260,7 +351,7 @@ public class GameManagerGuiForm
 	private boolean isDeleteConfirmed ()
 	{
 		int result = JOptionPane.showConfirmDialog (null, "Are you sure, you want to delete player?",
-		                              "alert", JOptionPane.OK_CANCEL_OPTION);
+		                                            "alert", JOptionPane.OK_CANCEL_OPTION);
 		return result == 0;
 	}
 
@@ -283,27 +374,27 @@ public class GameManagerGuiForm
 			}
 		};
 
-		mDefaultTableModel.setDataVector (mNewPlayerTableData, mNewPlayerTableHeaders);
+		mDefaultTableModel.setDataVector (mPlayerTableData, mPlayerTableHeaders);
 
 		if (mMatchController.getPlayerList () != null)
 			populateTableModelWithOldPlayers (mMatchController.getPlayerList ());
 
-		mNewPlayerTable.setModel (mDefaultTableModel);
+		mPlayerTable.setModel (mDefaultTableModel);
 
-		mNewPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellRenderer (new ButtonRenderer ());
-		mNewPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellRenderer (new ButtonRenderer ());
+		mPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellRenderer (new ButtonRenderer ());
+		mPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellRenderer (new ButtonRenderer ());
 
-		mNewPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellEditor (new ButtonEditor (this, new JCheckBox ()));
-		mNewPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellEditor (new ButtonEditor (this, new JCheckBox ()));
+		mPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellEditor (new ButtonEditor (this, new JCheckBox ()));
+		mPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellEditor (new ButtonEditor (this, new JCheckBox ()));
 
-		mNewPlayerTable.removeColumn (mNewPlayerTable.getColumn ("Id"));    // To hide Id Column
+		mPlayerTable.removeColumn (mPlayerTable.getColumn ("Id"));    // To hide Id Column
 
-		mNewPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth (mNewPlayerJScrollPane.getWidth () - 103);
-		mNewPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth (50);
-		mNewPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth (50);
+		mPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth (mTableJScrollPane.getWidth () - 103);
+		mPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth (50);
+		mPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth (50);
 
-		mNewPlayerTable.getTableHeader ().setReorderingAllowed (false);
-		mNewPlayerTable.getTableHeader ().setResizingAllowed (false);
+		mPlayerTable.getTableHeader ().setReorderingAllowed (false);
+		mPlayerTable.getTableHeader ().setResizingAllowed (false);
 	}
 
 
@@ -347,26 +438,26 @@ public class GameManagerGuiForm
 
 	private void addComponentsListeners ()
 	{
-		mNewPlayerNameTxtField.addFocusListener (new FocusAdapter ()
+		mPlayerNameTxtField.addFocusListener (new FocusAdapter ()
 		{
 			@Override
 			public void focusGained (FocusEvent e)
 			{
-				String currentTxtFieldValue = mNewPlayerNameTxtField.getText ();
-				if(currentTxtFieldValue.equals (mNewPlayerNameTxtFieldDefaultValue))
-					mNewPlayerNameTxtField.setText ("");
+				String currentTxtFieldValue = mPlayerNameTxtField.getText ();
+				if(currentTxtFieldValue.equals (mPlayerNameTxtFieldDefaultValue))
+					mPlayerNameTxtField.setText ("");
 			}
 
 
 			@Override
 			public void focusLost (FocusEvent e)
 			{
-				if (mNewPlayerNameTxtField.getText ().length () == 0)
-					mNewPlayerNameTxtField.setText (mNewPlayerNameTxtFieldDefaultValue);
+				if (mPlayerNameTxtField.getText ().length () == 0)
+					mPlayerNameTxtField.setText (mPlayerNameTxtFieldDefaultValue);
 			}
 		});
 
-		backButton.addActionListener (new ActionListener ()
+		mBackButton.addActionListener (new ActionListener ()
 		{
 			@Override
 			public void actionPerformed (ActionEvent e)
@@ -384,7 +475,7 @@ public class GameManagerGuiForm
 			}
 		});
 
-		mNewPlayerAddBtn.addActionListener (new ActionListener ()
+		mPlayerAddBtn.addActionListener (new ActionListener ()
 		{
 			@Override
 			public void actionPerformed (ActionEvent e)
@@ -393,7 +484,7 @@ public class GameManagerGuiForm
 			}
 		});
 
-		mNewPlayerNameTxtField.addKeyListener (new KeyAdapter ()
+		mPlayerNameTxtField.addKeyListener (new KeyAdapter ()
 		{
 			@Override
 			public void keyPressed (KeyEvent e)
@@ -401,26 +492,26 @@ public class GameManagerGuiForm
 				if (e.getKeyCode () == KeyEvent.VK_ENTER)
 				{
 					addNewPlayer ();
-					mNewPlayerNameTxtField.setText ("");
+					mPlayerNameTxtField.setText ("");
 				}
 			}
 		});
 
-		mNewPlayerTable.addMouseMotionListener (new MouseMotionAdapter ()
+		mPlayerTable.addMouseMotionListener (new MouseMotionAdapter ()
 		{
 			@Override
 			public void mouseMoved (MouseEvent e)
 			{
-				int columnIndex = mNewPlayerTable.columnAtPoint (e.getPoint());
+				int columnIndex = mPlayerTable.columnAtPoint (e.getPoint());
 				if (isTableInnerButton (columnIndex, false))
-					mNewPlayerTable.setCursor (new Cursor (Cursor.HAND_CURSOR));
+					mPlayerTable.setCursor (new Cursor (Cursor.HAND_CURSOR));
 				else
-					mNewPlayerTable.setCursor (new Cursor (Cursor.DEFAULT_CURSOR));
+					mPlayerTable.setCursor (new Cursor (Cursor.DEFAULT_CURSOR));
 			}
 		});
 
 
-		mNewPlayerTable.addKeyListener (new KeyAdapter ()
+		mPlayerTable.addKeyListener (new KeyAdapter ()
 		{
 			@Override
 			public void keyPressed (KeyEvent e)
