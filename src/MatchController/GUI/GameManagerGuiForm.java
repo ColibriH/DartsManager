@@ -5,6 +5,7 @@ import MatchController.Constats;
 import MatchController.Objects.PlayerObject;
 import MenuGui.ImagedPanel;
 import Tools.ImageLoader;
+import Tools.ImageViewport;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -42,12 +43,15 @@ public class GameManagerGuiForm
 	private JTextField              mPlayerNameTxtField;
 	private JButton                 mPlayerAddBtn;
 	private JButton                 mMatchStartBtn;
-	private JLabel                  mNameLabel;
 
-	private JScrollPane             mTableJScrollPane;
+
+	private JScrollPane             mPlayerTableJScrollPane;
 	private JTextField              mPlayersInGroupTxtField;
 	private JButton                 mBackButton;
 	private Image                   mBackGroundImage;
+
+	private JLabel                  mPlayerInGroupCntLabel;
+	private JLabel                  mPlayerNameLabel;
 
 	private String                  mPlayerNameTxtFieldDefaultValue;
 	private String []               mPlayerTableHeaders;
@@ -76,8 +80,8 @@ public class GameManagerGuiForm
 		controlPanelBuilder ();
 		tablePanelBuilder ();
 
-		addComponentToPanel (mJPanel, mControlJPanel,   0, 0, new Insets (0, 0, 0, 0), mPanelGbc, GridBagConstraints.LINE_START);
-	//	addComponentToPanel (mJPanel, mTableJPanel,     1, 0, new Insets (0, 0, 0, 0), mPanelGbc, GridBagConstraints.LINE_END);
+		addComponentToPanel (mJPanel, mControlJPanel,   0, 0, new Insets (67, 35, 0, 0), 0, 0, 0, 1, GridBagConstraints.NORTHWEST, mPanelGbc);
+		addComponentToPanel (mJPanel, mTableJPanel,     1, 0, new Insets (144, 245, 0, 10), 0, 1, 1, 1, GridBagConstraints.NORTHWEST, mPanelGbc);
 	}
 
 
@@ -85,12 +89,14 @@ public class GameManagerGuiForm
 	{
 		GridBagConstraints tablePanelGbc = new GridBagConstraints ();
 		mTableJPanel.setLayout (new GridBagLayout ());
-		mTableJScrollPane = new JScrollPane (mPlayerTable);
+		mPlayerTableJScrollPane = new JScrollPane (mPlayerTable);
+		mTableJPanel.setBackground (new Color (255, 255, 255, 0));
+		mTableJPanel.setOpaque (false);
 
 		newPlayerTableInitialization ();
 		setTableStyle ();
 
-		addComponentToPanel (mTableJPanel, mTableJScrollPane,     0, 0, new Insets (0, 0, 0, 0), tablePanelGbc, GridBagConstraints.CENTER);
+		addComponentToPanel (mTableJPanel, mPlayerTableJScrollPane, 0, 0, new Insets (0, 0, 0, 0), 0, 0, 0, 0, GridBagConstraints.CENTER, tablePanelGbc);
 	}
 
 
@@ -98,16 +104,18 @@ public class GameManagerGuiForm
 	{
 		GridBagConstraints ctrPanelGbc = new GridBagConstraints ();
 		mControlJPanel.setLayout (new GridBagLayout ());
+		mControlJPanel.setBackground (new Color (255, 255, 255 , 0));
+		mControlJPanel.setOpaque (false);
 
 		controlPanelComponentStyling ();
 
-		addComponentToPanel (mControlJPanel, new Label ("Number of players in group: "), 0, 0, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
-		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField,                    1, 0, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
-		addComponentToPanel (mControlJPanel, new Label ("Name"),                         0, 1, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
-		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,                        1, 1, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
-		addComponentToPanel (mControlJPanel, mPlayerAddBtn,                              1, 2, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
-		addComponentToPanel (mControlJPanel, mBackButton,                                0, 3, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
-		addComponentToPanel (mControlJPanel, mMatchStartBtn,                             1, 3, new Insets (0, 0, 0, 0), ctrPanelGbc, GridBagConstraints.ABOVE_BASELINE);
+		addComponentToPanel (mControlJPanel, mPlayerInGroupCntLabel,  0, 1, new Insets (0,   5, 5, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField, 0, 2, new Insets (0,   5, 0, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayerNameLabel,        0, 3, new Insets (15,   5, 5, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 4, new Insets (0,   5, 5, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0, 5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (110, 5, 0, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
 	}
 
 
@@ -131,7 +139,6 @@ public class GameManagerGuiForm
 
 	private void buildMainFrame ()
 	{
-		//mJFrame.setPreferredSize (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT));
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
 		mJFrame.setContentPane (mJPanel);
 		//mJFrame.setResizable (false);
@@ -143,13 +150,10 @@ public class GameManagerGuiForm
 		mJFrame.setVisible (true);
 		setEntryComponentFocus ();
 	}
-	
+
 
 	private void initializeComponents ()
 	{
-		// TODO add image
-		//mBackGroundImage
-
 		mJFrame                 = new JFrame ();
 
 		mJPanel                 = new ImagedPanel (mBackGroundImage);
@@ -157,26 +161,32 @@ public class GameManagerGuiForm
 		mTableJPanel            = new JPanel ();
 
 		mPlayerTable            = new JTable ();
-		mTableJScrollPane       = new JScrollPane (mPlayerTable);
+		mPlayerTableJScrollPane = new JScrollPane (mPlayerTable);
 
 		mPlayerAddBtn           = new JButton ();
 		mMatchStartBtn          = new JButton ();
 		mBackButton             = new JButton ();
 
-		mNameLabel              = new JLabel ();
+		mPlayerInGroupCntLabel  = new JLabel ("Number of players in group: ");
+		mPlayerNameLabel        = new JLabel ("Name");
 
 		mPlayersInGroupTxtField = new JTextField ();
 		mPlayerNameTxtField     = new JTextField ();
 	}
 
 
-	private void addComponentToPanel (JPanel parent, Component child, int xPos, int yPos, Insets insets, GridBagConstraints gbc, int anchor)
+	private void addComponentToPanel (JPanel parent, Component child, int xPos, int yPos, Insets insets, int ipady,
+	                                  double weightx, double weighty, int gridwidth, int anchor, GridBagConstraints gbc)
 	{
-		gbc.fill    = GridBagConstraints.HORIZONTAL;
-		gbc.gridx   = xPos;
-		gbc.gridy   = yPos;
-		gbc.insets  = insets;
-		gbc.anchor  = anchor;
+		gbc.fill        = GridBagConstraints.HORIZONTAL;
+		gbc.gridx       = xPos;
+		gbc.gridy       = yPos;
+		gbc.insets      = insets;
+		gbc.ipady       = ipady;
+		gbc.weightx     = weightx;
+		gbc.weighty     = weighty;
+		gbc.gridwidth   = gridwidth;
+		gbc.anchor      = anchor;
 
 		parent.add (child, gbc);
 	}
@@ -260,12 +270,12 @@ public class GameManagerGuiForm
 		mPlayerTable.setForeground(Color.BLACK);
 		mPlayerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		mPlayerTable.setOpaque(false);
-		mPlayerTable.setBackground(new Color(255, 255, 255, 158));
+		mPlayerTable.setBackground (new Color (255, 255, 255, 0));
+		mPlayerTable.setOpaque (false);
 
-		//mBackGroundImage = ImageLoader.getImage (Constats.TABLE_PIC);
-
-		//mTableJScrollPane.setViewport(new ImageViewport (mBackGroundImage));
-		//mTableJScrollPane.setViewportView(mPlayerTable);
+		mPlayerTableJScrollPane.setPreferredSize (new Dimension (161, 275));
+		mPlayerTableJScrollPane.setBackground (new Color (255, 255, 255, 0));
+		mPlayerTableJScrollPane.getViewport ().setOpaque (false);
 	}
 
 
@@ -389,12 +399,16 @@ public class GameManagerGuiForm
 
 		mPlayerTable.removeColumn (mPlayerTable.getColumn ("Id"));    // To hide Id Column
 
-		mPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth (mTableJScrollPane.getWidth () - 103);
-		mPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth (50);
-		mPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth (50);
+		mPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth (118);
+		mPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth (20);
+		mPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth (20);
 
-		mPlayerTable.getTableHeader ().setReorderingAllowed (false);
-		mPlayerTable.getTableHeader ().setResizingAllowed (false);
+		//mPlayerTable.getTableHeader ().setReorderingAllowed (false);
+		//mPlayerTable.getTableHeader ().setResizingAllowed (false);
+	//	mPlayerTable.getTableHeader ().setBackground(new Color(0,0,0,0.6f));
+		mPlayerTable.getTableHeader ().setVisible (false);
+		mPlayerTable.getTableHeader ().setOpaque (false);
+		mPlayerTable.getTableHeader ().setBackground(new Color(255,255,255,0));
 	}
 
 
