@@ -17,8 +17,10 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 // TODO Create buttons
+// TODO Fix table buttons
 // TODO Focus txtField bug fix
 // TODO Input underline scratched
+
 // TODO Read about UIManager
 // TODO Create check on name twin (name should be UNIQUE)
 
@@ -42,7 +44,6 @@ public class GameManagerGuiForm
 	private JTextField              mPlayerNameTxtField;
 	private JButton                 mPlayerAddBtn;
 	private JButton                 mMatchStartBtn;
-
 
 	private JScrollPane             mPlayerTableJScrollPane;
 	private JTextField              mPlayersInGroupTxtField;
