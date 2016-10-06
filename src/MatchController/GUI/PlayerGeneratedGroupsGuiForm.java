@@ -47,6 +47,7 @@ public class PlayerGeneratedGroupsGuiForm
 
 	private void formInitialization ()
 	{
+		mGroupsPanel.setLayout (new GridBagLayout ());
 		mJFrame = new JFrame ("PlayerGeneratedGroupsGuiForm");
 		mJFrame.setContentPane (mJPanel);
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
@@ -104,14 +105,34 @@ public class PlayerGeneratedGroupsGuiForm
 	}
 
 
+	private void addComponentToPanel (JPanel parent, Component child, int xPos, int yPos, Insets insets, int ipady,
+	                                  double weightx, double weighty, int gridwidth, int anchor, GridBagConstraints gbc)
+	{
+		//gbc.fill        = GridBagConstraints.;
+		gbc.gridx       = xPos;
+		gbc.gridy       = yPos;
+		gbc.insets      = insets;
+		gbc.ipady       = ipady;
+		gbc.weightx     = weightx;
+		gbc.weighty     = weighty;
+		gbc.gridwidth   = gridwidth;
+		gbc.anchor      = anchor;
+
+		parent.add (child, gbc);
+	}
+
+
 	private void addGroupsToMainPanelAndLinkGroupWithPlayer ()
 	{
+		GridBagConstraints gbc = new GridBagConstraints ();
+
 		for (int i = 0; i < mPlayerGroupsMap.size (); i++)
 		{
 			ArrayList <Integer> playersIds = mPlayerGroupsMap.get (i);
 			DisplayGroupPanel dgp = new DisplayGroupPanel (playersIds, mPlayerList);
 
-			mGroupsPanel.add (dgp);
+			addComponentToPanel (mGroupsPanel, dgp,   0, i, new Insets (0, 0, 0, 0), 0, 1, 0, 1, GridBagConstraints.NORTHWEST, gbc);
+
 			mMatchController.setPlayersGeneratedGroupLink (playersIds, dgp);
 		}
 	}
