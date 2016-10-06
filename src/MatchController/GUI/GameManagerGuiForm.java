@@ -8,19 +8,18 @@ import Tools.ImageLoader;
 import Tools.ImageViewport;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
-// TODO Set BackGround of mPanel as dartBoard with two side windows
-// TODO set Board at the middle
-// TODO set font + underline
-// TODO change font of table
-// TODO change button style
-// TODO thing on input style
-// TODO Borders of table hide
+// TODO Create buttons
+// TODO Focus txtField bug fix
+// TODO Input underline scratched
+// TODO Read about UIManager
 // TODO Create check on name twin (name should be UNIQUE)
 
 /**
@@ -55,7 +54,6 @@ public class GameManagerGuiForm
 
 	private String                  mPlayerNameTxtFieldDefaultValue;
 	private String []               mPlayerTableHeaders;
-	private Object [][]             mPlayerTableData;
 	private DefaultTableModel       mDefaultTableModel;
 
 
@@ -93,7 +91,7 @@ public class GameManagerGuiForm
 		mTableJPanel.setBackground (new Color (255, 255, 255, 0));
 		mTableJPanel.setOpaque (false);
 
-		newPlayerTableInitialization ();
+		playerTableDataModelInit ();
 		setTableStyle ();
 
 		addComponentToPanel (mTableJPanel, mPlayerTableJScrollPane, 0, 0, new Insets (0, 0, 0, 0), 0, 0, 0, 0, GridBagConstraints.CENTER, tablePanelGbc);
@@ -109,25 +107,44 @@ public class GameManagerGuiForm
 
 		controlPanelComponentStyling ();
 
-		addComponentToPanel (mControlJPanel, mPlayerInGroupCntLabel,  0, 1, new Insets (0,   5, 5, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
-		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField, 0, 2, new Insets (0,   5, 0, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
-		addComponentToPanel (mControlJPanel, mPlayerNameLabel,        0, 3, new Insets (15,   5, 5, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
-		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 4, new Insets (0,   5, 5, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
-		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0, 5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc);
-		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
-		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (110, 5, 0, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayerInGroupCntLabel,  0, 1, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField, 0, 2, new Insets (0,   5, 10, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayerNameLabel,        0, 3, new Insets (15,  5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 4, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (115, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
 	}
 
 
 	private void controlPanelComponentStyling ()
 	{
+		Font scratchFont = new Font ("Nail Scratch", Font.TRUETYPE_FONT, 12);
+
+		mPlayerInGroupCntLabel.setForeground (Color.white);
+		mPlayerInGroupCntLabel.setFont (scratchFont);
+
 		mPlayersInGroupTxtField.setEditable (false);
 		mPlayersInGroupTxtField.setText ("2");
+		mPlayersInGroupTxtField.setFont (scratchFont);
+		mPlayersInGroupTxtField.setBorder (new EmptyBorder (0, 0, 0, 0));
+		mPlayersInGroupTxtField.setBackground (new Color (255, 255, 255, 0));
+		mPlayersInGroupTxtField.setForeground (Color.WHITE);
+		mPlayersInGroupTxtField.setOpaque (false);
+
+		mPlayerNameLabel.setForeground (Color.white);
+		mPlayerNameLabel.setFont (scratchFont);
 
 		mPlayerNameTxtField.setText (mPlayerNameTxtFieldDefaultValue);
+		mPlayerNameTxtField.setFont (scratchFont);
+		mPlayerNameTxtField.setBorder (new EmptyBorder (0, 0, 0, 0));
+		mPlayerNameTxtField.setBackground (new Color (255, 255, 255, 0));
+		mPlayerNameTxtField.setForeground (Color.WHITE);
+		mPlayerNameTxtField.setOpaque (false);
 
 		mPlayerAddBtn.setText ("Add player");
 		mPlayerAddBtn.setPreferredSize (new Dimension (32, 25));
+		mPlayerAddBtn.setBackground (new Color (255, 255, 255, 0));
 
 		mBackButton.setText ("Back");
 		mBackButton.setPreferredSize (new Dimension (25, 25));
@@ -141,11 +158,9 @@ public class GameManagerGuiForm
 	{
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
 		mJFrame.setContentPane (mJPanel);
-		//mJFrame.setResizable (false);
+		mJFrame.setResizable (false);
 		setMJFrameLocation ();
-
 		mainPanelBuilder ();
-
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
 		setEntryComponentFocus ();
@@ -167,7 +182,7 @@ public class GameManagerGuiForm
 		mMatchStartBtn          = new JButton ();
 		mBackButton             = new JButton ();
 
-		mPlayerInGroupCntLabel  = new JLabel ("Number of players in group: ");
+		mPlayerInGroupCntLabel  = new JLabel ("Players number in group");
 		mPlayerNameLabel        = new JLabel ("Name");
 
 		mPlayersInGroupTxtField = new JTextField ();
@@ -267,15 +282,50 @@ public class GameManagerGuiForm
 
 	private void setTableStyle ()
 	{
-		mPlayerTable.setForeground(Color.BLACK);
-		mPlayerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		mPlayerTable.setOpaque(false);
-		mPlayerTable.setBackground (new Color (255, 255, 255, 0));
-		mPlayerTable.setOpaque (false);
+		Color transparentColor = new Color (255, 255, 255 ,0);
+
+		mPlayerTable.setDefaultRenderer (Object.class, new DefaultTableCellRenderer ()
+		{
+			 @Override
+			 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+			 {
+			     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				 setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
+			     return this;
+			 }
+		});
+
+		mPlayerTableJScrollPane.setViewport     (new ImageViewport (ImageLoader.getImage (Constats.RIGHT_BOARD_PIC)));
+		mPlayerTableJScrollPane.setViewportView (mPlayerTable);
+		mPlayerTableJScrollPane.setBorder       (new EmptyBorder (0, 0, 0, 0));
+
+		mPlayerTableJScrollPane.getVerticalScrollBar().setUI(new TableScrollBar ());
+		mPlayerTableJScrollPane.getVerticalScrollBar().setBackground (Color.GRAY);
+		mPlayerTableJScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(10, 0));
+		mPlayerTableJScrollPane.setHorizontalScrollBarPolicy (ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+		mPlayerTable.setFont                    (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 9));
+		mPlayerTable.setForeground              (Color.WHITE);
+		mPlayerTable.setAutoResizeMode          (JTable.AUTO_RESIZE_OFF);
+		mPlayerTable.setOpaque                  (false);
+		mPlayerTable.setBackground              (transparentColor);
+		mPlayerTable.setShowGrid                (false);
+		mPlayerTable.setSelectionBackground     (transparentColor);
+		mPlayerTable.setSelectionForeground     (Color.WHITE);
+		mPlayerTable.setBorder                  (new EmptyBorder (0, 0, 0, 0));
+		mPlayerTable.setTableHeader             (null);
+		mPlayerTable.getColumn                  (Constats.DELETE_BTN_ID).setCellRenderer    (new ButtonRenderer ());
+		mPlayerTable.getColumn                  (Constats.EDIT_BTN_ID  ).setCellRenderer    (new ButtonRenderer ());
+		mPlayerTable.getColumn                  (Constats.DELETE_BTN_ID).setCellEditor      (new ButtonEditor (this, new JCheckBox ()));
+		mPlayerTable.getColumn                  (Constats.EDIT_BTN_ID  ).setCellEditor      (new ButtonEditor (this, new JCheckBox ()));
+		mPlayerTable.removeColumn               (mPlayerTable.getColumn (COLUMN_ID));    // To hide Id Column
 
 		mPlayerTableJScrollPane.setPreferredSize (new Dimension (161, 275));
-		mPlayerTableJScrollPane.setBackground (new Color (255, 255, 255, 0));
-		mPlayerTableJScrollPane.getViewport ().setOpaque (false);
+		mPlayerTable.setRowHeight (20);
+		mPlayerTable.setIntercellSpacing (new Dimension (5, 0));
+		mPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth (100);
+		mPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth (25);
+		mPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth (25);
 	}
 
 
@@ -366,15 +416,7 @@ public class GameManagerGuiForm
 	}
 
 
-	public void setVisibility (boolean visibilityFlag)
-	{
-		mJFrame.setVisible (visibilityFlag);
-	}
-
-
-	//TODO create separate model class
-	//TODO same to table
-	private void newPlayerTableInitialization ()
+	private void playerTableDataModelInit ()
 	{
 		mDefaultTableModel = new DefaultTableModel ()
 		{
@@ -384,31 +426,12 @@ public class GameManagerGuiForm
 			}
 		};
 
-		mDefaultTableModel.setDataVector (mPlayerTableData, mPlayerTableHeaders);
+		mDefaultTableModel.setDataVector (new Object[][]{}, mPlayerTableHeaders);
 
 		if (mMatchController.getPlayerList () != null)
 			populateTableModelWithOldPlayers (mMatchController.getPlayerList ());
 
 		mPlayerTable.setModel (mDefaultTableModel);
-
-		mPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellRenderer (new ButtonRenderer ());
-		mPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellRenderer (new ButtonRenderer ());
-
-		mPlayerTable.getColumn (Constats.DELETE_BTN_ID).setCellEditor (new ButtonEditor (this, new JCheckBox ()));
-		mPlayerTable.getColumn (Constats.EDIT_BTN_ID  ).setCellEditor (new ButtonEditor (this, new JCheckBox ()));
-
-		mPlayerTable.removeColumn (mPlayerTable.getColumn ("Id"));    // To hide Id Column
-
-		mPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth (118);
-		mPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth (20);
-		mPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth (20);
-
-		//mPlayerTable.getTableHeader ().setReorderingAllowed (false);
-		//mPlayerTable.getTableHeader ().setResizingAllowed (false);
-	//	mPlayerTable.getTableHeader ().setBackground(new Color(0,0,0,0.6f));
-		mPlayerTable.getTableHeader ().setVisible (false);
-		mPlayerTable.getTableHeader ().setOpaque (false);
-		mPlayerTable.getTableHeader ().setBackground(new Color(255,255,255,0));
 	}
 
 

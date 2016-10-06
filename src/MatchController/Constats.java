@@ -2,6 +2,8 @@ package MatchController;
 
 import java.io.File;
 
+// TODO Refactor replace based on forms
+
 /**
  * Created by vladislavs on 12.09.2016..
  */
@@ -20,9 +22,9 @@ public class Constats
 																				Constats.PIC_FOLDER_PATH +
 																				File.separator;
 
-	public static final String TABLE_PIC                    = PIC_FOLDER_FULL_PATH + "table_pic.jpeg";
-	public static final String DELETE_PIC                   = PIC_FOLDER_FULL_PATH + "delete_pic.png";
-	public static final String EDIT_PIC                     = PIC_FOLDER_FULL_PATH + "edit_pic.png";
+	//public static final String TABLE_PIC                    = PIC_FOLDER_FULL_PATH + "table_pic.jpeg";
+	public static final String DELETE_PIC                   = PIC_FOLDER_FULL_PATH + "chalk_remove.jpg";
+	public static final String EDIT_PIC                     = PIC_FOLDER_FULL_PATH + "chalk_edit.jpg";
 
 	public static final String RIGHT_DART_PIC               = PIC_FOLDER_FULL_PATH + "dart_right.png";
 	public static final String LEFT_DART_PIC                = PIC_FOLDER_FULL_PATH + "dart_left.png";
@@ -39,10 +41,12 @@ public class Constats
 	public static final String BTN_TEXTURE_PIC              = PIC_FOLDER_FULL_PATH + "chalk_borders.png";
 	public static final String BTN_FILLER_PIC               = PIC_FOLDER_FULL_PATH + "chalk_filler.png";
 	public static final String MENU_BG_PIC                  = PIC_FOLDER_FULL_PATH + "menuBG.jpg";
-	public static final String CORNER_BG_PIC                = PIC_FOLDER_FULL_PATH + "corner_img.png";
+	//public static final String CORNER_BG_PIC                = PIC_FOLDER_FULL_PATH + "corner_img.png";
 	public static final String OPEN_BOARD_PIC               = PIC_FOLDER_FULL_PATH + "dart_open_board.png";
+	public static final String RIGHT_BOARD_PIC              = PIC_FOLDER_FULL_PATH + "right_board.png";
 
 	public static final String CHALK_FONT1                  = FONT_FOLDER_FULL_PATH + "erasdust.ttf";
 	public static final String CHALK_FONT2                  = FONT_FOLDER_FULL_PATH + "Eraser.ttf";
+	public static final String SCRATHC_FONT                 = FONT_FOLDER_FULL_PATH + "nailscratch.ttf";
 
 }

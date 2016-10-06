@@ -20,6 +20,8 @@ public class FontLoader
 		{
 			ge.registerFont (Font.createFont (Font.TRUETYPE_FONT, new File (Constats.CHALK_FONT1)));
 			ge.registerFont (Font.createFont (Font.TRUETYPE_FONT, new File (Constats.CHALK_FONT2)));
+			ge.registerFont (Font.createFont (Font.TRUETYPE_FONT, new File (Constats.SCRATHC_FONT)));
+			//ge.getAllFonts ();
 		}
 		catch (IOException | FontFormatException e)
 		{

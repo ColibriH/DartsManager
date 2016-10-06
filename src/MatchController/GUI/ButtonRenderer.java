@@ -36,7 +36,7 @@ public class ButtonRenderer extends JButton implements TableCellRenderer
 
 		setIcon (new ImageIcon (ImageLoader.getImage (pathToImage)));
 		setBorderPainted(false);
-		setBackground(new Color(255, 255, 255, 158));
+		setBackground(new Color(255, 255, 255, 0));
 		setName (value.toString ());
 
 		return this;
