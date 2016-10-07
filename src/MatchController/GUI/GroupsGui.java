@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by vladislavs on 06.09.2016..
+ * Created by vladislavs on 07.10.2016..
  */
-public class PlayerGeneratedGroupsGuiForm
+public class GroupsGui
 {
-	private final MatchController                       mMatchController;
+	private final MatchController mMatchController;
 
-	private JFrame                                      mJFrame;
+	private JFrame mJFrame;
 	private JButton                                     mGameStartBtn;
 	private JPanel                                      mGroupsPanel;
 	private JScrollPane                                 mGroupsScrollPane;
@@ -26,12 +26,12 @@ public class PlayerGeneratedGroupsGuiForm
 	private JButton                                     mNextStageBtn;
 	private JButton backButton;
 
-	private HashMap <Integer, ArrayList <Integer>>      mPlayerGroupsMap;
+	private HashMap<Integer, ArrayList<Integer>> mPlayerGroupsMap;
 	private ArrayList <PlayerObject>                    mPlayerList;
 	private Integer                                     mCurrentPlayingGroupNumber;
 
 
-	public PlayerGeneratedGroupsGuiForm (MatchController matchController, ArrayList<PlayerObject> playerList,
+	public GroupsGui (MatchController matchController, ArrayList<PlayerObject> playerList,
 	                                     HashMap <Integer, ArrayList <Integer>> playerGroupsMap, Integer currentPlayingGroupNumber)
 	{
 		mCurrentPlayingGroupNumber  = currentPlayingGroupNumber;
