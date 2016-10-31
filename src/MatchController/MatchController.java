@@ -2,11 +2,8 @@ package MatchController;
 
 import GameController.GameController;
 import MainController.MainController;
-import MatchController.GUI.DisplayGroupPanel;
+import MatchController.GUI.*;
 import MatchController.Objects.PlayerObject;
-import MatchController.GUI.GameManagerGuiForm;
-import MatchController.GUI.PlayerGeneratedGroupsGuiForm;
-import MatchController.GUI.WinnerGuiForm;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -22,7 +19,7 @@ import java.util.Map;
 public class MatchController
 {
 	private GameManagerGuiForm                            mGameManagerGuiForm;
-	private PlayerGeneratedGroupsGuiForm                  mPlayerGeneratedGroupsGuiForm;
+	private GroupsGui 									  mPlayerGeneratedGroupsGuiForm;
 	private WinnerGuiForm                                 mWinnerGuiForm;
 	private GameController                                mGameController;
 
@@ -45,6 +42,32 @@ public class MatchController
 		mPlayersNumberInGroup       = 2;
 		mCurrentPlayingGroupNumber  = 0;
 		mStageWinnerHashMap         = new HashMap <> ();
+
+		// TODO delete in production
+		mPlayerList = new ArrayList<>();
+
+		mPlayerList.add(new PlayerObject("0", 0));
+		mPlayerList.add(new PlayerObject("1", 1));
+		mPlayerList.add(new PlayerObject("2", 2));
+		mPlayerList.add(new PlayerObject("3", 3));
+		mPlayerList.add(new PlayerObject("4", 4));
+		mPlayerList.add(new PlayerObject("5", 5));
+		mPlayerList.add(new PlayerObject("6", 6));
+		mPlayerList.add(new PlayerObject("7", 7));
+		mPlayerList.add(new PlayerObject("8", 8));
+		mPlayerList.add(new PlayerObject("9", 9));
+
+		mPlayerList.add(new PlayerObject("10", 10));
+		mPlayerList.add(new PlayerObject("11", 11));
+		mPlayerList.add(new PlayerObject("12", 12));
+		mPlayerList.add(new PlayerObject("13", 13));
+
+		mPlayerList.add(new PlayerObject("14", 14));
+		mPlayerList.add(new PlayerObject("15", 15));
+		mPlayerList.add(new PlayerObject("16", 16));
+		mPlayerList.add(new PlayerObject("17", 17));
+
+
 		whetherToKeepOldPlayerList ();
 		mGameManagerGuiForm = new GameManagerGuiForm (this);
 	}
@@ -52,9 +75,10 @@ public class MatchController
 
 	private void whetherToKeepOldPlayerList ()
 	{
-		if (mPlayerList != null)
-			if (! keepPlayers ())
-				mPlayerList = null;
+		// TODO uncoment in production
+//		if (mPlayerList != null)
+//			if (! keepPlayers ())
+//				mPlayerList = null;
 	}
 
 
@@ -148,7 +172,7 @@ public class MatchController
 
 	private void displayGameGroups ()
 	{
-		mPlayerGeneratedGroupsGuiForm = new PlayerGeneratedGroupsGuiForm (this, mPlayerList, mPlayerGroupsMap, mCurrentPlayingGroupNumber);
+		mPlayerGeneratedGroupsGuiForm = new GroupsGui (this, mPlayerList, mPlayerGroupsMap, mCurrentPlayingGroupNumber);
 	}
 
 

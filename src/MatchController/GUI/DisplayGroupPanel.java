@@ -41,6 +41,10 @@ public class DisplayGroupPanel extends JPanel
 		initialization (mPlayerList.get (playersIds.get (0)).mName, mPlayerList.get (playersIds.get (1)).mName);
 	}
 
+	public DisplayGroupPanel ()
+	{
+		initialization ("?", "?");
+	}
 
 	private void initialization (String fPlayer, String sPlayer)
 	{

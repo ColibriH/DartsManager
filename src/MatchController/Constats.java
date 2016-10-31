@@ -42,7 +42,7 @@ public class Constats
 	public static final String BTN_FILLER_PIC               = PIC_FOLDER_FULL_PATH + "chalk_filler.png";
 	public static final String MENU_BG_PIC                  = PIC_FOLDER_FULL_PATH + "menuBG.jpg";
 	//public static final String CORNER_BG_PIC                = PIC_FOLDER_FULL_PATH + "corner_img.png";
-	public static final String OPEN_BOARD_PIC               = PIC_FOLDER_FULL_PATH + "dart_open_board.png";
+	public static final String OPEN_BOARD_PIC               = PIC_FOLDER_FULL_PATH + "matchmenu-bg.jpg";
 	public static final String RIGHT_BOARD_PIC              = PIC_FOLDER_FULL_PATH + "right_board.png";
 
 	public static final String CHALK_FONT1                  = FONT_FOLDER_FULL_PATH + "erasdust.ttf";

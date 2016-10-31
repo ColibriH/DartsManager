@@ -74,13 +74,13 @@ public class GameManagerGuiForm
 		GridBagConstraints mPanelGbc = new GridBagConstraints ();
 		mJPanel.setLayout (new GridBagLayout ());
 		mJPanel.setPreferredSize (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT));
-		mJPanel.setBackground (Color.BLUE);
+		//mJPanel.setBackground (Color.BLUE);
 
 		controlPanelBuilder ();
 		tablePanelBuilder ();
 
-		addComponentToPanel (mJPanel, mControlJPanel,   0, 0, new Insets (67, 35, 0, 0), 0, 0, 0, 1, GridBagConstraints.NORTHWEST, mPanelGbc);
-		addComponentToPanel (mJPanel, mTableJPanel,     1, 0, new Insets (144, 245, 0, 10), 0, 1, 1, 1, GridBagConstraints.NORTHWEST, mPanelGbc);
+		addComponentToPanel (mJPanel, mControlJPanel,   0, 0, new Insets (210,  35, 0,   0), 0, 0, 0, 1, GridBagConstraints.NORTHWEST, mPanelGbc);
+		addComponentToPanel (mJPanel, mTableJPanel,     1, 0, new Insets (282, 245, 0, 10), 0, 1, 1, 1, GridBagConstraints.NORTHWEST, mPanelGbc);
 	}
 
 
@@ -114,7 +114,7 @@ public class GameManagerGuiForm
 		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 4, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
 		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc);
 		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
-		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (115, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
+		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (100, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc);
 	}
 
 
