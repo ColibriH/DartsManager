@@ -15,6 +15,13 @@ import java.util.Map;
 /**
  * Created by vladislavs on 07.10.2016..
  */
+
+// TODO Create Control panel
+// TODO Fix scroll to work
+// TODO Change group design
+// TODO Set some BG
+// TODO Style buttons
+
 public class GroupsGui
 {
 	private final MatchController mMatchController;
