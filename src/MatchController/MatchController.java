@@ -50,10 +50,12 @@ public class MatchController
 		mPlayerList.add(new PlayerObject("1", 1));
 		mPlayerList.add(new PlayerObject("2", 2));
 		mPlayerList.add(new PlayerObject("3", 3));
+
 		mPlayerList.add(new PlayerObject("4", 4));
 		mPlayerList.add(new PlayerObject("5", 5));
 		mPlayerList.add(new PlayerObject("6", 6));
 		mPlayerList.add(new PlayerObject("7", 7));
+
 		mPlayerList.add(new PlayerObject("8", 8));
 		mPlayerList.add(new PlayerObject("9", 9));
 
@@ -67,6 +69,10 @@ public class MatchController
 		mPlayerList.add(new PlayerObject("16", 16));
 		mPlayerList.add(new PlayerObject("17", 17));
 
+		mPlayerList.add(new PlayerObject("18", 18));
+		mPlayerList.add(new PlayerObject("19", 19));
+		mPlayerList.add(new PlayerObject("20", 20));
+		mPlayerList.add(new PlayerObject("21", 21));
 
 		whetherToKeepOldPlayerList ();
 		mGameManagerGuiForm = new GameManagerGuiForm (this);
