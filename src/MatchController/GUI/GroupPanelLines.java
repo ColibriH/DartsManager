@@ -11,6 +11,8 @@ import java.util.Map;
  * Created by Prud on 10/31/2016.
  */
 
+// TODO Refactor
+
 public class GroupPanelLines extends JPanel
 {
 	private HashMap <Integer, ArrayList <DisplayGroupPanel>> mGroupsPanels;

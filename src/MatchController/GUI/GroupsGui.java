@@ -6,8 +6,6 @@ import MatchController.Constats;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,105 +14,34 @@ import java.util.Map;
  * Created by vladislavs on 07.10.2016..
  */
 
-// TODO Create Control panel
 // TODO Fix scroll to work
 // TODO Change group design
 // TODO Set some BG
 // TODO Style buttons
+// TODO Refactor
 
 public class GroupsGui
 {
 	private final MatchController mMatchController;
 
-	private JFrame                                      mJFrame;
+	private JFrame                                              mJFrame;
 
-	private JPanel                                      mJPanel;
-	private JPanel                                      mControlJPanel;
-	private JPanel                                      mGroupsPanel;
-	private GroupPanelLines										mGlassPanel;
-	private JScrollPane                                 mGroupsScrollPane;
+	private JPanel                                              mJPanel;
+	private JPanel                                              mControlJPanel;
+	private JPanel                                              mGroupsPanel;
+	private GroupPanelLines								        mGlassPanel;
+	private JScrollPane                                         mGroupsScrollPane;
 
-	private JButton                                     mGameStartBtn;
-	private JButton                                     mNextStageBtn;
-	private JButton                                     mBackBtn;
+	private JButton                                             mGameStartBtn;
+	private JButton                                             mNextStageBtn;
+	private JButton                                             mBackBtn;
 
-	private HashMap<Integer, ArrayList<Integer>>        mPlayerGroupsMap;
-	private ArrayList <PlayerObject>                    mPlayerList;
+	private HashMap<Integer, ArrayList<Integer>>                mPlayerGroupsMap;
+	private ArrayList <PlayerObject>                            mPlayerList;
 
-	private HashMap <Integer, ArrayList <DisplayGroupPanel>> mGroupsPanels;
+	private HashMap <Integer, ArrayList <DisplayGroupPanel>>    mGroupsPanels;
 
-	private Integer                                     mCurrentPlayingGroupNumber;
-
-
-	private class Levels
-	{
-		private int mLvlCnt = 1;
-		private HashMap <Integer, Integer> mGroupCntOnLvls = new HashMap <> ();
-		private int mEvenLvl = 0;
-
-		public Levels (int groupCnt)
-		{
-			addLevel (mLvlCnt, groupCnt);
-			initialization (groupCnt);
-		}
-
-
-		private void initialization (int groupCnt)
-		{
-			boolean isEvenCount = (groupCnt & 1) == 0;
-			int returnNumber = groupCnt;
-
-			mLvlCnt++;
-
-			if (isEvenNumber (groupCnt))
-			{
-				returnNumber = groupCnt / 2;
-				addLevel (mLvlCnt, returnNumber);
-			}
-			else
-			{
-				if (returnNumber == 1)
-				{
-					if (mEvenLvl != 0)
-					{
-						addLevel (mLvlCnt, mEvenLvl);
-						return;
-					}
-
-					return;
-				}
-				else
-				{
-					returnNumber = groupCnt / 2;
-
-					if (mEvenLvl != 0)
-						returnNumber += mEvenLvl;
-
-					addLevel (mLvlCnt, returnNumber);
-
-					returnNumber -= mEvenLvl;
-					mEvenLvl = 0;
-
-					mEvenLvl++;
-				}
-			}
-
-			if (returnNumber != 0 & returnNumber > 0)
-				initialization (returnNumber);
-		}
-
-
-		private void addLevel (int lvlNumber, int groupCnt)
-		{
-			mGroupCntOnLvls.put (lvlNumber, groupCnt);
-		}
-
-
-		private boolean isEvenNumber (int number) // Even - true, Odd - false
-		{
-			return (number & 1) == 0;
-		}
-	}
+	private Integer                                             mCurrentPlayingGroupNumber;
 
 
 	public GroupsGui (MatchController matchController, ArrayList<PlayerObject> playerList,
@@ -127,7 +54,7 @@ public class GroupsGui
 		mGroupsPanels 				= new HashMap <> ();
 
 		initializeComponents ();
-		//addComponentsListeners ();// empty
+		addComponentsListener ();
 		buildMainFrame ();
 	}
 
@@ -147,37 +74,46 @@ public class GroupsGui
 	{
 		GridBagConstraints mPanelGbc = new GridBagConstraints ();
 		mJPanel.setLayout (new GridBagLayout ());
-		mJPanel.setPreferredSize (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT));
+		mJPanel.setPreferredSize (new Dimension (Constats.MAIN_WIDTH + 200, Constats.MAIN_HEIGHT + 100));
 		mJPanel.setBackground (Color.BLUE);
 
-		//controlPanelBuilder ();
+		controlPanelBuilder ();
 		groupsPanelBuilder ();
 
 		createGroupLines ();
-		addComponentToPanel (mJPanel, mGlassPanel,  0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.NORTHWEST, mPanelGbc, GridBagConstraints.BOTH);
-		addComponentToPanel (mJPanel, mGroupsPanel, 0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.NORTHWEST, mPanelGbc, GridBagConstraints.BOTH);
+		addComponentToPanel (mJPanel, mGlassPanel,    0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 2, GridBagConstraints.NORTHWEST,       mPanelGbc, GridBagConstraints.BOTH);
+		addComponentToPanel (mJPanel, mGroupsPanel,   0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 2, GridBagConstraints.NORTHWEST,       mPanelGbc, GridBagConstraints.BOTH);
+		addComponentToPanel (mJPanel, mControlJPanel, 0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.LAST_LINE_START, mPanelGbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
 	private void groupsPanelBuilder ()
 	{
 		mGroupsPanel.setLayout (new GridBagLayout ());
-		mGroupsPanel.setPreferredSize (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT));
+		//mGroupsPanel.setPreferredSize (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT));
 		addGroupsToPanelAndUpdateFrame ();
 		setCurrentPlayingGroup ();
 	}
 
 
-//	private void controlPanelBuilder ()
-//	{
-//
-//	}
+	private void controlPanelBuilder ()
+	{
+		GridBagConstraints mControlPanelGbc = new GridBagConstraints ();
+		mControlJPanel.setLayout (new GridBagLayout ());
+		//mControlJPanel.setPreferredSize (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT / 4));
+
+		controlPanelComponentModification ();
+
+		addComponentToPanel (mJPanel, mBackBtn,      0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mJPanel, mGameStartBtn, 1, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
+	}
 
 
-//	private void addComponentsListeners ()
-//	{
-//
-//	}
+	private void controlPanelComponentModification ()
+	{
+		mGameStartBtn.setPreferredSize (new Dimension (100, 50));
+		mBackBtn.setPreferredSize (new Dimension (100, 50));
+	}
 
 
 	private void initializeComponents ()
@@ -190,9 +126,9 @@ public class GroupsGui
 		mGlassPanel 		= new GroupPanelLines (null);
 		mGroupsScrollPane   = new JScrollPane (mGroupsPanel);
 
-		mGameStartBtn   	= new JButton ();
-		mNextStageBtn   	= new JButton ();
-		mBackBtn        	= new JButton ();
+		mGameStartBtn   	= new JButton ("Start Game");
+		mNextStageBtn   	= new JButton ("Next Stage");
+		mBackBtn        	= new JButton ("Back");
 	}
 
 	private void setMJFrameLocation ()
@@ -205,13 +141,11 @@ public class GroupsGui
 	private void addGroupsToPanelAndUpdateFrame ()
 	{
 		addGroupsToMainPanelAndLinkGroupWithPlayer ();
-		//updateForm ();
 	}
 
 	private void createGroupLines ()
 	{
 		mGlassPanel	= new GroupPanelLines (mGroupsPanels);
-		//updateForm();
 	}
 
 
@@ -247,7 +181,7 @@ public class GroupsGui
 
 
 	private void addComponentToPanel (JPanel parent, Component child, int xPos, int yPos, Insets insets, int ipady,
-									  double weightx, double weighty, int gridwidth, int anchor, GridBagConstraints gbc, Integer fill)
+									  double weightx, double weighty, int gridwidth, Integer anchor, GridBagConstraints gbc, Integer fill)
 	{
 		if (fill != null)
 			gbc.fill    = fill;
@@ -259,18 +193,19 @@ public class GroupsGui
 		gbc.weightx     = weightx;
 		gbc.weighty     = weighty;
 		gbc.gridwidth   = gridwidth;
-		gbc.anchor      = anchor;
+
+		if (anchor != null)
+			gbc.anchor  = anchor;
 
 		parent.add (child, gbc);
 	}
 
-	ArrayList <DisplayGroupPanel> groups = new ArrayList <DisplayGroupPanel> ();
 
 	private void addGroupsToMainPanelAndLinkGroupWithPlayer ()
 	{
-		Levels levels = new Levels (mPlayerGroupsMap.size ());
-
-		GridBagConstraints gbc = new GridBagConstraints ();
+		ArrayList <DisplayGroupPanel>   groups    = new ArrayList <> ();
+		Levels                          levels    = new Levels (mPlayerGroupsMap.size ());
+		GridBagConstraints              gbc       = new GridBagConstraints ();
 
 		int lvlAdd = 2;
 		int prevLvlFirstElPos = 2;
@@ -354,14 +289,6 @@ public class GroupsGui
 	}
 
 
-//	private void updateForm ()
-//	{
-//		mJFrame.invalidate();
-//		mJFrame.validate();
-//		mJFrame.repaint();
-//	}
-
-
 	public void destroy ()
 	{
 		mJFrame.dispose ();
@@ -370,31 +297,15 @@ public class GroupsGui
 
 	private void addComponentsListener ()
 	{
-		mGameStartBtn.addActionListener (new ActionListener ()
-		{
-			@Override
-			public void actionPerformed (ActionEvent e)
-			{
-				mMatchController.runActionsAfterGroupDisplay ();
-			}
-		});
-
-		mNextStageBtn.addActionListener (new ActionListener ()
-		{
-			@Override
-			public void actionPerformed (ActionEvent e)
-			{
-				mMatchController.nextStageTrigger ();
-			}
-		});
-
-		mBackBtn.addActionListener (new ActionListener ()
-		{
-			@Override
-			public void actionPerformed (ActionEvent e)
-			{
-				mMatchController.openGameManagerGuiForm ();
-			}
-		});
+		mGameStartBtn.  addActionListener (e -> mMatchController.runActionsAfterGroupDisplay ());
+		mBackBtn.       addActionListener (e -> mMatchController.openGameManagerGuiForm ());
+//		mNextStageBtn.addActionListener (new ActionListener ()
+//		{
+//			@Override
+//			public void actionPerformed (ActionEvent e)
+//			{
+//				mMatchController.nextStageTrigger ();
+//			}
+//		});
 	}
 }

@@ -9,6 +9,8 @@ import MainController.MainController;
 
 // TODO Test for 3 people, 6, 9, 12
 
+// TODO Rewrite logic for game lvls
+
 // TODO more than 2 people in one group -> little bit changes in rules check this! (for this need huge refactor and logic changes) AND Create more game types
 
 // TODO In game menu
