@@ -80,8 +80,8 @@ public class GroupsGui
 
 		controlPanelBuilder ();
 		groupsPanelBuilder ();
-
 		createGroupLines ();
+
 		addComponentToPanel (mJPanel, mGlassPanel,    0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 2, GridBagConstraints.NORTHWEST,       mPanelGbc, GridBagConstraints.BOTH);
 		addComponentToPanel (mJPanel, mGroupsPanel,   0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 2, GridBagConstraints.NORTHWEST,       mPanelGbc, GridBagConstraints.BOTH);
 		addComponentToPanel (mJPanel, mControlJPanel, 0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.LAST_LINE_START, mPanelGbc, GridBagConstraints.HORIZONTAL);
@@ -318,8 +318,6 @@ public class GroupsGui
 	{
 		hideCurrentPlayingGroupPanelForAllGroups ();
 		showWinner (winner);
-		mGameStartBtn.setVisible (false);
-		mNextStageBtn.setVisible (true);
 	}
 
 
