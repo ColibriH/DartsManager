@@ -282,7 +282,7 @@ public class MatchController
 
 	private void displayWinner (PlayerObject winner)
 	{
-		mPlayerGeneratedGroupsGuiForm.displayWinnerPanelInGroup (winner);
+		mPlayerGeneratedGroupsGuiForm.displayWinnerPanelInGroup (winner);   // TODO Rename to moveWinnerToNextStage
 		mPlayerGeneratedGroupsGuiForm.setVisibility (true);
 	}
 

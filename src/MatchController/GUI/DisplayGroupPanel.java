@@ -124,6 +124,15 @@ public class DisplayGroupPanel extends JPanel
 	}
 
 
+	public void setPlayerName (String playerName)
+	{
+		if (mNameLabel.getText ().equals ("?"))
+			mNameLabel.setText (playerName);
+		else
+			mSNameLabel.setText (playerName);
+	}
+
+
 	private void labelStyling ()
 	{
 		vsLabel         .setHorizontalAlignment (SwingConstants.CENTER);
