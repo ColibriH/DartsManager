@@ -1,8 +1,12 @@
 package MatchController.GUI;
 
+import MatchController.GUI.Components.DisplayGroupPanel;
+import MatchController.GUI.Components.GroupPanelLines;
 import MatchController.MatchController;
+import MatchController.Objects.GroupsTreeNode;
+import MatchController.Objects.Levels;
 import MatchController.Objects.PlayerObject;
-import MatchController.Constats;
+import Constants.Constats;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +34,7 @@ public class GroupsGui
 	private JPanel                                              mJPanel;
 	private JPanel                                              mControlJPanel;
 	private JPanel                                              mGroupsPanel;
-	private GroupPanelLines								        mGlassPanel;
+	private GroupPanelLines mGlassPanel;
 	private JScrollPane                                         mGroupsScrollPane;
 
 	private JButton                                             mGameStartBtn;
@@ -202,7 +206,7 @@ public class GroupsGui
 	private void addGroupsToMainPanelAndLinkGroupWithPlayer ()
 	{
 		ArrayList <GroupsTreeNode>   groups    = new ArrayList <> ();
-		Levels                          levels    = new Levels (mPlayerGroupsMap.size ());
+		Levels levels    = new Levels (mPlayerGroupsMap.size ());
 		GridBagConstraints              gbc       = new GridBagConstraints ();
 
 		int lvlAdd = 2;

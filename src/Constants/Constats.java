@@ -1,4 +1,4 @@
-package MatchController;
+package Constants;
 
 import java.io.File;
 

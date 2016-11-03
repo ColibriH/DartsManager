@@ -1,4 +1,4 @@
-package MatchController.GUI;
+package MatchController.Objects;
 
 import java.util.HashMap;
 

@@ -1,6 +1,7 @@
-package MenuGui;
+package MenuGui.Components;
 
-import MatchController.Constats;
+import Constants.Constats;
+import MenuGui.MenuGui;
 import Tools.ImageLoader;
 
 import javax.swing.*;

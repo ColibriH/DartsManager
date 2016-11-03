@@ -3,7 +3,9 @@ package MatchController;
 import GameController.GameController;
 import MainController.MainController;
 import MatchController.GUI.*;
+import MatchController.GUI.Components.DisplayGroupPanel;
 import MatchController.Objects.PlayerObject;
+import Tools.GroupGenerator;
 
 import javax.swing.*;
 import java.util.ArrayList;

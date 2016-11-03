@@ -1,4 +1,6 @@
-package MatchController.GUI;
+package MatchController.Objects;
+
+import MatchController.GUI.Components.DisplayGroupPanel;
 
 import java.util.ArrayList;
 
@@ -7,7 +9,7 @@ import java.util.ArrayList;
  */
 public class GroupsTreeNode
 {
-	private ArrayList<GroupsTreeNode> mChildrens;
+	private ArrayList <GroupsTreeNode> mChildrens;
 	private DisplayGroupPanel mDisplayGroupPanel;
 	private GroupsTreeNode mParent;
 

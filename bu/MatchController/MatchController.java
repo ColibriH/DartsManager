@@ -5,7 +5,6 @@ import MainController.MainController;
 import MatchController.GUI.DisplayGroupPanel;
 import MatchController.Objects.PlayerObject;
 import MatchController.GUI.GameManagerGuiForm;
-import MatchController.GUI.PlayerGeneratedGroupsGuiForm;
 import MatchController.GUI.WinnerGuiForm;
 
 import javax.swing.*;

@@ -1,20 +1,17 @@
-package MatchController.GUI;
+package MatchController.GUI.Components;
 
-import MatchController.Constats;
+import Constants.Constats;
 import Tools.ImageLoader;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
 
 /**
  * Created by vladislavs on 12.09.2016..
  */
 
+// TODO Refactor
 // TODO TABLE BTn Style
 
 public class ButtonRenderer extends JButton implements TableCellRenderer

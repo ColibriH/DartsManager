@@ -1,4 +1,4 @@
-package MatchController.GUI;
+package MatchController.GUI.Components;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;

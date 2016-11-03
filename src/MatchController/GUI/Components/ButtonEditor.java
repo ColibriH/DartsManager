@@ -1,6 +1,7 @@
-package MatchController.GUI;
+package MatchController.GUI.Components;
 
-import MatchController.Constats;
+import Constants.Constats;
+import MatchController.GUI.GameManagerGuiForm;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +11,9 @@ import java.awt.event.ActionListener;
 /**
  * Created by vladislavs on 12.09.2016..
  */
+
+// TODO Refactor
+
 public class ButtonEditor extends DefaultCellEditor
 {
 	private JButton     button;

@@ -1,6 +1,6 @@
 package MatchController.Objects;
 
-import MatchController.GUI.DisplayGroupPanel;
+import MatchController.GUI.Components.DisplayGroupPanel;
 
 import javax.swing.*;
 

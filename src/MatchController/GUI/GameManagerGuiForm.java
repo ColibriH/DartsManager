@@ -1,9 +1,12 @@
 package MatchController.GUI;
 
+import MatchController.GUI.Components.ButtonEditor;
+import MatchController.GUI.Components.ButtonRenderer;
+import MatchController.GUI.Components.TableScrollBar;
 import MatchController.MatchController;
-import MatchController.Constats;
+import Constants.Constats;
 import MatchController.Objects.PlayerObject;
-import MenuGui.ImagedPanel;
+import MenuGui.Components.ImagedPanel;
 import Tools.ImageLoader;
 import Tools.ImageViewport;
 
@@ -372,7 +375,7 @@ public class GameManagerGuiForm
 	}
 
 
-	protected void editNewPlayerInTable ()
+	public void editNewPlayerInTable ()
 	{
 		int selectedRow     = mPlayerTable.getSelectedRow ();
 		int selectedColumn  = mPlayerTable.getColumn (COLUMN_NAME).getModelIndex ();
@@ -391,7 +394,7 @@ public class GameManagerGuiForm
 	}
 
 
-	protected void deleteNewPlayerFromTable ()
+	public void deleteNewPlayerFromTable ()
 	{
 		int selectedRow = mPlayerTable.getSelectedRow ();
 

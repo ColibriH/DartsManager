@@ -2,7 +2,7 @@ package MatchController.GUI;
 
 import MatchController.Objects.PlayerObject;
 import MatchController.MatchController;
-import MatchController.Constats;
+import Constants.Constats;
 import Tools.ImageLoader;
 
 import javax.swing.*;

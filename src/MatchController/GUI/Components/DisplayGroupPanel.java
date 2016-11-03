@@ -1,6 +1,6 @@
-package MatchController.GUI;
+package MatchController.GUI.Components;
 
-import MatchController.Constats;
+import Constants.Constats;
 import MatchController.Objects.PlayerObject;
 import Tools.ImageLoader;
 

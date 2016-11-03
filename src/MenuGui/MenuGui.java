@@ -1,7 +1,9 @@
 package MenuGui;
 
 import MainController.MainController;
-import MatchController.Constats;
+import Constants.Constats;
+import MenuGui.Components.ImagedPanel;
+import MenuGui.Components.MenuButton;
 import Tools.FontLoader;
 
 import javax.swing.*;
@@ -21,9 +23,9 @@ public class MenuGui
 
 	private JFrame                  mJFrame;
 	private JPanel                  mCtrBtnPanel;
-	private ImagedPanel             mJPanel;
+	private ImagedPanel mJPanel;
 
-	private MenuButton              tournamentButton;
+	private MenuButton tournamentButton;
 	private MenuButton              exitButton;
 	private MenuButton              optionsButton;
 	private MenuButton              eachVsEachButton;

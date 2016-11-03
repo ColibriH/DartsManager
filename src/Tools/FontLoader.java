@@ -1,6 +1,6 @@
 package Tools;
 
-import MatchController.Constats;
+import Constants.Constats;
 
 import java.awt.*;
 import java.io.File;

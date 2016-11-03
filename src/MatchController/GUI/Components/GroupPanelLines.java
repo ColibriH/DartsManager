@@ -1,4 +1,6 @@
-package MatchController.GUI;
+package MatchController.GUI.Components;
+
+import MatchController.Objects.GroupsTreeNode;
 
 import javax.swing.*;
 import java.awt.*;
