@@ -10,14 +10,24 @@ import java.util.ArrayList;
 public class GroupsTreeNode
 {
 	private ArrayList <GroupsTreeNode> mChildrens;
+	private ArrayList <PlayerObject> mPlayerObjects;
 	private DisplayGroupPanel mDisplayGroupPanel;
 	private GroupsTreeNode mParent;
 
 	public GroupsTreeNode (DisplayGroupPanel group)
 	{
-		mChildrens = new ArrayList <> ();
+		mPlayerObjects  = new ArrayList <> ();
+		mChildrens      = new ArrayList <> ();
 		mDisplayGroupPanel = group;
 	}
+
+
+	public GroupsTreeNode (DisplayGroupPanel group, ArrayList <PlayerObject> playersInGroup)
+	{
+		this (group);
+		mPlayerObjects = new ArrayList <> (playersInGroup);
+	}
+
 
 	public void addChildren (GroupsTreeNode children)
 	{
@@ -46,5 +56,17 @@ public class GroupsTreeNode
 	public ArrayList <GroupsTreeNode> getChildrens ()
 	{
 		return mChildrens;
+	}
+
+
+	public ArrayList <PlayerObject> getPlayerObjects ()
+	{
+		return mPlayerObjects;
+	}
+
+
+	public void setPlayerObjects (ArrayList <PlayerObject> mPlayerObjects)
+	{
+		this.mPlayerObjects = mPlayerObjects;
 	}
 }

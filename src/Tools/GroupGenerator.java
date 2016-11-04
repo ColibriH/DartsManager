@@ -7,46 +7,44 @@ import java.util.*;
 /**
  * Created by vladislavs on 06.09.2016..
  */
+
+// TODO May be need Refactor - Check!
+
 public class GroupGenerator
 {
-
-	public static HashMap <Integer, ArrayList <Integer>> generateRandomGroups (Integer playersNumberInGroup, ArrayList <PlayerObject> playerList)
+	public static HashMap <Integer, ArrayList <PlayerObject>> generateRandomGroups (Integer playersNumberInGroup, ArrayList <PlayerObject> playerList)
 	{
-		HashMap <Integer, ArrayList <Integer>> generatedGroupMap = new HashMap <> ();
-		List <Integer> shuffledList = getShuffledList (playerList);
-
-		int maxPlayerInGroup = playersNumberInGroup;
-		int groupCount = playerList.size () / maxPlayerInGroup;
+		int groupCount = playerList.size () / playersNumberInGroup;
 
 		if (isOdd (playerList.size ()))
 			groupCount++;
 
+		HashMap <Integer, ArrayList <PlayerObject>> generatedGroupMap = new HashMap <> ();
 		for (int i = 0; i < groupCount; i++)
-			generatedGroupMap.put (i, getOneCreatedGroup (maxPlayerInGroup, playerList, shuffledList));
+			generatedGroupMap.put (i, getOneCreatedGroup (playersNumberInGroup, playerList, getShuffledListOfPlayerObject (playerList)));
 
 		return generatedGroupMap;
 	}
 
 
-	private static ArrayList <Integer> getOneCreatedGroup (Integer maxPlayerInGroup, ArrayList <PlayerObject> playerList, List <Integer> shuffledList)
+	private static ArrayList <PlayerObject> getOneCreatedGroup (Integer maxPlayerInGroup, ArrayList <PlayerObject> playerList, List <PlayerObject> shuffledList)
 	{
-		ArrayList <Integer> playersGroupValue = new ArrayList <> ();
+		ArrayList <PlayerObject> playersGroupValue = new ArrayList <> ();
 
 		for (int i = 0; i < maxPlayerInGroup; i++)
 			if (shuffledList.size () != 0)
-				playersGroupValue.add (getPlayerFromShuffledListAndRemove (playerList, shuffledList));
+				playersGroupValue.add (getPlayerFromShuffledListAndRemove (shuffledList));
 
 		return playersGroupValue;
 	}
 
 
-	private static Integer getPlayerFromShuffledListAndRemove (ArrayList <PlayerObject> playerList, List <Integer> shuffledList)
+	private static PlayerObject getPlayerFromShuffledListAndRemove (List <PlayerObject> shuffledList)
 	{
-		Integer playerIdFromShuffledList = shuffledList.get (0);
-		Integer pId = playerList.get (playerIdFromShuffledList).mId;
+		PlayerObject playerObjectFromShuffledList = shuffledList.get (0);
 		shuffledList.remove (0);
 
-		return pId;
+		return playerObjectFromShuffledList;
 	}
 
 
@@ -56,7 +54,7 @@ public class GroupGenerator
 	}
 
 
-	private static List <Integer> getShuffledList (ArrayList <PlayerObject> playerList)
+	private static List <PlayerObject> getShuffledListOfPlayerObject (ArrayList <PlayerObject> playerList)
 	{
 		List <Integer> returnList = new LinkedList <> ();
 
@@ -65,6 +63,27 @@ public class GroupGenerator
 
 		Collections.shuffle(returnList);
 
+		return createListOfPlayerObject (playerList, returnList);
+	}
+
+
+	private static List <PlayerObject> createListOfPlayerObject (ArrayList <PlayerObject> playerList, List <Integer> playersIdList)
+	{
+		List <PlayerObject> returnList = new LinkedList <> ();
+
+		for (Integer id : playersIdList)
+			returnList.add (findPlayerObject (playerList, id));
+
 		return returnList;
+	}
+
+
+	private static PlayerObject findPlayerObject (ArrayList<PlayerObject> playerList, Integer searchedId)   // TODO Handle null exception!!!
+	{
+		for (PlayerObject player : playerList)
+			if (player.mId.equals (searchedId))
+				return player;
+
+		return null;
 	}
 }

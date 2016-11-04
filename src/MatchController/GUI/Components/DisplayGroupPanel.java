@@ -35,16 +35,41 @@ public class DisplayGroupPanel extends JPanel
 	private JLabel lArrow;
 	private JLabel rArrow;
 
+	private int mRow;
+	private int mColumn;
+	private double mWeightX;
+	private double mWeightY;
 
-	public DisplayGroupPanel (ArrayList <Integer> playersIds, ArrayList<PlayerObject> mPlayerList)
+
+	public DisplayGroupPanel (ArrayList<PlayerObject> mPlayerList)
 	{
-		initialization (mPlayerList.get (playersIds.get (0)).mName, mPlayerList.get (playersIds.get (1)).mName);
+		initialization (mPlayerList.get (0).mName, mPlayerList.get (1).mName);
+	}
+
+	public DisplayGroupPanel (ArrayList<PlayerObject> mPlayerList, int row, int column, double weightX, double weightY)
+	{
+		this (mPlayerList);
+
+		mRow        = row;
+		mColumn     = column;
+		mWeightX    = weightX;
+		mWeightY    = weightY;
 	}
 
 	public DisplayGroupPanel ()
 	{
 		initialization ("?", "?");
 	}
+
+
+	public DisplayGroupPanel (int row, int column, double weightX, double weightY)
+	{
+		mRow        = row;
+		mColumn     = column;
+		mWeightX    = weightX;
+		mWeightY    = weightY;
+	}
+
 
 	private void initialization (String fPlayer, String sPlayer)
 	{
@@ -219,6 +244,54 @@ public class DisplayGroupPanel extends JPanel
 	{
 		mWinnerName.setText ("Winner: " + winnerName);
 		mWinnerPanel.setVisible (true);
+	}
+
+
+	public int getRow ()
+	{
+		return mRow;
+	}
+
+
+	public void setRow (int mRow)
+	{
+		this.mRow = mRow;
+	}
+
+
+	public int getColumn ()
+	{
+		return mColumn;
+	}
+
+
+	public void setColumn (int mColumn)
+	{
+		this.mColumn = mColumn;
+	}
+
+
+	public double getWeightX ()
+	{
+		return mWeightX;
+	}
+
+
+	public void setWeightX (int mWeightX)
+	{
+		this.mWeightX = mWeightX;
+	}
+
+
+	public double getWeightY ()
+	{
+		return mWeightY;
+	}
+
+
+	public void setWeightY (int mWeightY)
+	{
+		this.mWeightY = mWeightY;
 	}
 
 

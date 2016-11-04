@@ -4,7 +4,7 @@ import MatchController.GUI.Components.DisplayGroupPanel;
 import MatchController.GUI.Components.GroupPanelLines;
 import MatchController.MatchController;
 import MatchController.Objects.GroupsTreeNode;
-import MatchController.Objects.Levels;
+import MatchController.Objects.Stages;
 import MatchController.Objects.PlayerObject;
 import Constants.Constats;
 
@@ -38,25 +38,15 @@ public class GroupsGui
 	private JScrollPane                                         mGroupsScrollPane;
 
 	private JButton                                             mGameStartBtn;
-	private JButton                                             mNextStageBtn;
 	private JButton                                             mBackBtn;
-
-	private HashMap<Integer, ArrayList<Integer>>                mPlayerGroupsMap;
-	private ArrayList <PlayerObject>                            mPlayerList;
-
-	private HashMap <Integer, ArrayList <GroupsTreeNode>>       mGroupsPanels;
 
 	private Integer                                             mCurrentPlayingGroupNumber;
 
 
-	public GroupsGui (MatchController matchController, ArrayList<PlayerObject> playerList,
-					  HashMap <Integer, ArrayList <Integer>> playerGroupsMap, Integer currentPlayingGroupNumber)
+	public GroupsGui (MatchController matchController, Integer currentPlayingGroupNumber)
 	{
 		mCurrentPlayingGroupNumber  = currentPlayingGroupNumber;
 		mMatchController            = matchController;
-		mPlayerList                 = playerList;
-		mPlayerGroupsMap            = new HashMap <> (playerGroupsMap);
-		mGroupsPanels 				= new HashMap <> ();
 
 		initializeComponents ();
 		addComponentsListener ();
@@ -129,7 +119,6 @@ public class GroupsGui
 		mGroupsScrollPane   = new JScrollPane (mGroupsPanel);
 
 		mGameStartBtn   	= new JButton ("Start Game");
-		mNextStageBtn   	= new JButton ("Next Stage");
 		mBackBtn        	= new JButton ("Back");
 	}
 
@@ -206,7 +195,7 @@ public class GroupsGui
 	private void addGroupsToMainPanelAndLinkGroupWithPlayer ()
 	{
 		ArrayList <GroupsTreeNode>   groups    = new ArrayList <> ();
-		Levels levels    = new Levels (mPlayerGroupsMap.size ());
+		Stages stages = new Stages (mPlayerGroupsMap.size ());
 		GridBagConstraints              gbc       = new GridBagConstraints ();
 
 		int lvlAdd = 2;
@@ -215,7 +204,7 @@ public class GroupsGui
 		for (int i = 0; i < mPlayerGroupsMap.size (); i++)      // Fill 1st lvl groups
 		{
 			ArrayList <Integer> playersIds = mPlayerGroupsMap.get (i);
-			DisplayGroupPanel dgp = new DisplayGroupPanel (playersIds, mPlayerList);
+			DisplayGroupPanel dgp = null; //new DisplayGroupPanel (playersIds, mPlayerList);
 
 			int weightX = (i == 0) ? 1 : 0;
 			int weightY = (i == mPlayerGroupsMap.size () - 1) ? 1 : 0;
@@ -229,7 +218,7 @@ public class GroupsGui
 
 		mGroupsPanels.put(1, new ArrayList <> (groups));
 
-		for (int i = 2; i < levels.mGroupCntOnLvls.size () + 1; i++)  // Fill Future groups // start from second lvl
+		for (int i = 2; i < stages.mGroupCountOnStages.size () + 1; i++)  // Fill Future groups // start from second lvl
 		{
 			groups.clear();
 			lvlAdd = (int) Math. pow ((double) 2, (double) i);
@@ -239,7 +228,7 @@ public class GroupsGui
 
 			int position = prevLvlFirstElPos;
 
-			for (int j = 0; j < levels.mGroupCntOnLvls.get(i); j++)
+			for (int j = 0; j < stages.mGroupCountOnStages.get(i); j++)
 			{
 				if (j > 0)
 					position += lvlAdd;

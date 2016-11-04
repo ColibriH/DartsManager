@@ -7,6 +7,9 @@ import javax.swing.*;
 /**
  * Created by vladislavs on 07.09.2016..
  */
+
+// TODO Create setters and getters
+
 public class PlayerObject
 {
 	public String               mName;

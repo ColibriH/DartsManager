@@ -8,16 +8,16 @@ import java.util.HashMap;
 
 // TODO Refactor
 
-public class Levels
+public class Stages
 {
-	public HashMap<Integer, Integer> mGroupCntOnLvls = new HashMap <> ();
+	public HashMap<Integer, Integer> mGroupCountOnStages = new HashMap <> ();
 
-	private int mLvlCnt     = 1;
+	private int mStageCount = 0;
 	private int mEvenLvl    = 0;
 
-	public Levels (int groupCnt)
+	public Stages (int groupCnt)
 	{
-		addLevel (mLvlCnt, groupCnt);
+		addLevel (mStageCount, groupCnt);
 		initialization (groupCnt);
 	}
 
@@ -26,12 +26,12 @@ public class Levels
 	{
 		int returnNumber = groupCnt;
 
-		mLvlCnt++;
+		mStageCount++;
 
 		if (isEvenNumber (groupCnt))
 		{
 			returnNumber = groupCnt / 2;
-			addLevel (mLvlCnt, returnNumber);
+			addLevel (mStageCount, returnNumber);
 		}
 		else
 		{
@@ -39,7 +39,7 @@ public class Levels
 			{
 				if (mEvenLvl != 0)
 				{
-					addLevel (mLvlCnt, mEvenLvl);
+					addLevel (mStageCount, mEvenLvl);
 					return;
 				}
 
@@ -52,7 +52,7 @@ public class Levels
 				if (mEvenLvl != 0)
 					returnNumber += mEvenLvl;
 
-				addLevel (mLvlCnt, returnNumber);
+				addLevel (mStageCount, returnNumber);
 
 				returnNumber -= mEvenLvl;
 				mEvenLvl = 0;
@@ -68,7 +68,7 @@ public class Levels
 
 	private void addLevel (int lvlNumber, int groupCnt)
 	{
-		mGroupCntOnLvls.put (lvlNumber, groupCnt);
+		mGroupCountOnStages.put (lvlNumber, groupCnt);
 	}
 
 

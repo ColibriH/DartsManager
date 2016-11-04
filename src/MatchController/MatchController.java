@@ -1,9 +1,11 @@
 package MatchController;
 
 import GameController.GameController;
+import GroupsController.GroupsController;
 import MainController.MainController;
 import MatchController.GUI.*;
 import MatchController.GUI.Components.DisplayGroupPanel;
+import MatchController.Objects.GroupsTreeNode;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
 
@@ -24,6 +26,7 @@ public class MatchController
 	private GroupsGui 									  mPlayerGeneratedGroupsGuiForm;
 	private WinnerGuiForm                                 mWinnerGuiForm;
 	private GameController                                mGameController;
+	private GroupsController                              mGroupsController;
 
 	private ArrayList <PlayerObject>                      mPlayerList;
 	private HashMap <Integer, ArrayList <Integer>>        mPlayerGroupsMap;
@@ -53,23 +56,23 @@ public class MatchController
 		mPlayerList.add(new PlayerObject("2", 2));
 		mPlayerList.add(new PlayerObject("3", 3));
 
-//		mPlayerList.add(new PlayerObject("4", 4));
-//		mPlayerList.add(new PlayerObject("5", 5));
-//		mPlayerList.add(new PlayerObject("6", 6));
-//		mPlayerList.add(new PlayerObject("7", 7));
-//
-//		mPlayerList.add(new PlayerObject("8", 8));
-//		mPlayerList.add(new PlayerObject("9", 9));
-//
-//		mPlayerList.add(new PlayerObject("10", 10));
-//		mPlayerList.add(new PlayerObject("11", 11));
-//		mPlayerList.add(new PlayerObject("12", 12));
-//		mPlayerList.add(new PlayerObject("13", 13));
-//
-//		mPlayerList.add(new PlayerObject("14", 14));
-//		mPlayerList.add(new PlayerObject("15", 15));
-//		mPlayerList.add(new PlayerObject("16", 16));
-//		mPlayerList.add(new PlayerObject("17", 17));
+		mPlayerList.add(new PlayerObject("4", 4));
+		mPlayerList.add(new PlayerObject("5", 5));
+		mPlayerList.add(new PlayerObject("6", 6));
+		mPlayerList.add(new PlayerObject("7", 7));
+
+		mPlayerList.add(new PlayerObject("8", 8));
+		mPlayerList.add(new PlayerObject("9", 9));
+
+		mPlayerList.add(new PlayerObject("10", 10));
+		mPlayerList.add(new PlayerObject("11", 11));
+		mPlayerList.add(new PlayerObject("12", 12));
+		mPlayerList.add(new PlayerObject("13", 13));
+
+		mPlayerList.add(new PlayerObject("14", 14));
+		mPlayerList.add(new PlayerObject("15", 15));
+		mPlayerList.add(new PlayerObject("16", 16));
+		mPlayerList.add(new PlayerObject("17", 17));
 //
 //		mPlayerList.add(new PlayerObject("18", 18));
 //		mPlayerList.add(new PlayerObject("19", 19));
@@ -110,11 +113,11 @@ public class MatchController
 
 		setPlayerList (tablePlayerList);
 		matchManagerGuiFormClose ();
-		initializePlayersGroups ();
+		initializeMatchGroupsController ();
 
 		try
 		{
-			ifOnePlayerInGroupPromoteToNextStage ();
+			//ifOnePlayerInGroupPromoteToNextStage ();
 			displayGameGroups ();
 		}
 		catch (Exception e)
@@ -157,9 +160,9 @@ public class MatchController
 	}
 
 
-	private void initializePlayersGroups ()
+	private void initializeMatchGroupsController ()
 	{
-		mPlayerGroupsMap = GroupGenerator.generateRandomGroups (mPlayersNumberInGroup, mPlayerList);
+		mGroupsController = new GroupsController (GroupGenerator.generateRandomGroups (mPlayersNumberInGroup, mPlayerList));
 	}
 
 
@@ -180,7 +183,13 @@ public class MatchController
 
 	private void displayGameGroups ()
 	{
-		mPlayerGeneratedGroupsGuiForm = new GroupsGui (this, mPlayerList, mPlayerGroupsMap, mCurrentPlayingGroupNumber);
+		mPlayerGeneratedGroupsGuiForm = new GroupsGui (this, mCurrentPlayingGroupNumber);
+	}
+
+
+	public HashMap <Integer, ArrayList <GroupsTreeNode>> getMatchGroups ()
+	{
+		return mGroupsController.getMatchGroups ();
 	}
 
 
