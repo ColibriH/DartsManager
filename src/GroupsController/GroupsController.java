@@ -13,11 +13,11 @@ import java.util.HashMap;
  */
 
 //TODO Refactor
+// TODO Create Level Links in nodes to rotate stage groups without find alg.
 
 public class GroupsController
 {
 	private HashMap<Integer, ArrayList<GroupsTreeNode>> mMatchGroups;
-	private int mCurrentStage = 0;
 	private GroupsTreeNode mCurrentPlayingGroup;
 
 	public GroupsController (HashMap <Integer, ArrayList <PlayerObject>> generatedMathGroups)
@@ -139,6 +139,14 @@ public class GroupsController
 	}
 
 
+	private void updateDisplayPanelData (GroupsTreeNode node)
+	{
+		ArrayList <PlayerObject> players = node.getPlayerObjects ();
+		for (PlayerObject player : players)
+			node.getDisplayGroupPanel ().setPlayerName (player.mName);
+	}
+
+
 	public ArrayList <DisplayGroupPanel> getAllMatchGroupsPanels ()
 	{
 		ArrayList <DisplayGroupPanel> allMatchGroupsPanels = new ArrayList <> ();
@@ -170,5 +178,62 @@ public class GroupsController
 	public HashMap <Integer, ArrayList <GroupsTreeNode>> getMatchGroups ()
 	{
 		return mMatchGroups;
+	}
+
+
+	public boolean isLastGroupPlayed ()
+	{
+		return mCurrentPlayingGroup.getParent () == null;
+	}
+
+
+	public void promoteWinningPlayerToNextStage (PlayerObject winningPlayerObject)
+	{
+		ArrayList <PlayerObject> players = mCurrentPlayingGroup.getPlayerObjects ();
+		for (PlayerObject player : players)
+		{
+			if (winningPlayerObject.equals (player))
+			{
+				GroupsTreeNode node = mCurrentPlayingGroup.getParent ();
+				if (node.getPlayerObjects () == null)
+				{
+					mCurrentPlayingGroup.getParent ().setPlayerObjects (new ArrayList <PlayerObject> ()
+					{
+						{
+							add (winningPlayerObject);
+						}
+					});
+				}
+				else
+				{
+					node.getPlayerObjects ().add (winningPlayerObject);
+				}
+
+				updateDisplayPanelData (node);
+				return;
+			}
+		}
+	}
+
+
+	public void rotateToNextGroup ()
+	{
+		for (int i = 0; i < mMatchGroups.size (); i++)
+		{
+			ArrayList <GroupsTreeNode> nodes = mMatchGroups.get (i);
+			for (int j = 0; j < nodes.size (); j++)
+			{
+				if (nodes.get (j).equals (mCurrentPlayingGroup))
+				{
+					if (j + 1 > nodes.size () - 1)
+						mCurrentPlayingGroup = nodes.get (0).getParent ();
+					else
+						mCurrentPlayingGroup = nodes.get (j + 1);
+
+					return;
+				}
+			}
+		}
+
 	}
 }

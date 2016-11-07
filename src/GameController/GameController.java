@@ -143,21 +143,10 @@ public class GameController
 		if (mCurrentPlayer.mLeg.equals (WINING_LEG_COUNT))
 		{
 			destroyGuiForms ();
-			mMatchController.runActionsAfterGameController (getPlayersAsArrayList ());
+			mMatchController.runActionsAfterGameController (mCurrentPlayer);
 		}
 	}
 
-
-	private ArrayList <PlayerObject> getPlayersAsArrayList ()
-	{
-		return new ArrayList <PlayerObject> ()
-		{
-			{
-				add (mPlayer);
-				add (mOpponentPlayer);
-			}
-		};
-	}
 
 	private void destroyGuiForms ()
 	{

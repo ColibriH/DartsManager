@@ -13,7 +13,6 @@ import java.util.ArrayList;
  * Created by vladislavs on 13.09.2016..
  */
 
-// TODO Add some groups names
 // TODO set better style
 // TODO set preferred size to mPanel
 // TODO refactor
@@ -22,13 +21,11 @@ public class DisplayGroupPanel extends JPanel
 {
 	private JPanel mFirstPlayerPanel   = new JPanel ();
 	private JPanel mSecondPlayerPanel  = new JPanel ();
-	private JPanel mWinnerPanel        = new JPanel ();
 	private JPanel mVersusPanel        = new JPanel ();
 	private JPanel mPlayingTxtPanel    = new JPanel ();
 
 	private JLabel mNameLabel          = new JLabel ();
 	private JLabel mSNameLabel         = new JLabel ();
-	private JLabel mWinnerName         = new JLabel ();
 
 	private JLabel mPlayingLabel       = new JLabel ("Group to play!");
 	private JLabel vsLabel             = new JLabel ("VS");
@@ -46,6 +43,7 @@ public class DisplayGroupPanel extends JPanel
 		initialization (mPlayerList.get (0).mName, mPlayerList.get (1).mName);
 	}
 
+
 	public DisplayGroupPanel (ArrayList<PlayerObject> mPlayerList, int row, int column, double weightX, double weightY)
 	{
 		this (mPlayerList);
@@ -55,6 +53,7 @@ public class DisplayGroupPanel extends JPanel
 		mWeightX    = weightX;
 		mWeightY    = weightY;
 	}
+
 
 	public DisplayGroupPanel ()
 	{
@@ -101,7 +100,6 @@ public class DisplayGroupPanel extends JPanel
 								groupLayout.createParallelGroup (GroupLayout.Alignment.LEADING)
 								           .addComponent (mPlayingTxtPanel)
 								           .addComponent (mVersusPanel)
-								           .addComponent (mWinnerPanel)
 						)
 						.addComponent (mSecondPlayerPanel)
 
@@ -117,7 +115,6 @@ public class DisplayGroupPanel extends JPanel
 								          .addComponent (mVersusPanel)
 								          .addComponent (mSecondPlayerPanel)
 						)
-						.addComponent (mWinnerPanel)
 		);
 	}
 
@@ -130,7 +127,6 @@ public class DisplayGroupPanel extends JPanel
 		mVersusPanel        .add (rArrow);
 		mFirstPlayerPanel   .add (mNameLabel);
 		mSecondPlayerPanel  .add (mSNameLabel);
-		mWinnerPanel        .add (mWinnerName);
 	}
 
 
@@ -139,7 +135,6 @@ public class DisplayGroupPanel extends JPanel
 		mVersusPanel        .setLayout (new GridLayout (1, 3, -1, -1));
 		mFirstPlayerPanel   .setLayout (new GridLayout (1, 2, -1, -1));
 		mSecondPlayerPanel  .setLayout (new GridLayout (1, 2, -1, -1));
-		mWinnerPanel        .setLayout (new GridLayout (1, 2, -1, -1));
 		mPlayingTxtPanel    .setLayout (new GridLayout (1, 2, -1, -1));
 	}
 
@@ -164,15 +159,12 @@ public class DisplayGroupPanel extends JPanel
 	{
 		vsLabel         .setHorizontalAlignment (SwingConstants.CENTER);
 		mPlayingLabel   .setHorizontalAlignment (SwingConstants.CENTER);
-		mWinnerName     .setHorizontalAlignment (SwingConstants.CENTER);
 
 		mNameLabel  .setOpaque (true);
 		mSNameLabel .setOpaque (false);
-		mWinnerName .setOpaque (false);
 
 		mNameLabel  .setBackground (new Color(255, 255, 255, 0));
 		mSNameLabel .setBackground (new Color(255, 255, 255, 0));
-		mWinnerName .setBackground (new Color(255, 255, 255, 0));
 
 		setImages ();
 	}
@@ -227,25 +219,15 @@ public class DisplayGroupPanel extends JPanel
 
 		mFirstPlayerPanel   .setOpaque (false);
 		mSecondPlayerPanel  .setOpaque (false);
-		mWinnerPanel        .setOpaque (false);
 		mVersusPanel        .setOpaque (false);
 		mPlayingTxtPanel    .setOpaque (false);
 
 		mFirstPlayerPanel   .setBackground (new Color(255, 255, 255, 0));
 		mSecondPlayerPanel  .setBackground (new Color(255, 255, 255, 0));
-		mWinnerPanel        .setBackground (new Color(255, 255, 255, 0));
 		mVersusPanel        .setBackground (new Color(255, 255, 255, 0));
 		mPlayingTxtPanel    .setBackground (new Color(255, 255, 255, 0));
 
 		mPlayingTxtPanel.setVisible (false);
-		mWinnerPanel.setVisible (false);
-	}
-
-
-	public void showWinner (String winnerName)
-	{
-		mWinnerName.setText ("Winner: " + winnerName);
-		mWinnerPanel.setVisible (true);
 	}
 
 
@@ -255,21 +237,9 @@ public class DisplayGroupPanel extends JPanel
 	}
 
 
-	public void setRow (int mRow)
-	{
-		this.mRow = mRow;
-	}
-
-
 	public int getColumn ()
 	{
 		return mColumn;
-	}
-
-
-	public void setColumn (int mColumn)
-	{
-		this.mColumn = mColumn;
 	}
 
 
@@ -279,25 +249,13 @@ public class DisplayGroupPanel extends JPanel
 	}
 
 
-	public void setWeightX (int mWeightX)
-	{
-		this.mWeightX = mWeightX;
-	}
-
-
 	public double getWeightY ()
 	{
 		return mWeightY;
 	}
 
 
-	public void setWeightY (int mWeightY)
-	{
-		this.mWeightY = mWeightY;
-	}
-
-
-	public void setCurretPlayingGroup (boolean visibilityState)
+	public void setCurrentPlayingGroup (boolean visibilityState)
 	{
 		mPlayingTxtPanel.setVisible (visibilityState);
 	}

@@ -4,24 +4,22 @@ import MatchController.GUI.Components.DisplayGroupPanel;
 import MatchController.GUI.Components.GroupPanelLines;
 import MatchController.MatchController;
 import MatchController.Objects.GroupsTreeNode;
-import MatchController.Objects.PlayerObject;
 import Constants.Constats;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by vladislavs on 07.10.2016..
  */
 
-// TODO Fix scroll to work
 // TODO Change group design
 // TODO Set some BG
 // TODO Style buttons
-// TODO Thing to replace in player object panel on node
+// TODO Fix scroll to work
+
 // TODO Refactor
 
 public class GroupsGui
@@ -42,7 +40,7 @@ public class GroupsGui
 
 	public GroupsGui (MatchController matchController)
 	{
-		mMatchController            = matchController;
+		mMatchController = matchController;
 
 		initializeComponents ();
 		addComponentsListener ();
@@ -50,10 +48,26 @@ public class GroupsGui
 	}
 
 
+	private void initializeComponents ()
+	{
+		mJFrame = new JFrame ();
+
+		mJPanel             = new JPanel ();
+		mGroupsPanel        = new JPanel ();
+		mControlJPanel      = new JPanel ();
+		mGlassPanel 		= new GroupPanelLines (null);
+		mGroupsScrollPane   = new JScrollPane (mGroupsPanel);
+
+		mGameStartBtn   	= new JButton ("Start Game");
+		mBackBtn        	= new JButton ("Back");
+	}
+
+
 	private void buildMainFrame ()
 	{
 		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
 		mJFrame.setContentPane (mJPanel);
+		//mJFrame.setResizable (false);
 		setMJFrameLocation ();
 		mainPanelBuilder ();
 		mJFrame.pack ();
@@ -68,6 +82,7 @@ public class GroupsGui
 		mJPanel.setPreferredSize (new Dimension (Constats.MAIN_WIDTH + 200, Constats.MAIN_HEIGHT + 100));
 		mJPanel.setBackground (Color.BLUE);
 
+
 		controlPanelBuilder ();
 		groupsPanelBuilder ();
 		createGroupLines ();
@@ -80,8 +95,10 @@ public class GroupsGui
 
 	private void groupsPanelBuilder ()
 	{
+		mGroupsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		mGroupsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		mGroupsPanel.setLayout (new GridBagLayout ());
-		addGroupsToPanelAndUpdateFrame ();
+		addGroupsToMainPanel ();
 		setCurrentPlayingGroupText ();
 	}
 
@@ -104,31 +121,12 @@ public class GroupsGui
 	}
 
 
-	private void initializeComponents ()
-	{
-		mJFrame = new JFrame ();
-
-		mJPanel             = new JPanel ();
-		mGroupsPanel        = new JPanel ();
-		mControlJPanel      = new JPanel ();
-		mGlassPanel 		= new GroupPanelLines (null);
-		mGroupsScrollPane   = new JScrollPane (mGroupsPanel);
-
-		mGameStartBtn   	= new JButton ("Start Game");
-		mBackBtn        	= new JButton ("Back");
-	}
-
 	private void setMJFrameLocation ()
 	{
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		mJFrame.setLocation (dim.width / 2 - mJFrame.getSize ().width / 2, 0);
 	}
 
-
-	private void addGroupsToPanelAndUpdateFrame ()
-	{
-		addGroupsToMainPanel ();
-	}
 
 	private void createGroupLines ()
 	{
@@ -147,7 +145,7 @@ public class GroupsGui
 	{
 		try
 		{
-			panel.setCurretPlayingGroup (state);
+			panel.setCurrentPlayingGroup (state);
 		}
 		catch (Exception e)
 		{
@@ -201,49 +199,27 @@ public class GroupsGui
 	}
 
 
+	private void addComponentsListener ()
+	{
+		mGameStartBtn.  addActionListener (e -> mMatchController.runActionsAfterGroupDisplay ());
+		mBackBtn.       addActionListener (e -> mMatchController.openGameManagerGuiForm ());
+	}
+
+
 	public void setVisibility (boolean visibilityFlag)
 	{
 		mJFrame.setVisible (visibilityFlag);
 	}
 
 
-	public void displayWinnerPanelInGroup (PlayerObject winner)
+	public void displayWinnerPanelInGroup ()
 	{
 		setCurrentPlayingGroupText ();
-		showWinner (winner);
-	}
-
-
-	public void displayWinnerAndNextStage (PlayerObject winner)
-	{
-		hideCurrentPlayingGroupPanelForAllGroups ();
-		showWinner (winner);
-	}
-
-
-	private void showWinner (PlayerObject winner)
-	{
-		try
-		{
-			//GroupsTreeNode winnerNode = findNode (mMatchController.getPlayerObjectById (winner.mId).getDisplayGroupPanel ());
-			//winnerNode.getParent ().getDisplayGroupPanel ().setPlayerName (winner.mName);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace ();
-		}
 	}
 
 
 	public void destroy ()
 	{
 		mJFrame.dispose ();
-	}
-
-
-	private void addComponentsListener ()
-	{
-		mGameStartBtn.  addActionListener (e -> mMatchController.runActionsAfterGroupDisplay ());
-		mBackBtn.       addActionListener (e -> mMatchController.openGameManagerGuiForm ());
 	}
 }

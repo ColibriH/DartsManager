@@ -7,9 +7,11 @@ import MainController.MainController;
 
 // TODO Finish Styling // Recreate group display for tournament
 
-// TODO Test for 3 people, 6, 9, 12
+// TODO Create Interface for Gui object to unify all
 
-// TODO Rewrite logic for game lvls
+// TODO Separate Gui and logic in 2 files under package
+
+// TODO Test for 3 people, 6, 9, 12
 
 // TODO more than 2 people in one group -> little bit changes in rules check this! (for this need huge refactor and logic changes) AND Create more game types
 
