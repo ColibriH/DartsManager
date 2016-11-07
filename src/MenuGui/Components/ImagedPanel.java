@@ -17,7 +17,7 @@ public class ImagedPanel extends JPanel
 	// TODO remove this constructor
 	public ImagedPanel ()
 	{
-		mBg = ImageLoader.getImage (Constats.MENU_BG_PIC);;
+		mBg = ImageLoader.getImage (Constats.MENU_BG_PIC);
 	}
 
 

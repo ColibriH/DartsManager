@@ -64,6 +64,8 @@ public class DisplayGroupPanel extends JPanel
 
 	public DisplayGroupPanel (int row, int column, double weightX, double weightY)
 	{
+		this ();
+
 		mRow        = row;
 		mColumn     = column;
 		mWeightX    = weightX;

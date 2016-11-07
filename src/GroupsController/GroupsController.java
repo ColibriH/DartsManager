@@ -17,13 +17,19 @@ import java.util.HashMap;
 public class GroupsController
 {
 	private HashMap<Integer, ArrayList<GroupsTreeNode>> mMatchGroups;
-	private int mCurrentStage;
-	private int mCurrentPlayingGroup;
+	private int mCurrentStage = 0;
+	private GroupsTreeNode mCurrentPlayingGroup;
 
 	public GroupsController (HashMap <Integer, ArrayList <PlayerObject>> generatedMathGroups)
 	{
 		mMatchGroups = new HashMap <> ();
 		initializeGroups (generatedMathGroups);
+		setCurrentPlayingGroup ();
+	}
+
+	private void setCurrentPlayingGroup ()
+	{
+		mCurrentPlayingGroup = mMatchGroups.get (0).get (0);
 	}
 
 
@@ -46,13 +52,13 @@ public class GroupsController
 
 	private void addStageGroupToGroupHashMap (int rowGap, int firstElementPosition, int stageSequenceNumber, int groupCount, HashMap <Integer, ArrayList <PlayerObject>> generatedMathGroups)
 	{
-		for (int j = 0; j < groupCount; j++)      // Fill 1st lvl groups
+		for (int j = 0; j < groupCount; j++)
 		{
 			int     row         = (j * rowGap) + firstElementPosition;
 			double  weightX     = (j == 0) ? 1 : 0;
 			double  weightY     = (j == generatedMathGroups.size () - 1) ? 1 : 0;
 
-			GroupsTreeNode groupNode;
+			final GroupsTreeNode groupNode;
 			if (stageSequenceNumber == 0)
 			{
 				ArrayList <PlayerObject> playersInGroup = generatedMathGroups.get (j);      // Get (i) - Get players in group from generatedMathGroups
@@ -61,8 +67,12 @@ public class GroupsController
 			}
 			else
 			{
-				weightX = 0;
-				weightY = 0.5;
+				if (j != 0 && j != generatedMathGroups.size () - 1)
+				{
+					weightX = 0;
+					weightY = 0.5;
+				}
+
 				groupNode = new GroupsTreeNode (new DisplayGroupPanel (row, stageSequenceNumber, weightX, weightY));
 			}
 
@@ -86,22 +96,22 @@ public class GroupsController
 
 	private void createGroupsTree ()
 	{
-		for (Integer i = mMatchGroups.size (); i > 1; i--)
+		for (Integer i = mMatchGroups.size () - 1; i > 0; i--)
 		{
-			ArrayList groups = mMatchGroups.get (i);
+			ArrayList <GroupsTreeNode>  groups = mMatchGroups.get (i);
 			for (int j = 0; j < groups.size (); j++)
-				addChildren (mMatchGroups.get (i-1), j * 2, (GroupsTreeNode) groups.get (j), i);
+				addChildren (mMatchGroups.get (i-1), j * 2, groups.get (j), i);
 		}
 	}
 
 
-	private void addChildren (ArrayList groups, int spos, GroupsTreeNode parent, int key)
+	private void addChildren (ArrayList <GroupsTreeNode> groups, int spos, GroupsTreeNode parent, int key)
 	{
-		GroupsTreeNode node = (GroupsTreeNode) groups.get (spos);
+		GroupsTreeNode node = groups.get (spos);
 		GroupsTreeNode node2;
 
 		if (groups.size () > spos + 1)
-			node2 = (GroupsTreeNode) groups.get (spos + 1);
+			node2 = groups.get (spos + 1);
 		else
 			node2 = findNode (key);
 
@@ -115,7 +125,7 @@ public class GroupsController
 
 	private GroupsTreeNode findNode (Integer key)
 	{
-		for (Integer i = mMatchGroups.size (); i > 0; i--)
+		for (int i = mMatchGroups.size () - 1; i >= 0; i--)
 		{
 			if (i < key - 1)
 			{
@@ -126,6 +136,34 @@ public class GroupsController
 		}
 
 		return null;
+	}
+
+
+	public ArrayList <DisplayGroupPanel> getAllMatchGroupsPanels ()
+	{
+		ArrayList <DisplayGroupPanel> allMatchGroupsPanels = new ArrayList <> ();
+		for (int i = 0; i < mMatchGroups.size (); i++)
+		{
+			ArrayList <GroupsTreeNode> nodes = mMatchGroups.get (i);
+			for (int j = 0; j < nodes.size (); j++)
+			{
+				allMatchGroupsPanels.add (nodes.get (j).getDisplayGroupPanel ());
+			}
+		}
+
+		return allMatchGroupsPanels;
+	}
+
+
+	public DisplayGroupPanel getCurrentPlayingGroupPanel ()
+	{
+		return mCurrentPlayingGroup.getDisplayGroupPanel ();
+	}
+
+
+	public GroupsTreeNode getCurrentPlayingGroup ()
+	{
+		return mCurrentPlayingGroup;
 	}
 
 

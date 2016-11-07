@@ -4,7 +4,6 @@ import MatchController.GUI.Components.DisplayGroupPanel;
 import MatchController.GUI.Components.GroupPanelLines;
 import MatchController.MatchController;
 import MatchController.Objects.GroupsTreeNode;
-import MatchController.Objects.Stages;
 import MatchController.Objects.PlayerObject;
 import Constants.Constats;
 
@@ -40,12 +39,9 @@ public class GroupsGui
 	private JButton                                             mGameStartBtn;
 	private JButton                                             mBackBtn;
 
-	private Integer                                             mCurrentPlayingGroupNumber;
 
-
-	public GroupsGui (MatchController matchController, Integer currentPlayingGroupNumber)
+	public GroupsGui (MatchController matchController)
 	{
-		mCurrentPlayingGroupNumber  = currentPlayingGroupNumber;
 		mMatchController            = matchController;
 
 		initializeComponents ();
@@ -86,7 +82,7 @@ public class GroupsGui
 	{
 		mGroupsPanel.setLayout (new GridBagLayout ());
 		addGroupsToPanelAndUpdateFrame ();
-		setCurrentPlayingGroup ();
+		setCurrentPlayingGroupText ();
 	}
 
 
@@ -131,28 +127,27 @@ public class GroupsGui
 
 	private void addGroupsToPanelAndUpdateFrame ()
 	{
-		addGroupsToMainPanelAndLinkGroupWithPlayer ();
+		addGroupsToMainPanel ();
 	}
 
 	private void createGroupLines ()
 	{
-		mGlassPanel	= new GroupPanelLines (mGroupsPanels);
+		mGlassPanel	= new GroupPanelLines (mMatchController.getMatchGroups ());
 	}
 
 
-	private void setCurrentPlayingGroup ()
+	private void setCurrentPlayingGroupText ()
 	{
-		mCurrentPlayingGroupNumber = mMatchController.getCurrentPlayingGroupNumber ();
 		hideCurrentPlayingGroupPanelForAllGroups ();
-		setCurrentPlayingGroup (mPlayerGroupsMap.get (mCurrentPlayingGroupNumber).get (0), true);
+		setCurrentPlayingGroupText (mMatchController.getCurrentPlayingGroupPanel (), true);
 	}
 
 
-	private void setCurrentPlayingGroup (Integer firstPlayerId, boolean state)
+	private void setCurrentPlayingGroupText (DisplayGroupPanel panel, boolean state)
 	{
 		try
 		{
-			mMatchController.getPlayerObjectById (firstPlayerId).getDisplayGroupPanel ().setCurretPlayingGroup (state);
+			panel.setCurretPlayingGroup (state);
 		}
 		catch (Exception e)
 		{
@@ -163,11 +158,9 @@ public class GroupsGui
 
 	private void hideCurrentPlayingGroupPanelForAllGroups ()
 	{
-		for (Object o : mPlayerGroupsMap.entrySet ())
-		{
-			Map.Entry pair = (Map.Entry) o;
-			setCurrentPlayingGroup (((ArrayList <Integer>) pair.getValue ()).get (0), false);
-		}
+		ArrayList <DisplayGroupPanel> allMatchGroupsPanels = mMatchController.getAllMatchGroupsPanels ();
+		for (int i = 0; i < allMatchGroupsPanels.size (); i++)
+			setCurrentPlayingGroupText (allMatchGroupsPanels.get (i), false);
 	}
 
 
@@ -192,105 +185,19 @@ public class GroupsGui
 	}
 
 
-	private void addGroupsToMainPanelAndLinkGroupWithPlayer ()
+	private void addGroupsToMainPanel ()
 	{
-		ArrayList <GroupsTreeNode>   groups    = new ArrayList <> ();
-		Stages stages = new Stages (mPlayerGroupsMap.size ());
-		GridBagConstraints              gbc       = new GridBagConstraints ();
-
-		int lvlAdd = 2;
-		int prevLvlFirstElPos = 2;
-
-		for (int i = 0; i < mPlayerGroupsMap.size (); i++)      // Fill 1st lvl groups
+		GridBagConstraints gbc = new GridBagConstraints ();
+		HashMap <Integer, ArrayList <GroupsTreeNode>> matchGroups = mMatchController.getMatchGroups ();
+		for (int i = 0; i < matchGroups.size (); i++)
 		{
-			ArrayList <Integer> playersIds = mPlayerGroupsMap.get (i);
-			DisplayGroupPanel dgp = null; //new DisplayGroupPanel (playersIds, mPlayerList);
-
-			int weightX = (i == 0) ? 1 : 0;
-			int weightY = (i == mPlayerGroupsMap.size () - 1) ? 1 : 0;
-
-			addComponentToPanel (mGroupsPanel, dgp,   0, i * lvlAdd, new Insets (0, 0, 0, 0), 0, weightX, weightY, 1, GridBagConstraints.NORTHWEST, gbc, GridBagConstraints.HORIZONTAL);
-
-			groups.add(new GroupsTreeNode (dgp));
-
-			mMatchController.setPlayersGeneratedGroupLink (playersIds, dgp);
-		}
-
-		mGroupsPanels.put(1, new ArrayList <> (groups));
-
-		for (int i = 2; i < stages.mGroupCountOnStages.size () + 1; i++)  // Fill Future groups // start from second lvl
-		{
-			groups.clear();
-			lvlAdd = (int) Math. pow ((double) 2, (double) i);
-
-			if (i != 2)
-				prevLvlFirstElPos *= 2;
-
-			int position = prevLvlFirstElPos;
-
-			for (int j = 0; j < stages.mGroupCountOnStages.get(i); j++)
+			ArrayList <GroupsTreeNode> nodes = matchGroups.get (i);
+			for (int j = 0; j < nodes.size (); j++)
 			{
-				if (j > 0)
-					position += lvlAdd;
-
-				DisplayGroupPanel dgp = new DisplayGroupPanel ();
-
-				addComponentToPanel (mGroupsPanel, dgp,   i - 1, position - 1, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.NORTHWEST, gbc, GridBagConstraints.HORIZONTAL);
-
-				groups.add(new GroupsTreeNode (dgp));
-			}
-
-			mGroupsPanels.put(i, new ArrayList <> (groups));
-		}
-
-		createGroupsTree ();
-	}
-
-
-	private void createGroupsTree ()
-	{
-		for (Integer i = mGroupsPanels.size (); i > 1; i--)
-		{
-			ArrayList groups = mGroupsPanels.get (i);
-			for (int j = 0; j < groups.size (); j++)
-			{
-				addChildren (mGroupsPanels.get (i-1), j * 2, (GroupsTreeNode) groups.get (j), i);
+				DisplayGroupPanel dgp = nodes.get (j).getDisplayGroupPanel ();
+				addComponentToPanel (mGroupsPanel, dgp,   dgp.getColumn (), dgp.getRow (), new Insets (0, 0, 0, 0), 0, dgp.getWeightX (), dgp.getWeightY (), 1, GridBagConstraints.NORTHWEST, gbc, GridBagConstraints.HORIZONTAL);
 			}
 		}
-	}
-
-
-	private void addChildren (ArrayList groups, int spos, GroupsTreeNode parent, int key)
-	{
-		GroupsTreeNode node = (GroupsTreeNode) groups.get (spos);
-		GroupsTreeNode node2;
-
-		if (groups.size () > spos + 1)
-			node2 = (GroupsTreeNode) groups.get (spos + 1);
-		else
-			node2 = findNode (key);
-
-		parent.addChildren (node);
-		parent.addChildren (node2);
-
-		node.setParent (parent);
-		node2.setParent (parent);
-	}
-
-
-	private GroupsTreeNode findNode (Integer key)
-	{
-		for (Integer i = mGroupsPanels.size (); i > 0; i--)
-		{
-			if (i < key - 1)
-			{
-				ArrayList valueArr = mGroupsPanels.get (i);
-				if (valueArr.size () % 2 != 0)
-					return (GroupsTreeNode)valueArr.get (valueArr.size () - 1);
-			}
-		}
-
-		return null;
 	}
 
 
@@ -302,7 +209,7 @@ public class GroupsGui
 
 	public void displayWinnerPanelInGroup (PlayerObject winner)
 	{
-		setCurrentPlayingGroup ();
+		setCurrentPlayingGroupText ();
 		showWinner (winner);
 	}
 
@@ -318,31 +225,13 @@ public class GroupsGui
 	{
 		try
 		{
-			GroupsTreeNode winnerNode = findNode (mMatchController.getPlayerObjectById (winner.mId).getDisplayGroupPanel ());
-			winnerNode.getParent ().getDisplayGroupPanel ().setPlayerName (winner.mName);
+			//GroupsTreeNode winnerNode = findNode (mMatchController.getPlayerObjectById (winner.mId).getDisplayGroupPanel ());
+			//winnerNode.getParent ().getDisplayGroupPanel ().setPlayerName (winner.mName);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace ();
 		}
-	}
-
-
-	private GroupsTreeNode findNode (DisplayGroupPanel displayGroupPanel)
-	{
-		for (int i = 1; i < mGroupsPanels.size (); i++)
-		{
-			ArrayList <GroupsTreeNode> nodes = mGroupsPanels.get (i);
-			for (int j = 0 ; j< nodes.size (); j++)
-			{
-				if (nodes.get (j).getDisplayGroupPanel ().equals (displayGroupPanel))
-				{
-					return nodes.get (j);
-				}
-			}
-		}
-
-		return null;
 	}
 
 

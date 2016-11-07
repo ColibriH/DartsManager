@@ -29,8 +29,8 @@ public class MatchController
 	private GroupsController                              mGroupsController;
 
 	private ArrayList <PlayerObject>                      mPlayerList;
-	private HashMap <Integer, ArrayList <Integer>>        mPlayerGroupsMap;
-	private HashMap <Integer, PlayerObject>               mStageWinnerHashMap;
+	//private HashMap <Integer, ArrayList <Integer>>        mPlayerGroupsMap;
+	//private HashMap <Integer, PlayerObject>               mStageWinnerHashMap;
 
 	private Integer                                       mCurrentPlayingGroupNumber;
 	private Integer                                       mPlayersNumberInGroup;
@@ -46,7 +46,7 @@ public class MatchController
 	{
 		mPlayersNumberInGroup       = 2;
 		mCurrentPlayingGroupNumber  = 0;
-		mStageWinnerHashMap         = new HashMap <> ();
+		//mStageWinnerHashMap         = new HashMap <> ();
 
 		// TODO delete in production
 		mPlayerList = new ArrayList<>();
@@ -64,16 +64,16 @@ public class MatchController
 		mPlayerList.add(new PlayerObject("8", 8));
 		mPlayerList.add(new PlayerObject("9", 9));
 
-		mPlayerList.add(new PlayerObject("10", 10));
-		mPlayerList.add(new PlayerObject("11", 11));
-		mPlayerList.add(new PlayerObject("12", 12));
-		mPlayerList.add(new PlayerObject("13", 13));
-
-		mPlayerList.add(new PlayerObject("14", 14));
-		mPlayerList.add(new PlayerObject("15", 15));
-		mPlayerList.add(new PlayerObject("16", 16));
-		mPlayerList.add(new PlayerObject("17", 17));
+//		mPlayerList.add(new PlayerObject("10", 10));
+//		mPlayerList.add(new PlayerObject("11", 11));
+//		mPlayerList.add(new PlayerObject("12", 12));
+//		mPlayerList.add(new PlayerObject("13", 13));
 //
+//		mPlayerList.add(new PlayerObject("14", 14));
+//		mPlayerList.add(new PlayerObject("15", 15));
+//		mPlayerList.add(new PlayerObject("16", 16));
+//		mPlayerList.add(new PlayerObject("17", 17));
+////
 //		mPlayerList.add(new PlayerObject("18", 18));
 //		mPlayerList.add(new PlayerObject("19", 19));
 //		mPlayerList.add(new PlayerObject("20", 20));
@@ -130,7 +130,7 @@ public class MatchController
 
 	private void ifOnePlayerInGroupPromoteToNextStage () throws Exception
 	{
-		for (Object o : mPlayerGroupsMap.entrySet ())
+/*		for (Object o : mPlayerGroupsMap.entrySet ())
 		{
 			Map.Entry <Integer, ArrayList <Integer>> pair = (Map.Entry <Integer, ArrayList <Integer>>) o;   // Could by cast exception at runtime!
 			ArrayList <Integer> value =  pair.getValue ();
@@ -142,7 +142,7 @@ public class MatchController
 				mStageWinnerHashMap.put (playerId, getPlayerObjectById (playerId));
 				mPlayerGroupsMap.remove (pair.getKey ());
 			}
-		}
+		}*/
 	}
 
 
@@ -183,7 +183,7 @@ public class MatchController
 
 	private void displayGameGroups ()
 	{
-		mPlayerGeneratedGroupsGuiForm = new GroupsGui (this, mCurrentPlayingGroupNumber);
+		mPlayerGeneratedGroupsGuiForm = new GroupsGui (this);
 	}
 
 
@@ -195,13 +195,7 @@ public class MatchController
 
 	private ArrayList <PlayerObject> getGameOpponents () throws Exception
 	{
-		ArrayList <PlayerObject> playerObjectsList = new ArrayList <> ();
-
-		ArrayList <Integer> playersIds = mPlayerGroupsMap.get (mCurrentPlayingGroupNumber);
-		for (Integer playerId : playersIds)
-			playerObjectsList.add (getPlayerObjectById (playerId));
-
-		return playerObjectsList;
+		return mGroupsController.getCurrentPlayingGroup ().getPlayerObjects ();
 	}
 
 
@@ -233,7 +227,7 @@ public class MatchController
 	{
 		try
 		{
-			PlayerObject winner = getWinnersPlayerObject (playerObjectArrayListResult);
+	/*		PlayerObject winner = getWinnersPlayerObject (playerObjectArrayListResult);
 			resetPlayerLegData (playerObjectArrayListResult);
 			mStageWinnerHashMap.put (mCurrentPlayingGroupNumber, winner);
 
@@ -242,7 +236,7 @@ public class MatchController
 			if (ifLastGroupPlayed ())
 				handleLastGroupPlayedState (winner);
 			else
-				displayWinner (winner);
+				displayWinner (winner);*/
 		}
 		catch (Exception e)
 		{
@@ -261,7 +255,7 @@ public class MatchController
 
 	private void handleLastGroupPlayedState (PlayerObject winner) throws Exception
 	{
-		if (ifFinalStage ())
+	/*	if (ifFinalStage ())
 		{
 			showMatchWinner (winner);
 		}
@@ -269,25 +263,13 @@ public class MatchController
 		{
 			groupsStageRotation ();
 			displayWinnerAndNextStage (winner);
-		}
+		}*/
 	}
 
 
 	private void showMatchWinner (PlayerObject winner)
 	{
 		mWinnerGuiForm = new WinnerGuiForm (this, winner);
-	}
-
-
-	private boolean ifLastGroupPlayed ()
-	{
-		return getGroupCount ().equals (mCurrentPlayingGroupNumber);
-	}
-
-
-	private Integer getGroupCount ()
-	{
-		return mPlayerGroupsMap.size ();
 	}
 
 
@@ -316,14 +298,14 @@ public class MatchController
 
 	private void groupsStageRotation () throws Exception
 	{
-		mPlayerGroupsMap.clear ();
+		/*mPlayerGroupsMap.clear ();
 
 		int winnersHashMapSize = mStageWinnerHashMap.size ();
 
 		for (int i = 0; i < winnersHashMapSize - 1; i++)
 		{
-			PlayerObject currentPlayer  = mStageWinnerHashMap.get (i);
-			PlayerObject nextPlayer     = mStageWinnerHashMap.get (i + 1);
+			final PlayerObject currentPlayer  = mStageWinnerHashMap.get (i);
+			final PlayerObject nextPlayer     = mStageWinnerHashMap.get (i + 1);
 
 			if (currentPlayer == null || nextPlayer == null)
 				throw new Exception ("Can`t retrieve id from current player object");
@@ -345,13 +327,7 @@ public class MatchController
 				});
 		}
 
-		mStageWinnerHashMap.clear ();
-	}
-
-
-	private boolean ifFinalStage ()
-	{
-		return mStageWinnerHashMap.size () == 1;
+		mStageWinnerHashMap.clear ();*/
 	}
 
 
@@ -406,5 +382,15 @@ public class MatchController
 		mPlayerGeneratedGroupsGuiForm.destroy ();
 		mPlayerGeneratedGroupsGuiForm = null;
 		mGameManagerGuiForm = new GameManagerGuiForm (this);
+	}
+
+	public ArrayList<DisplayGroupPanel> getAllMatchGroupsPanels ()
+	{
+		return mGroupsController.getAllMatchGroupsPanels ();
+	}
+
+	public DisplayGroupPanel getCurrentPlayingGroupPanel ()
+	{
+		return mGroupsController.getCurrentPlayingGroupPanel ();
 	}
 }
