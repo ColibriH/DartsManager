@@ -1,10 +1,12 @@
 package MatchController.GUI;
 
+import GUIComponents.ImagedPanel;
 import MatchController.GUI.Components.DisplayGroupPanel;
 import MatchController.GUI.Components.GroupPanelLines;
 import MatchController.MatchController;
 import MatchController.Objects.GroupsTreeNode;
 import Constants.Constats;
+import Tools.ImageLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,14 +26,14 @@ import java.util.HashMap;
 
 public class GroupsGui
 {
-	private final MatchController mMatchController;
+	private final MatchController                               mMatchController;
 
 	private JFrame                                              mJFrame;
 
 	private JPanel                                              mJPanel;
 	private JPanel                                              mControlJPanel;
-	private JPanel                                              mGroupsPanel;
-	private GroupPanelLines mGlassPanel;
+	private ImagedPanel                                         mGroupsPanel;
+	private GroupPanelLines                                     mGlassPanel;
 	private JScrollPane                                         mGroupsScrollPane;
 
 	private JButton                                             mGameStartBtn;
@@ -53,7 +55,7 @@ public class GroupsGui
 		mJFrame = new JFrame ();
 
 		mJPanel             = new JPanel ();
-		mGroupsPanel        = new JPanel ();
+		mGroupsPanel        = new ImagedPanel (ImageLoader.getImage (Constats.CHALK_BOARD));
 		mControlJPanel      = new JPanel ();
 		mGlassPanel 		= new GroupPanelLines (null);
 		mGroupsScrollPane   = new JScrollPane (mGroupsPanel);

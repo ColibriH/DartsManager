@@ -44,9 +44,9 @@ public class Constats
 	//public static final String CORNER_BG_PIC                = PIC_FOLDER_FULL_PATH + "corner_img.png";
 	public static final String OPEN_BOARD_PIC               = PIC_FOLDER_FULL_PATH + "matchmenu-bg.jpg";
 	public static final String RIGHT_BOARD_PIC              = PIC_FOLDER_FULL_PATH + "right_board.png";
+	public static final String CHALK_BOARD                  = PIC_FOLDER_FULL_PATH + "chalk_board.jpg";
 
 	public static final String CHALK_FONT1                  = FONT_FOLDER_FULL_PATH + "erasdust.ttf";
 	public static final String CHALK_FONT2                  = FONT_FOLDER_FULL_PATH + "Eraser.ttf";
 	public static final String SCRATHC_FONT                 = FONT_FOLDER_FULL_PATH + "nailscratch.ttf";
-
 }

@@ -100,6 +100,9 @@ public class DisplayGroupPanel extends JPanel
 		GridBagConstraints mPanelGbc = new GridBagConstraints ();
 		this.setLayout (new GridBagLayout ());
 		this.setPreferredSize (new Dimension (100, 150));
+		this.setBackground (new Color (255, 255, 255, 0));
+		this.setOpaque (false);
+		this.setForeground (Color.WHITE);
 
 		buildPanels ();
 		styleLabels ();
@@ -166,11 +169,16 @@ public class DisplayGroupPanel extends JPanel
 		vsLabel         .setHorizontalAlignment (SwingConstants.CENTER);
 		mPlayingLabel   .setHorizontalAlignment (SwingConstants.CENTER);
 
-		mNameLabel  .setOpaque (true);
-		mSNameLabel .setOpaque (false);
+		mNameLabel      .setOpaque (true);
+		mSNameLabel     .setOpaque (false);
 
-		mNameLabel  .setBackground (new Color(255, 255, 255, 0));
-		mSNameLabel .setBackground (new Color(255, 255, 255, 0));
+		mNameLabel      .setBackground (new Color(255, 255, 255, 0));
+		mSNameLabel     .setBackground (new Color(255, 255, 255, 0));
+
+		mNameLabel      .setForeground (Color.WHITE);
+		mSNameLabel     .setForeground (Color.WHITE);
+		vsLabel         .setForeground (Color.WHITE);
+		mPlayingLabel   .setForeground (Color.WHITE);
 	}
 
 
@@ -186,35 +194,35 @@ public class DisplayGroupPanel extends JPanel
 	}
 
 
-	private static Color hex2Rgb (String colorStr)
-	{
-		// TODO Check colorStr pattern.
-		return new Color (
-				Integer.valueOf (colorStr.substring (1, 3), 16),
-				Integer.valueOf (colorStr.substring (3, 5), 16),
-				Integer.valueOf (colorStr.substring (5, 7), 16)
-		);
-	}
+//	private static Color hex2Rgb (String colorStr)
+//	{
+//		// TODO Check colorStr pattern.
+//		return new Color (
+//				Integer.valueOf (colorStr.substring (1, 3), 16),
+//				Integer.valueOf (colorStr.substring (3, 5), 16),
+//				Integer.valueOf (colorStr.substring (5, 7), 16)
+//		);
+//	}
 
-
-	@Override
-	protected void paintComponent (Graphics g)
-	{
-		super.paintComponent (g);
-		Graphics2D g2d = (Graphics2D) g;
-
-		int width = getWidth ();
-		int height = getHeight ();
-
-		Color lowerColor = hex2Rgb ("#e5ffd4");
-		Color upperColor = hex2Rgb ("#d4ffda");
-
-		GradientPaint gp = new GradientPaint (3, 4, lowerColor, 3, height, upperColor);
-
-		g2d.setRenderingHint (RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setPaint (gp);
-		g2d.fillRect (0, 0, width, height);
-	}
+//
+//	@Override
+//	protected void paintComponent (Graphics g)
+//	{
+//		super.paintComponent (g);
+//		Graphics2D g2d = (Graphics2D) g;
+//
+//		int width = getWidth ();
+//		int height = getHeight ();
+//
+//		Color lowerColor = hex2Rgb ("#e5ffd4");
+//		Color upperColor = hex2Rgb ("#d4ffda");
+//
+//		GradientPaint gp = new GradientPaint (3, 4, lowerColor, 3, height, upperColor);
+//
+//		g2d.setRenderingHint (RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//		g2d.setPaint (gp);
+//		g2d.fillRect (0, 0, width, height);
+//	}
 
 
 	private void stylePanels ()

@@ -2,7 +2,7 @@ package MenuGui;
 
 import MainController.MainController;
 import Constants.Constats;
-import MenuGui.Components.ImagedPanel;
+import GUIComponents.ImagedPanel;
 import MenuGui.Components.MenuButton;
 import Tools.FontLoader;
 

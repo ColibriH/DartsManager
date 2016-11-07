@@ -6,7 +6,7 @@ import MatchController.GUI.Components.TableScrollBar;
 import MatchController.MatchController;
 import Constants.Constats;
 import MatchController.Objects.PlayerObject;
-import MenuGui.Components.ImagedPanel;
+import GUIComponents.ImagedPanel;
 import Tools.ImageLoader;
 import Tools.ImageViewport;
 

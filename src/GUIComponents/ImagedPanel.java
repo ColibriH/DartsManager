@@ -1,4 +1,4 @@
-package MenuGui.Components;
+package GUIComponents;
 
 import Constants.Constats;
 import Tools.ImageLoader;

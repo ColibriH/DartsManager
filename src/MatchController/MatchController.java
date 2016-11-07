@@ -148,7 +148,6 @@ public class MatchController
 
 	private void playerGeneratedGroupsGuiFormClose ()
 	{
-		// TODO Create correct handle of form to close form and reuse of form (if need to go back)
 		mPlayerGeneratedGroupsGuiForm.setVisibility (false);
 	}
 
