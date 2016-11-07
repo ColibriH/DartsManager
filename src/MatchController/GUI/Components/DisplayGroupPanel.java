@@ -6,6 +6,7 @@ import Tools.ImageLoader;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -19,16 +20,16 @@ import java.util.ArrayList;
 
 public class DisplayGroupPanel extends JPanel
 {
-	private JPanel mFirstPlayerPanel   = new JPanel ();
-	private JPanel mSecondPlayerPanel  = new JPanel ();
-	private JPanel mVersusPanel        = new JPanel ();
-	private JPanel mPlayingTxtPanel    = new JPanel ();
+	private JPanel mFirstPlayerPanel;
+	private JPanel mSecondPlayerPanel;
+	private JPanel mVersusPanel;
+	private JPanel mPlayingTxtPanel;
 
-	private JLabel mNameLabel          = new JLabel ();
-	private JLabel mSNameLabel         = new JLabel ();
+	private JLabel mNameLabel;
+	private JLabel mSNameLabel;
 
-	private JLabel mPlayingLabel       = new JLabel ("Group to play!");
-	private JLabel vsLabel             = new JLabel ("VS");
+	private JLabel mPlayingLabel;
+	private JLabel vsLabel;
 	private JLabel lArrow;
 	private JLabel rArrow;
 
@@ -74,52 +75,66 @@ public class DisplayGroupPanel extends JPanel
 
 	private void initialization (String fPlayer, String sPlayer)
 	{
-		setMainPanelLayout ();
-		setPanelsLayout ();
-		panelStyling ();
-		labelStyling ();
-		setPlayersNames (fPlayer, sPlayer);
-		buildPanel ();
+		initializeComponents ();
+		buildMainPanel (fPlayer, sPlayer);
+		buildPanels ();
 	}
 
 
-	private void setMainPanelLayout ()
+	private void initializeComponents ()
 	{
-		GroupLayout groupLayout = new GroupLayout (this);
-		this.setLayout (groupLayout);
-
-		groupLayout.setAutoCreateGaps(true);
-		groupLayout.setAutoCreateContainerGaps(true);
-
-		groupLayout.setHorizontalGroup
-		(
-				groupLayout.createSequentialGroup ()
-						.addComponent (mFirstPlayerPanel)
-						.addGroup
-						(
-								groupLayout.createParallelGroup (GroupLayout.Alignment.LEADING)
-								           .addComponent (mPlayingTxtPanel)
-								           .addComponent (mVersusPanel)
-						)
-						.addComponent (mSecondPlayerPanel)
-
-		);
-		groupLayout.setVerticalGroup
-		(
-				groupLayout.createSequentialGroup ()
-						.addComponent (mPlayingTxtPanel)
-						.addGroup
-						(
-								groupLayout.createParallelGroup (GroupLayout.Alignment.BASELINE)
-								          .addComponent (mFirstPlayerPanel)
-								          .addComponent (mVersusPanel)
-								          .addComponent (mSecondPlayerPanel)
-						)
-		);
+		mFirstPlayerPanel   = new JPanel ();
+		mSecondPlayerPanel  = new JPanel ();
+		mVersusPanel        = new JPanel ();
+		mPlayingTxtPanel    = new JPanel ();
+		mNameLabel          = new JLabel ();
+		mSNameLabel         = new JLabel ();
+		mPlayingLabel       = new JLabel ("Group to play!");
+		vsLabel             = new JLabel ("VS");
+		setImages ();
 	}
 
 
-	private void buildPanel ()
+	private void buildMainPanel (String fPlayer, String sPlayer)
+	{
+		GridBagConstraints mPanelGbc = new GridBagConstraints ();
+		this.setLayout (new GridBagLayout ());
+		this.setPreferredSize (new Dimension (100, 150));
+
+		buildPanels ();
+		styleLabels ();
+		stylePanels ();
+		setPlayersNames (fPlayer, sPlayer);
+
+		addComponentToPanel (this, mPlayingTxtPanel,    0, 0, new Insets (0, 2, 0, 2), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (this, mFirstPlayerPanel,   0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (this, mVersusPanel,        0, 2, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (this, mSecondPlayerPanel,  0, 3, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
+	}
+
+
+	private void addComponentToPanel (JPanel parent, Component child, int xPos, int yPos, Insets insets, int ipady,
+	                                  double weightx, double weighty, int gridwidth, Integer anchor, GridBagConstraints gbc, Integer fill)
+	{
+		if (fill != null)
+			gbc.fill    = fill;
+
+		gbc.gridx       = xPos;
+		gbc.gridy       = yPos;
+		gbc.insets      = insets;
+		gbc.ipady       = ipady;
+		gbc.weightx     = weightx;
+		gbc.weighty     = weighty;
+		gbc.gridwidth   = gridwidth;
+
+		if (anchor != null)
+			gbc.anchor  = anchor;
+
+		parent.add (child, gbc);
+	}
+
+
+	private void buildPanels ()
 	{
 		mVersusPanel        .add (lArrow);
 		mPlayingTxtPanel    .add (mPlayingLabel);
@@ -127,15 +142,6 @@ public class DisplayGroupPanel extends JPanel
 		mVersusPanel        .add (rArrow);
 		mFirstPlayerPanel   .add (mNameLabel);
 		mSecondPlayerPanel  .add (mSNameLabel);
-	}
-
-
-	private void setPanelsLayout ()
-	{
-		mVersusPanel        .setLayout (new GridLayout (1, 3, -1, -1));
-		mFirstPlayerPanel   .setLayout (new GridLayout (1, 2, -1, -1));
-		mSecondPlayerPanel  .setLayout (new GridLayout (1, 2, -1, -1));
-		mPlayingTxtPanel    .setLayout (new GridLayout (1, 2, -1, -1));
 	}
 
 
@@ -155,7 +161,7 @@ public class DisplayGroupPanel extends JPanel
 	}
 
 
-	private void labelStyling ()
+	private void styleLabels ()
 	{
 		vsLabel         .setHorizontalAlignment (SwingConstants.CENTER);
 		mPlayingLabel   .setHorizontalAlignment (SwingConstants.CENTER);
@@ -165,8 +171,6 @@ public class DisplayGroupPanel extends JPanel
 
 		mNameLabel  .setBackground (new Color(255, 255, 255, 0));
 		mSNameLabel .setBackground (new Color(255, 255, 255, 0));
-
-		setImages ();
 	}
 
 
@@ -213,7 +217,7 @@ public class DisplayGroupPanel extends JPanel
 	}
 
 
-	private void panelStyling ()
+	private void stylePanels ()
 	{
 		this.setBorder (new EtchedBorder (EtchedBorder.LOWERED));
 
@@ -226,6 +230,11 @@ public class DisplayGroupPanel extends JPanel
 		mSecondPlayerPanel  .setBackground (new Color(255, 255, 255, 0));
 		mVersusPanel        .setBackground (new Color(255, 255, 255, 0));
 		mPlayingTxtPanel    .setBackground (new Color(255, 255, 255, 0));
+
+		mPlayingTxtPanel    .setBorder (new MatteBorder (0, 1, 1, 1, Color.GRAY));
+		mFirstPlayerPanel   .setBorder (new MatteBorder (0, 0, 1, 0, Color.LIGHT_GRAY));
+		mSecondPlayerPanel  .setBorder (new MatteBorder (1, 0, 0, 0, Color.LIGHT_GRAY));
+
 
 		mPlayingTxtPanel.setVisible (false);
 	}

@@ -80,8 +80,6 @@ public class GroupsGui
 		GridBagConstraints mPanelGbc = new GridBagConstraints ();
 		mJPanel.setLayout (new GridBagLayout ());
 		mJPanel.setPreferredSize (new Dimension (Constats.MAIN_WIDTH + 200, Constats.MAIN_HEIGHT + 100));
-		mJPanel.setBackground (Color.BLUE);
-
 
 		controlPanelBuilder ();
 		groupsPanelBuilder ();
@@ -98,6 +96,8 @@ public class GroupsGui
 		mGroupsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		mGroupsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		mGroupsPanel.setLayout (new GridBagLayout ());
+		mGroupsPanel.setBackground (Color.BLACK);
+
 		addGroupsToMainPanel ();
 		setCurrentPlayingGroupText ();
 	}
@@ -193,7 +193,7 @@ public class GroupsGui
 			for (int j = 0; j < nodes.size (); j++)
 			{
 				DisplayGroupPanel dgp = nodes.get (j).getDisplayGroupPanel ();
-				addComponentToPanel (mGroupsPanel, dgp,   dgp.getColumn (), dgp.getRow (), new Insets (0, 0, 0, 0), 0, dgp.getWeightX (), dgp.getWeightY (), 1, GridBagConstraints.NORTHWEST, gbc, GridBagConstraints.HORIZONTAL);
+				addComponentToPanel (mGroupsPanel, dgp,   dgp.getColumn (), dgp.getRow (), new Insets (0, 0, 0, 0), 0, dgp.getWeightX (), dgp.getWeightY (), 1, GridBagConstraints.NORTHWEST, gbc, null);
 			}
 		}
 	}

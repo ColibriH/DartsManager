@@ -31,6 +31,8 @@ public class GroupPanelLines extends JPanel
 		if (mGroupsPanels == null || mGroupsPanels.size () == 0)
 			return;
 
+		g.setColor (Color.white);
+
 		for (int k = mGroupsPanels.size () - 1; k > 0; k--)
 		{
 			ArrayList <GroupsTreeNode> a = mGroupsPanels.get (k);
