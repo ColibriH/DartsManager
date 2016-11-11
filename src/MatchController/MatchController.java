@@ -5,6 +5,8 @@ import GroupsController.GroupsController;
 import MainController.MainController;
 import MatchController.GUI.*;
 import MatchController.GUI.Components.DisplayGroupPanel;
+import MatchController.GUI.PlayersRegistration.PlayersRegistration;
+import MatchController.GUI.TournamentTable.TournamentTable;
 import MatchController.Objects.GroupsTreeNode;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
@@ -21,14 +23,14 @@ import java.util.HashMap;
 
 public class MatchController
 {
-	private GameManagerGuiForm                            mGameManagerGuiForm;
-	private GroupsGui 									  mPlayerGeneratedGroupsGuiForm;
-	private WinnerGuiForm                                 mWinnerGuiForm;
-	private GameController                                mGameController;
-	private GroupsController                              mGroupsController;
+	private PlayersRegistration         mPlayersRegistration;
+	private TournamentTable             mPlayerGeneratedGroupsGuiForm;
+	private WinnerGuiForm               mWinnerGuiForm;
+	private GameController              mGameController;
+	private GroupsController            mGroupsController;
 
-	private ArrayList <PlayerObject>                      mPlayerList;
-	private Integer                                       mPlayersNumberInGroup;
+	private ArrayList <PlayerObject>    mPlayerList;
+	private Integer                     mPlayersNumberInGroup;
 
 
 	public MatchController ()
@@ -73,7 +75,7 @@ public class MatchController
 //		mPlayerList.add(new PlayerObject("21", 21));
 
 		whetherToKeepOldPlayerList ();
-		mGameManagerGuiForm = new GameManagerGuiForm (this);
+		mPlayersRegistration = new PlayersRegistration (this);
 	}
 
 
@@ -141,8 +143,8 @@ public class MatchController
 
 	private void matchManagerGuiFormClose ()
 	{
-		mGameManagerGuiForm.destroy ();
-		mGameManagerGuiForm = null;
+		mPlayersRegistration.destroy ();
+		mPlayersRegistration = null;
 	}
 
 
@@ -175,7 +177,7 @@ public class MatchController
 
 	private void displayGameGroups ()
 	{
-		mPlayerGeneratedGroupsGuiForm = new GroupsGui (this);
+		mPlayerGeneratedGroupsGuiForm = new TournamentTable (this);
 	}
 
 
@@ -229,7 +231,7 @@ public class MatchController
 
 	private void setNextPanelPlayingText ()
 	{
-		mPlayerGeneratedGroupsGuiForm.displayWinnerPanelInGroup ();   // TODO Rename to moveWinnerToNextStage
+		mPlayerGeneratedGroupsGuiForm.displayCurrentPlayingGroupText ();
 		mPlayerGeneratedGroupsGuiForm.setVisibility (true);
 	}
 
@@ -260,8 +262,8 @@ public class MatchController
 
 	public void openMenuGuiForm ()
 	{
-		mGameManagerGuiForm.destroy ();
-		mGameManagerGuiForm = null;
+		mPlayersRegistration.destroy ();
+		mPlayersRegistration = null;
 		MainController.openMenuGui ();
 	}
 
@@ -270,7 +272,7 @@ public class MatchController
 	{
 		mPlayerGeneratedGroupsGuiForm.destroy ();
 		mPlayerGeneratedGroupsGuiForm = null;
-		mGameManagerGuiForm = new GameManagerGuiForm (this);
+		mPlayersRegistration = new PlayersRegistration (this);
 	}
 
 	public ArrayList<DisplayGroupPanel> getAllMatchGroupsPanels ()

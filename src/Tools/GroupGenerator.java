@@ -7,9 +7,6 @@ import java.util.*;
 /**
  * Created by vladislavs on 06.09.2016..
  */
-
-// TODO May be need Refactor - Check!
-
 public class GroupGenerator
 {
 	public static HashMap <Integer, ArrayList <PlayerObject>> generateRandomGroups (Integer playersNumberInGroup, ArrayList <PlayerObject> playerList)
@@ -21,13 +18,13 @@ public class GroupGenerator
 
 		HashMap <Integer, ArrayList <PlayerObject>> generatedGroupMap = new HashMap <> ();
 		for (int i = 0; i < groupCount; i++)
-			generatedGroupMap.put (i, getOneCreatedGroup (playersNumberInGroup, playerList, getShuffledListOfPlayerObject (playerList)));
+			generatedGroupMap.put (i, getOneCreatedGroup (playersNumberInGroup, getShuffledListOfPlayerObject (playerList)));
 
 		return generatedGroupMap;
 	}
 
 
-	private static ArrayList <PlayerObject> getOneCreatedGroup (Integer maxPlayerInGroup, ArrayList <PlayerObject> playerList, List <PlayerObject> shuffledList)
+	private static ArrayList <PlayerObject> getOneCreatedGroup (Integer maxPlayerInGroup, List <PlayerObject> shuffledList)
 	{
 		ArrayList <PlayerObject> playersGroupValue = new ArrayList <> ();
 
@@ -78,12 +75,19 @@ public class GroupGenerator
 	}
 
 
-	private static PlayerObject findPlayerObject (ArrayList<PlayerObject> playerList, Integer searchedId)   // TODO Handle null exception!!!
+	private static PlayerObject findPlayerObject (ArrayList<PlayerObject> playerList, Integer searchedId)
 	{
-		for (PlayerObject player : playerList)
-			if (player.mId.equals (searchedId))
-				return player;
+		PlayerObject foundPlayer = null;
 
-		return null;
+		for (PlayerObject player : playerList)
+		{
+			if (player.mId.equals (searchedId))
+			{
+				foundPlayer = player;
+				break;
+			}
+		}
+
+		return foundPlayer;
 	}
 }

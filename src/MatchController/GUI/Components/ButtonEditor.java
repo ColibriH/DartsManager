@@ -1,7 +1,7 @@
 package MatchController.GUI.Components;
 
 import Constants.Constats;
-import MatchController.GUI.GameManagerGuiForm;
+import MatchController.GUI.PlayersRegistration.PlayersRegistration;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,13 +20,13 @@ public class ButtonEditor extends DefaultCellEditor
 	private String      label;
 	private boolean     isPushed;
 
-	private GameManagerGuiForm mGameManagerGuiForm;
+	private PlayersRegistration mPlayersRegistration;
 
-	public ButtonEditor (GameManagerGuiForm gameManagerGuiForm, JCheckBox checkBox)
+	public ButtonEditor (PlayersRegistration playersRegistration, JCheckBox checkBox)
 	{
 		super (checkBox);
 
-		mGameManagerGuiForm = gameManagerGuiForm;
+		mPlayersRegistration = playersRegistration;
 
 		button = new JButton ();
 		button.setOpaque (true);
@@ -55,9 +55,9 @@ public class ButtonEditor extends DefaultCellEditor
 		if (isPushed)
 		{
 			if (label.equals (Constats.DELETE_BTN_ID))
-				mGameManagerGuiForm.deleteNewPlayerFromTable ();
+				mPlayersRegistration.deleteNewPlayerFromTable ();
 			else if (label.equals (Constats.EDIT_BTN_ID))
-				mGameManagerGuiForm.editNewPlayerInTable ();
+				mPlayersRegistration.editNewPlayerInTable ();
 		}
 
 		isPushed = false;

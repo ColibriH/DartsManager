@@ -23,9 +23,9 @@ public class MenuGui
 
 	private JFrame                  mJFrame;
 	private JPanel                  mCtrBtnPanel;
-	private ImagedPanel mJPanel;
+	private ImagedPanel             mJPanel;
 
-	private MenuButton tournamentButton;
+	private MenuButton              tournamentButton;
 	private MenuButton              exitButton;
 	private MenuButton              optionsButton;
 	private MenuButton              eachVsEachButton;
@@ -122,23 +122,12 @@ public class MenuGui
 
 	private void addComponentsListeners ()
 	{
-		tournamentButton.addActionListener (new ActionListener ()
-		{
-			@Override
-			public void actionPerformed (ActionEvent e)
-			{
-				MainController.startMatch ();
-				destroy ();
-			}
-		});
+		tournamentButton.addActionListener (e ->
+        {
+            MainController.startMatch ();
+            destroy ();
+        });
 
-		exitButton.addActionListener (new ActionListener ()
-		{
-			@Override
-			public void actionPerformed (ActionEvent e)
-			{
-				System.exit (1);
-			}
-		});
+		exitButton.addActionListener (e -> System.exit (1));
 	}
 }
