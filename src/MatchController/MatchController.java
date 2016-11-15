@@ -3,7 +3,7 @@ package MatchController;
 import GameController.GameController;
 import GroupsController.GroupsController;
 import MainController.MainController;
-import MatchController.Gui.Components.DisplayGroupPanel;
+import MatchController.Gui.Components.TournamentTableGroupPanel;
 import MatchController.Gui.PlayersRegistration.PlayersRegistration;
 import MatchController.Gui.TournamentTable.TournamentTable;
 import MatchController.Gui.WinnerFrame.WinnerFrame;
@@ -275,13 +275,13 @@ public class MatchController
 		mPlayersRegistration = new PlayersRegistration (this);
 	}
 
-	public ArrayList<DisplayGroupPanel> getAllMatchGroupsPanels ()
+	public ArrayList<TournamentTableGroupPanel> getAllMatchGroupsPanels ()
 	{
 		return mGroupsController.getAllMatchGroupsPanels ();
 	}
 
 
-	public DisplayGroupPanel getCurrentPlayingGroupPanel ()
+	public TournamentTableGroupPanel getCurrentPlayingGroupPanel ()
 	{
 		return mGroupsController.getCurrentPlayingGroupPanel ();
 	}

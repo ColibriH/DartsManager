@@ -14,7 +14,6 @@ public abstract class DartsGuiFormBase
 	protected abstract void addComponentsListener   ();
 	protected abstract void buildMainPanel          ();
 
-
 	private         JFrame          mJFrame;
 	private         JPanel          mJPanel;
 	private         boolean         mIsMainFrameResizable;

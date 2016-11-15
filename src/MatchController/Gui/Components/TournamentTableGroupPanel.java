@@ -18,7 +18,7 @@ import java.util.ArrayList;
 // TODO set preferred size to mPanel
 // TODO refactor
 
-public class DisplayGroupPanel extends JPanel
+public class TournamentTableGroupPanel extends JPanel
 {
 	private JPanel mFirstPlayerPanel;
 	private JPanel mSecondPlayerPanel;
@@ -33,19 +33,19 @@ public class DisplayGroupPanel extends JPanel
 	private JLabel lArrow;
 	private JLabel rArrow;
 
-	private int mRow;
-	private int mColumn;
-	private double mWeightX;
-	private double mWeightY;
+	private int     mRow;
+	private int     mColumn;
+	private double  mWeightX;
+	private double  mWeightY;
 
 
-	public DisplayGroupPanel (ArrayList<PlayerObject> mPlayerList)
+	public TournamentTableGroupPanel (ArrayList<PlayerObject> mPlayerList)
 	{
 		initialization (mPlayerList.get (0).mName, mPlayerList.get (1).mName);
 	}
 
 
-	public DisplayGroupPanel (ArrayList<PlayerObject> mPlayerList, int row, int column, double weightX, double weightY)
+	public TournamentTableGroupPanel (ArrayList<PlayerObject> mPlayerList, int row, int column, double weightX, double weightY)
 	{
 		this (mPlayerList);
 
@@ -56,13 +56,13 @@ public class DisplayGroupPanel extends JPanel
 	}
 
 
-	public DisplayGroupPanel ()
+	public TournamentTableGroupPanel ()
 	{
 		initialization ("?", "?");
 	}
 
 
-	public DisplayGroupPanel (int row, int column, double weightX, double weightY)
+	public TournamentTableGroupPanel (int row, int column, double weightX, double weightY)
 	{
 		this ();
 
@@ -192,37 +192,6 @@ public class DisplayGroupPanel extends JPanel
 		Icon rightIcon = new ImageIcon(rightImage);
 		rArrow = new JLabel(rightIcon);
 	}
-
-
-//	private static Color hex2Rgb (String colorStr)
-//	{
-//		// TODO Check colorStr pattern.
-//		return new Color (
-//				Integer.valueOf (colorStr.substring (1, 3), 16),
-//				Integer.valueOf (colorStr.substring (3, 5), 16),
-//				Integer.valueOf (colorStr.substring (5, 7), 16)
-//		);
-//	}
-
-//
-//	@Override
-//	protected void paintComponent (Graphics g)
-//	{
-//		super.paintComponent (g);
-//		Graphics2D g2d = (Graphics2D) g;
-//
-//		int width = getWidth ();
-//		int height = getHeight ();
-//
-//		Color lowerColor = hex2Rgb ("#e5ffd4");
-//		Color upperColor = hex2Rgb ("#d4ffda");
-//
-//		GradientPaint gp = new GradientPaint (3, 4, lowerColor, 3, height, upperColor);
-//
-//		g2d.setRenderingHint (RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-//		g2d.setPaint (gp);
-//		g2d.fillRect (0, 0, width, height);
-//	}
 
 
 	private void stylePanels ()

@@ -5,11 +5,13 @@ import MainController.MainController;
  */
 
 
+// TODO bug compiling flag to create tests =)
+
+// TODO some null image to prevent null for imageloader
+
+// TODO set getters and setters
+
 // TODO Finish Styling // Recreate group display for tournament
-
-// TODO Create Interface for Gui object to unify all
-
-// TODO Separate Gui and logic in 2 files under package
 
 // TODO Test for 3 people, 6, 9, 12
 
@@ -18,6 +20,8 @@ import MainController.MainController;
 // TODO In game menu
 
 // TODO Create documentation
+
+// TODO How to style playing forms.... and use abstract class
 
 // Additional features
 // ==================================

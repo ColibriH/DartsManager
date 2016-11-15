@@ -2,7 +2,7 @@ package MatchController.Gui.TournamentTable;
 
 import BaseAbstractClasses.DartsGuiFormBase;
 import GuiComponents.ImagedPanel;
-import MatchController.Gui.Components.DisplayGroupPanel;
+import MatchController.Gui.Components.TournamentTableGroupPanel;
 import MatchController.Gui.Components.GroupPanelLines;
 import MatchController.MatchController;
 import MatchController.Objects.GroupsTreeNode;
@@ -127,7 +127,7 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 			ArrayList <GroupsTreeNode> nodes = matchGroups.get (i);
 			for (GroupsTreeNode node : nodes)
 			{
-				DisplayGroupPanel dgp = node.getDisplayGroupPanel ();
+				TournamentTableGroupPanel dgp = node.getDisplayGroupPanel ();
 				addComponentToPanel (mGroupsPanel, dgp, dgp.getColumn (), dgp.getRow (), new Insets (0, 0, 0, 0), 0, dgp.getWeightX (), dgp.getWeightY (), 1, GridBagConstraints.NORTHWEST, gbc, null);
 			}
 		}

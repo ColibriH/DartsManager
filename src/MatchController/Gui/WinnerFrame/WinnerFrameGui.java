@@ -41,7 +41,7 @@ abstract class WinnerFrameGui extends DartsGuiFormBase
 	{
 		mWinnerPanel        = new JPanel ();
 		mControlPanel       = new JPanel ();
-		mMenuButton         = new JButton ("MainController/Menu");
+		mMenuButton         = new JButton ("Menu");
 		mExitButton         = new JButton ("Exit");
 		mWinnerName         = new JLabel ();
 	}

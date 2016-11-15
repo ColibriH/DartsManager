@@ -12,6 +12,9 @@ import java.util.Vector;
 /**
  * Created by vladislavs on 11.11.2016..
  */
+
+// TODO refactor
+
 public class PlayersRegistration extends PlayersRegistrationGui
 {
 	private DefaultTableModel       mDefaultTableModel;

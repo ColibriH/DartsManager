@@ -1,6 +1,6 @@
 package MatchController.Gui.TournamentTable;
 
-import MatchController.Gui.Components.DisplayGroupPanel;
+import MatchController.Gui.Components.TournamentTableGroupPanel;
 import MatchController.MatchController;
 
 import java.util.ArrayList;
@@ -8,6 +8,9 @@ import java.util.ArrayList;
 /**
  * Created by vladislavs on 11.11.2016..
  */
+
+// TODO Refactor
+
 public class TournamentTable extends TournamentTableGui
 {
 	public TournamentTable (MatchController matchController)
@@ -24,7 +27,7 @@ public class TournamentTable extends TournamentTableGui
 	}
 
 
-	private void setCurrentPlayingGroupText (DisplayGroupPanel panel, boolean state)
+	private void setCurrentPlayingGroupText (TournamentTableGroupPanel panel, boolean state)
 	{
 		try
 		{
@@ -39,8 +42,8 @@ public class TournamentTable extends TournamentTableGui
 
 	private void hideCurrentPlayingGroupPanelForAllGroups ()
 	{
-		ArrayList<DisplayGroupPanel> allMatchGroupsPanels = getMatchController ().getAllMatchGroupsPanels ();
-		for (DisplayGroupPanel allMatchGroupsPanel : allMatchGroupsPanels)
+		ArrayList<TournamentTableGroupPanel> allMatchGroupsPanels = getMatchController ().getAllMatchGroupsPanels ();
+		for (TournamentTableGroupPanel allMatchGroupsPanel : allMatchGroupsPanels)
 			setCurrentPlayingGroupText (allMatchGroupsPanel, false);
 	}
 

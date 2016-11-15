@@ -9,8 +9,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-// TODO Add pressed pic
-
 /**
  * Created by vladislavs on 30.09.2016..
  */
@@ -20,6 +18,7 @@ public class MenuButton extends JButton
 	private int mHeight;
 	private int mFontSize;
 
+
 	public MenuButton (int width, int height)
 	{
 		mWidth  = width;
@@ -27,6 +26,7 @@ public class MenuButton extends JButton
 
 		initialize ();
 	}
+
 
 	public MenuButton (String txt, int width, int height)
 	{
@@ -61,7 +61,7 @@ public class MenuButton extends JButton
 		initializeListeners ();
 	}
 
-	// TODO Setter getter
+
 	private void initializeListeners ()
 	{
 		addMouseListener (new MouseAdapter ()

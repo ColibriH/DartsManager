@@ -1,6 +1,6 @@
 package GroupsController;
 
-import MatchController.Gui.Components.DisplayGroupPanel;
+import MatchController.Gui.Components.TournamentTableGroupPanel;
 import MatchController.Objects.GroupsTreeNode;
 import MatchController.Objects.Stages;
 import MatchController.Objects.PlayerObject;
@@ -12,7 +12,7 @@ import java.util.HashMap;
  * Created by vladislavs on 03.11.2016..
  */
 
-//TODO Refactor
+// TODO Refactor
 // TODO Create Level Links in nodes to rotate stage groups without find alg.
 
 public class GroupsController
@@ -62,7 +62,7 @@ public class GroupsController
 			if (stageSequenceNumber == 0)
 			{
 				ArrayList <PlayerObject> playersInGroup = generatedMathGroups.get (j);      // Get (i) - Get players in group from generatedMathGroups
-				groupNode = new GroupsTreeNode (new DisplayGroupPanel (playersInGroup, row, stageSequenceNumber, weightX, weightY), playersInGroup);
+				groupNode = new GroupsTreeNode (new TournamentTableGroupPanel (playersInGroup, row, stageSequenceNumber, weightX, weightY), playersInGroup);
 				linkPanelsWithPlayerObject (playersInGroup, groupNode.getDisplayGroupPanel ());
 			}
 			else
@@ -73,7 +73,7 @@ public class GroupsController
 					weightY = 0.5;
 				}
 
-				groupNode = new GroupsTreeNode (new DisplayGroupPanel (row, stageSequenceNumber, weightX, weightY));
+				groupNode = new GroupsTreeNode (new TournamentTableGroupPanel (row, stageSequenceNumber, weightX, weightY));
 			}
 
 			if (mMatchGroups.get (stageSequenceNumber) == null)       // TODO get (stageSequenceNumber) as sep. variable?
@@ -87,10 +87,10 @@ public class GroupsController
 	}
 
 
-	private void linkPanelsWithPlayerObject (ArrayList <PlayerObject> playersInGroup, DisplayGroupPanel displayGroupPanel)
+	private void linkPanelsWithPlayerObject (ArrayList <PlayerObject> playersInGroup, TournamentTableGroupPanel tournamentTableGroupPanel)
 	{
 		for (PlayerObject player : playersInGroup)
-			player.mDisplayGroupPanel = displayGroupPanel;
+			player.mTournamentTableGroupPanel = tournamentTableGroupPanel;
 	}
 
 
@@ -147,9 +147,9 @@ public class GroupsController
 	}
 
 
-	public ArrayList <DisplayGroupPanel> getAllMatchGroupsPanels ()
+	public ArrayList <TournamentTableGroupPanel> getAllMatchGroupsPanels ()
 	{
-		ArrayList <DisplayGroupPanel> allMatchGroupsPanels = new ArrayList <> ();
+		ArrayList <TournamentTableGroupPanel> allMatchGroupsPanels = new ArrayList <> ();
 		for (int i = 0; i < mMatchGroups.size (); i++)
 		{
 			ArrayList <GroupsTreeNode> nodes = mMatchGroups.get (i);
@@ -163,7 +163,7 @@ public class GroupsController
 	}
 
 
-	public DisplayGroupPanel getCurrentPlayingGroupPanel ()
+	public TournamentTableGroupPanel getCurrentPlayingGroupPanel ()
 	{
 		return mCurrentPlayingGroup.getDisplayGroupPanel ();
 	}

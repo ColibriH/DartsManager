@@ -1,6 +1,6 @@
 package MatchController.Objects;
 
-import MatchController.Gui.Components.DisplayGroupPanel;
+import MatchController.Gui.Components.TournamentTableGroupPanel;
 
 import javax.swing.*;
 
@@ -14,7 +14,7 @@ public class PlayerObject
 {
 	public String               mName;
 	public Integer              mId;
-	public DisplayGroupPanel    mDisplayGroupPanel;
+	public TournamentTableGroupPanel mTournamentTableGroupPanel;
 	public JLabel               mTurnArrow;
 
 	public Integer              mLeg       = 0;
@@ -38,15 +38,15 @@ public class PlayerObject
 	}
 
 
-	public DisplayGroupPanel getDisplayGroupPanel ()
+	public TournamentTableGroupPanel getDisplayGroupPanel ()
 	{
-		return mDisplayGroupPanel;
+		return mTournamentTableGroupPanel;
 	}
 
 
-	public void setDisplayGroupPanel (DisplayGroupPanel displayGroupPanel)
+	public void setDisplayGroupPanel (TournamentTableGroupPanel tournamentTableGroupPanel)
 	{
-		mDisplayGroupPanel = displayGroupPanel;
+		mTournamentTableGroupPanel = tournamentTableGroupPanel;
 	}
 
 

@@ -5,23 +5,21 @@ import java.util.HashMap;
 /**
  * Created by vladislavs on 01.11.2016..
  */
-
-// TODO Refactor
-
 public class Stages
 {
-	public HashMap<Integer, Integer> mGroupCountOnStages = new HashMap <> ();
+	public HashMap <Integer, Integer> mGroupCountOnStages = new HashMap <> ();
 
 	private int mStageCount = 0;
 	private int mEvenLvl    = 0;
 
+
 	public Stages (int groupCnt)
 	{
-		addLevel (mStageCount, groupCnt);
+		addStage (mStageCount, groupCnt);
 		initialization (groupCnt);
 	}
 
-
+	// TODO Refactor
 	private void initialization (int groupCnt)
 	{
 		int returnNumber = groupCnt;
@@ -31,7 +29,7 @@ public class Stages
 		if (isEvenNumber (groupCnt))
 		{
 			returnNumber = groupCnt / 2;
-			addLevel (mStageCount, returnNumber);
+			addStage (mStageCount, returnNumber);
 		}
 		else
 		{
@@ -39,7 +37,7 @@ public class Stages
 			{
 				if (mEvenLvl != 0)
 				{
-					addLevel (mStageCount, mEvenLvl);
+					addStage (mStageCount, mEvenLvl);
 					return;
 				}
 
@@ -52,7 +50,7 @@ public class Stages
 				if (mEvenLvl != 0)
 					returnNumber += mEvenLvl;
 
-				addLevel (mStageCount, returnNumber);
+				addStage (mStageCount, returnNumber);
 
 				returnNumber -= mEvenLvl;
 				mEvenLvl = 0;
@@ -66,7 +64,7 @@ public class Stages
 	}
 
 
-	private void addLevel (int lvlNumber, int groupCnt)
+	private void addStage (int lvlNumber, int groupCnt)
 	{
 		mGroupCountOnStages.put (lvlNumber, groupCnt);
 	}

@@ -1,6 +1,6 @@
 package MatchController.Objects;
 
-import MatchController.Gui.Components.DisplayGroupPanel;
+import MatchController.Gui.Components.TournamentTableGroupPanel;
 
 import java.util.ArrayList;
 
@@ -11,18 +11,19 @@ public class GroupsTreeNode
 {
 	private ArrayList <GroupsTreeNode> mChildrens;
 	private ArrayList <PlayerObject> mPlayerObjects;
-	private DisplayGroupPanel mDisplayGroupPanel;
+	private TournamentTableGroupPanel mTournamentTableGroupPanel;
 	private GroupsTreeNode mParent;
 
-	public GroupsTreeNode (DisplayGroupPanel group)
+
+	public GroupsTreeNode (TournamentTableGroupPanel group)
 	{
-		mPlayerObjects  = new ArrayList <> ();
-		mChildrens      = new ArrayList <> ();
-		mDisplayGroupPanel = group;
+		mPlayerObjects      = new ArrayList <> ();
+		mChildrens          = new ArrayList <> ();
+		mTournamentTableGroupPanel = group;
 	}
 
 
-	public GroupsTreeNode (DisplayGroupPanel group, ArrayList <PlayerObject> playersInGroup)
+	public GroupsTreeNode (TournamentTableGroupPanel group, ArrayList <PlayerObject> playersInGroup)
 	{
 		this (group);
 		mPlayerObjects = new ArrayList <> (playersInGroup);
@@ -41,9 +42,9 @@ public class GroupsTreeNode
 	}
 
 
-	public DisplayGroupPanel getDisplayGroupPanel ()
+	public TournamentTableGroupPanel getDisplayGroupPanel ()
 	{
-		return mDisplayGroupPanel;
+		return mTournamentTableGroupPanel;
 	}
 
 

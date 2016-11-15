@@ -3,7 +3,6 @@ package Tools;
 import java.awt.*;
 import java.io.*;
 
-
 /**
  * Created by vladislavs on 14.09.2016..
  */

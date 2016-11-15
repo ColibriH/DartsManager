@@ -10,9 +10,6 @@ import java.util.HashMap;
 /**
  * Created by Prud on 10/31/2016.
  */
-
-// TODO Refactor
-
 public class GroupPanelLines extends JPanel
 {
 	private HashMap <Integer, ArrayList <GroupsTreeNode>> mGroupsPanels;
@@ -24,7 +21,7 @@ public class GroupPanelLines extends JPanel
 			mGroupsPanels = new HashMap <> (groupsPanels);
 	}
 
-
+	// TODO Refactor
 	@Override
 	public void paintComponent (Graphics g)
 	{
@@ -42,8 +39,8 @@ public class GroupPanelLines extends JPanel
 
 				for (int j = 0; j < node.getChildrens ().size (); j++)
 				{
-					DisplayGroupPanel curLvlPanel = node.getChildrens ().get (j).getDisplayGroupPanel ();
-					DisplayGroupPanel nextLvlPanel = node.getDisplayGroupPanel ();
+					TournamentTableGroupPanel curLvlPanel = node.getChildrens ().get (j).getDisplayGroupPanel ();
+					TournamentTableGroupPanel nextLvlPanel = node.getDisplayGroupPanel ();
 
 					Point a1p1 = new Point (curLvlPanel.getX () + curLvlPanel.getWidth (), curLvlPanel.getY () + (curLvlPanel.getHeight () / 2));
 					Point a1p2 = new Point (nextLvlPanel.getX () + nextLvlPanel.getWidth () / 2, curLvlPanel.getY () + (curLvlPanel.getHeight () / 2));

@@ -1,8 +1,5 @@
 package GuiComponents;
 
-import Constants.Constats;
-import Tools.ImageLoader;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,12 +9,6 @@ import java.awt.*;
 public class ImagedPanel extends JPanel
 {
 	private	Image mBg;
-
-	// TODO remove this constructor
-	public ImagedPanel ()
-	{
-		mBg = ImageLoader.getImage (Constats.MENU_BG_PIC);
-	}
 
 
 	public ImagedPanel (Image bg)
