@@ -1,6 +1,7 @@
 package MatchController.Gui.PlayersRegistration;
 
 import BaseAbstractClasses.DartsGuiFormBase;
+import GuiComponents.MenuButton;
 import MatchController.Gui.Components.ButtonEditor;
 import MatchController.Gui.Components.ButtonRenderer;
 import MatchController.Gui.Components.TableScrollBar;
@@ -85,9 +86,9 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 		mPlayerTable            = new JTable ();
 		mPlayerTableJScrollPane = new JScrollPane (mPlayerTable);
 
-		mPlayerAddBtn           = new JButton ();
-		mMatchStartBtn          = new JButton ();
-		mBackButton             = new JButton ();
+		mPlayerAddBtn           = new MenuButton ("Add player");
+		mMatchStartBtn          = new MenuButton ("Start Match");
+		mBackButton             = new MenuButton ("Back");
 
 		mPlayerInGroupCntLabel  = new JLabel ("Players number in group");
 		mPlayerNameLabel        = new JLabel ("Name");
@@ -192,9 +193,9 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField, 0, 2, new Insets (0,   5, 10, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerNameLabel,        0, 3, new Insets (15,  5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 4, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc, GridBagConstraints.HORIZONTAL);
-		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, GridBagConstraints.HORIZONTAL);
-		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (100, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc, null/*GridBagConstraints.HORIZONTAL*/);
+		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null/*GridBagConstraints.HORIZONTAL*/);
+		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (100, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null/*GridBagConstraints.HORIZONTAL*/);
 	}
 
 
@@ -223,15 +224,18 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 		mPlayerNameTxtField.setForeground (Color.WHITE);
 		mPlayerNameTxtField.setOpaque (false);
 
-		mPlayerAddBtn.setText ("Add player");
-		mPlayerAddBtn.setPreferredSize (new Dimension (32, 25));
-		mPlayerAddBtn.setBackground (new Color (255, 255, 255, 0));
+		mPlayerAddBtn.setPreferredSize (new Dimension (150, 25));
+		mBackButton.setPreferredSize (new Dimension (150, 25));
+		mMatchStartBtn.setPreferredSize (new Dimension (150, 25));
 
-		mBackButton.setText ("Back");
-		mBackButton.setPreferredSize (new Dimension (25, 25));
+		mPlayerAddBtn.setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC_150x25)));
+		mPlayerAddBtn.setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC_150x25)));
 
-		mMatchStartBtn.setText ("Start Match");
-		mMatchStartBtn.setPreferredSize (new Dimension (25, 25));
+		mBackButton.setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC_150x25)));
+		mBackButton.setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC_150x25)));
+
+		mMatchStartBtn.setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC_150x25)));
+		mMatchStartBtn.setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC_150x25)));
 	}
 
 

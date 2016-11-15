@@ -38,6 +38,13 @@ public class MenuButton extends JButton
 	}
 
 
+	public MenuButton (String text)
+	{
+		setText (text);
+		initialize ();
+	}
+
+
 	private void initialize ()
 	{
 		setPreferredSize (new Dimension (mWidth, mHeight));

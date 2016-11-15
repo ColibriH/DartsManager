@@ -2,6 +2,8 @@ package MatchController.Gui.TournamentTable;
 
 import BaseAbstractClasses.DartsGuiFormBase;
 import GuiComponents.ImagedPanel;
+import GuiComponents.MenuButton;
+import MatchController.Gui.Components.TableScrollBar;
 import MatchController.Gui.Components.TournamentTableGroupPanel;
 import MatchController.Gui.Components.GroupPanelLines;
 import MatchController.MatchController;
@@ -18,10 +20,7 @@ import java.util.HashMap;
  * Created by vladislavs on 07.10.2016..
  */
 
-// TODO Change group design
-// TODO Set some BG
-// TODO Style buttons
-
+// TODO replace bg with moved image along scroll
 // TODO Refactor
 
 abstract class TournamentTableGui extends DartsGuiFormBase
@@ -54,8 +53,8 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 		mGlassPanel 		= new GroupPanelLines (null);
 		mGroupsScrollPane   = new JScrollPane (mGroupsPanelContent, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-		mGameStartBtn   	= new JButton ("Start Game");
-		mBackBtn        	= new JButton ("Back");
+		mGameStartBtn   	= new MenuButton ("Start Game");
+		mBackBtn        	= new MenuButton ("Back");
 	}
 
 
@@ -86,6 +85,9 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 	{
 		GridBagConstraints gbc = new GridBagConstraints ();
 		mGroupsScrollPane.getVerticalScrollBar ().setUnitIncrement (20);
+		mGroupsScrollPane.getVerticalScrollBar().setUI (new TableScrollBar ());
+		mGroupsScrollPane.getVerticalScrollBar().setBackground (Color.GRAY);
+		mGroupsScrollPane.getVerticalScrollBar().setPreferredSize (new Dimension(10, 0));
 		mGroupsPanelContent.setLayout (new GridBagLayout ());
 		mGroupsPanel.setLayout (new GridBagLayout ());
 		mGroupsPanel.setBackground (Color.BLACK);
@@ -103,6 +105,7 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 	{
 		GridBagConstraints mControlPanelGbc = new GridBagConstraints ();
 		mControlJPanel.setLayout (new GridBagLayout ());
+		mControlJPanel.setBackground (Color.BLACK);
 		controlPanelComponentModification ();
 
 		addComponentToPanel (mControlJPanel, mBackBtn,      0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);

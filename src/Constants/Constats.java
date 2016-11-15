@@ -38,6 +38,9 @@ public class Constats
 	public static final String WINNER_PIC                   = PIC_FOLDER_FULL_PATH  + "winner.png";
 	public static final String BTN_TEXTURE_PIC              = PIC_FOLDER_FULL_PATH  + "chalk_borders.png";
 	public static final String BTN_FILLER_PIC               = PIC_FOLDER_FULL_PATH  + "chalk_filler.png";
+	public static final String BTN_TEXTURE_PIC_150x25       = PIC_FOLDER_FULL_PATH  + "chalk_borders_150x25.png";
+	public static final String BTN_FILLER_PIC_150x25        = PIC_FOLDER_FULL_PATH  + "chalk_filler_150x25.png";
+
 	public static final String MENU_BG_PIC                  = PIC_FOLDER_FULL_PATH  + "menuBg.jpg";
 	public static final String OPEN_BOARD_PIC               = PIC_FOLDER_FULL_PATH  + "matchmenu-bg.jpg";
 	public static final String RIGHT_BOARD_PIC              = PIC_FOLDER_FULL_PATH  + "right_board.png";

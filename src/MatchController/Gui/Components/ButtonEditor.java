@@ -9,9 +9,6 @@ import java.awt.*;
 /**
  * Created by vladislavs on 12.09.2016..
  */
-
-// TODO Refactor
-
 public class ButtonEditor extends DefaultCellEditor
 {
 	private JButton     button;
@@ -28,7 +25,9 @@ public class ButtonEditor extends DefaultCellEditor
 		mPlayersRegistration = playersRegistration;
 
 		button = new JButton ();
-		button.setOpaque (true);
+		button.setBorderPainted (false);
+		button.setContentAreaFilled (false);
+		button.setFocusPainted (false);
 		button.addActionListener (e -> fireEditingStopped ());
 	}
 

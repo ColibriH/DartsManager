@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 // TODO set better style
 // TODO set preferred size to mPanel
-// TODO refactor
+// TODO refactor code and methods construction
 
 public class TournamentTableGroupPanel extends JPanel
 {
@@ -99,7 +99,6 @@ public class TournamentTableGroupPanel extends JPanel
 	{
 		GridBagConstraints mPanelGbc = new GridBagConstraints ();
 		this.setLayout (new GridBagLayout ());
-		this.setPreferredSize (new Dimension (100, 150));
 		this.setBackground (new Color (255, 255, 255, 0));
 		this.setOpaque (false);
 		this.setForeground (Color.WHITE);

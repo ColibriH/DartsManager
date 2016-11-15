@@ -4,16 +4,13 @@ import Constants.Constats;
 import Tools.ImageLoader;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
 /**
  * Created by vladislavs on 12.09.2016..
  */
-
-// TODO Refactor
-// TODO TABLE BTn Style
-
 public class ButtonRenderer extends JButton implements TableCellRenderer
 {
 
@@ -32,8 +29,7 @@ public class ButtonRenderer extends JButton implements TableCellRenderer
 			pathToImage = Constats.EDIT_PIC;
 
 		setIcon (new ImageIcon (ImageLoader.getImage (pathToImage)));
-		setBorderPainted(false);
-		setBackground(new Color(255, 255, 255, 0));
+		setPressedIcon (new ImageIcon (ImageLoader.getImage (pathToImage)));
 		setName (value.toString ());
 
 		return this;
