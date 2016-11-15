@@ -32,7 +32,7 @@ abstract class WinnerFrameGui extends DartsGuiFormBase
 	{
 		super (matchController);
 		mWinner = winner;
-		mWinnerName.setText (mWinner.mName);
+		mWinnerName.setText (mWinner.getName());
 	}
 
 

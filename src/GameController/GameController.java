@@ -75,8 +75,8 @@ public class GameController
 
 	private void updatePlayerScore (int newEarnedScores)
 	{
-		mCurrentPlayer.mPrevScore = mCurrentPlayer.mScore;
-		mCurrentPlayer.mScore -= newEarnedScores;
+		mCurrentPlayer.setPrevScore (mCurrentPlayer.getScore ());
+		mCurrentPlayer.setScore (mCurrentPlayer.getScore () - newEarnedScores);
 
 		checkAndChangeScoreBasedOnRules ();
 	}
@@ -84,8 +84,8 @@ public class GameController
 
 	private void checkAndChangeScoreBasedOnRules ()
 	{
-		if (isScoreNegativeOrNumberOne (mCurrentPlayer.mScore))
-			mCurrentPlayer.mScore = mCurrentPlayer.mPrevScore;
+		if (isScoreNegativeOrNumberOne (mCurrentPlayer.getScore()))
+			mCurrentPlayer.setScore(mCurrentPlayer.getPrevScore());
 	}
 
 
@@ -121,26 +121,26 @@ public class GameController
 
 	private boolean hasPlayerWonLeg ()
 	{
-		return mCurrentPlayer.mScore.equals (WINING_SCORES_COUNT);
+		return mCurrentPlayer.getScore().equals (WINING_SCORES_COUNT);
 	}
 
 
 	private void addWinningLegForCurrentPlayer ()
 	{
-		mCurrentPlayer.mLeg ++;
+		mCurrentPlayer.setLeg (mCurrentPlayer.getLeg() + 1);
 	}
 
 
 	private void resetPlayersScore ()
 	{
-		mPlayer.mScore          = PLAYER_START_SCORES;
-		mOpponentPlayer.mScore  = PLAYER_START_SCORES;
+		mPlayer.setScore (PLAYER_START_SCORES);
+		mOpponentPlayer.setScore (PLAYER_START_SCORES);
 	}
 
 
 	private void gameLegRuleCheck ()
 	{
-		if (mCurrentPlayer.mLeg.equals (WINING_LEG_COUNT))
+		if (mCurrentPlayer.getLeg().equals (WINING_LEG_COUNT))
 		{
 			destroyGuiForms ();
 			mMatchController.runActionsAfterGameController (mCurrentPlayer);

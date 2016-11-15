@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class Stages
 {
-	public HashMap <Integer, Integer> mGroupCountOnStages = new HashMap <> ();
+	private HashMap <Integer, Integer> mGroupCountOnStages = new HashMap <> ();
 
 	private int mStageCount = 0;
 	private int mEvenLvl    = 0;
@@ -18,6 +18,7 @@ public class Stages
 		addStage (mStageCount, groupCnt);
 		initialization (groupCnt);
 	}
+
 
 	// TODO Refactor
 	private void initialization (int groupCnt)
@@ -73,5 +74,11 @@ public class Stages
 	private boolean isEvenNumber (int number) // Even - true, Odd - false
 	{
 		return (number & 1) == 0;
+	}
+
+
+	public HashMap<Integer, Integer> getGroupCountOnStages ()
+	{
+		return mGroupCountOnStages;
 	}
 }

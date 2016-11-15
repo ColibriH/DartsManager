@@ -38,12 +38,12 @@ public class GroupsController
 		Stages stages = new Stages (generatedMathGroups.size ());
 
 		int rowGap = 1, firstElementPosition = 0;
-		for (int i = 0; i < stages.mGroupCountOnStages.size (); i++)
+		for (int i = 0; i < stages.getGroupCountOnStages ().size (); i++)
 		{
 			firstElementPosition = (i == 0) ? 0 : rowGap - 1;
 			rowGap *= 2;
 
-			addStageGroupToGroupHashMap (rowGap, firstElementPosition, i, stages.mGroupCountOnStages.get (i), generatedMathGroups);
+			addStageGroupToGroupHashMap (rowGap, firstElementPosition, i, stages.getGroupCountOnStages ().get (i), generatedMathGroups);
 		}
 
 		createGroupsTree ();
@@ -90,7 +90,7 @@ public class GroupsController
 	private void linkPanelsWithPlayerObject (ArrayList <PlayerObject> playersInGroup, TournamentTableGroupPanel tournamentTableGroupPanel)
 	{
 		for (PlayerObject player : playersInGroup)
-			player.mTournamentTableGroupPanel = tournamentTableGroupPanel;
+			player.setTournamentTableGroupPanel(tournamentTableGroupPanel);
 	}
 
 
@@ -143,7 +143,7 @@ public class GroupsController
 	{
 		ArrayList <PlayerObject> players = node.getPlayerObjects ();
 		for (PlayerObject player : players)
-			node.getDisplayGroupPanel ().setPlayerName (player.mName);
+			node.getDisplayGroupPanel ().setPlayerName (player.getName());
 	}
 
 

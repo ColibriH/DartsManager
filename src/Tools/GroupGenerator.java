@@ -81,7 +81,7 @@ public class GroupGenerator
 
 		for (PlayerObject player : playerList)
 		{
-			if (player.mId.equals (searchedId))
+			if (player.getId().equals (searchedId))
 			{
 				foundPlayer = player;
 				break;

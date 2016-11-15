@@ -5,23 +5,19 @@ import MainController.MainController;
  */
 
 
-// TODO bug compiling flag to create tests =)
+// TODO 1 some null image to prevent null for imageloader
 
-// TODO some null image to prevent null for imageloader
+// TODO 2 set getters and setters
 
-// TODO set getters and setters
+// TODO 3 Finish Styling // Recreate group display for tournament
 
-// TODO Finish Styling // Recreate group display for tournament
+// TODO 4 Test for 3 people, 6, 9, 12
 
-// TODO Test for 3 people, 6, 9, 12
+// TODO 5 Global Refactor
 
-// TODO more than 2 people in one group -> little bit changes in rules check this! (for this need huge refactor and logic changes) AND Create more game types
+// TODO 6 How to style playing forms.... and use abstract class
 
-// TODO In game menu
-
-// TODO Create documentation
-
-// TODO How to style playing forms.... and use abstract class
+// TODO 7 more than 2 people in one group -> little bit changes in rules check this! (for this need huge refactor and logic changes) AND Create more game types
 
 // Additional features
 // ==================================
@@ -30,9 +26,10 @@ import MainController.MainController;
 // TODO all player result?
 // TODO allPlayer places?
 // TODO style configuration
+// TODO In game menu
 //===================================
 
-// TODO create inner resources project architecture
+// TODO Create documentation
 // TODO Global Refactor: split logic
 // TODO Global End Refactor
 
@@ -42,6 +39,7 @@ public class Main
 {
 	public static void main (String[] args)
 	{
+		MainController.DEBUG_MODE = java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
 		MainController.openMenuGui ();
 	}
 }

@@ -146,7 +146,7 @@ public class PlayersRegistration extends PlayersRegistrationGui
 	private void populateTableModelWithOldPlayers (ArrayList <PlayerObject> playerObjectArrayList)
 	{
 		for (PlayerObject playerObject : playerObjectArrayList)
-			mDefaultTableModel.addRow (new String [] {String.valueOf (playerObject.mId), playerObject.mName, Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
+			mDefaultTableModel.addRow (new String [] {String.valueOf (playerObject.getId()), playerObject.getName(), Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
 	}
 
 

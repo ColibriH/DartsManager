@@ -7,19 +7,16 @@ import javax.swing.*;
 /**
  * Created by vladislavs on 07.09.2016..
  */
-
-// TODO Create setters and getters
-
 public class PlayerObject
 {
-	public String               mName;
-	public Integer              mId;
-	public TournamentTableGroupPanel mTournamentTableGroupPanel;
-	public JLabel               mTurnArrow;
+	private String               		mName;
+	private Integer              		mId;
+	private TournamentTableGroupPanel 	mTournamentTableGroupPanel;
+	private JLabel               		mTurnArrow;
 
-	public Integer              mLeg       = 0;
-	public Integer              mScore     = 301;
-	public Integer              mPrevScore = 301;
+	private Integer             		mLeg       = 0;
+	private Integer             		mScore     = 301;
+	private Integer             		mPrevScore = 301;
 
 
 	public PlayerObject (String name, Integer id)
@@ -38,13 +35,13 @@ public class PlayerObject
 	}
 
 
-	public TournamentTableGroupPanel getDisplayGroupPanel ()
+	public TournamentTableGroupPanel getTournamentTableGroupPanel()
 	{
 		return mTournamentTableGroupPanel;
 	}
 
 
-	public void setDisplayGroupPanel (TournamentTableGroupPanel tournamentTableGroupPanel)
+	public void setTournamentTableGroupPanel(TournamentTableGroupPanel tournamentTableGroupPanel)
 	{
 		mTournamentTableGroupPanel = tournamentTableGroupPanel;
 	}
@@ -59,5 +56,65 @@ public class PlayerObject
 	public void setTurnArrow (JLabel turnArrow)
 	{
 		mTurnArrow = turnArrow;
+	}
+
+
+	public String getName ()
+	{
+		return mName;
+	}
+
+
+	public void setName (String mName)
+	{
+		this.mName = mName;
+	}
+
+
+	public Integer getId ()
+	{
+		return mId;
+	}
+
+
+	public void setId (Integer mId)
+	{
+		this.mId = mId;
+	}
+
+
+	public Integer getLeg ()
+	{
+		return mLeg;
+	}
+
+
+	public void setLeg (Integer mLeg)
+	{
+		this.mLeg = mLeg;
+	}
+
+
+	public Integer getScore ()
+	{
+		return mScore;
+	}
+
+
+	public void setScore (Integer mScore)
+	{
+		this.mScore = mScore;
+	}
+
+
+	public Integer getPrevScore ()
+	{
+		return mPrevScore;
+	}
+
+
+	public void setPrevScore (Integer mPrevScore)
+	{
+		this.mPrevScore = mPrevScore;
 	}
 }

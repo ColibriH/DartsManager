@@ -106,32 +106,32 @@ public class GameDisplayGuiForm
 
 	private void playerTableInitialization ()
 	{
-		mSPlayerLabel.setText       (mPlayer.mName);
-		mFirstPlayerName.setText    (mPlayer.mName);
-		mFirstPlayerLeg.setText     (String.valueOf (mPlayer.mLeg));
-		mFirstPlayerScore.setText   (String.valueOf (mPlayer.mScore));
+		mSPlayerLabel.setText       (mPlayer.getName ());
+		mFirstPlayerName.setText    (mPlayer.getName ());
+		mFirstPlayerLeg.setText     (String.valueOf (mPlayer.getLeg ()));
+		mFirstPlayerScore.setText   (String.valueOf (mPlayer.getScore ()));
 
-		mFPlayerLabel.setText       (mPlayerOpponent.mName);
-		mSecondPlayerName.setText   (mPlayerOpponent.mName);
-		mSecondPlayerLeg.setText    (String.valueOf (mPlayerOpponent.mLeg));
-		mSecondPlayerScore.setText  (String.valueOf (mPlayerOpponent.mScore));
+		mFPlayerLabel.setText       (mPlayerOpponent.getName ());
+		mSecondPlayerName.setText   (mPlayerOpponent.getName ());
+		mSecondPlayerLeg.setText    (String.valueOf (mPlayerOpponent.getLeg ()));
+		mSecondPlayerScore.setText  (String.valueOf (mPlayerOpponent.getScore ()));
 	}
 
 
 	public void updatePlayerData ()
 	{
-		mFirstPlayerScore.setText (String.valueOf (mPlayer.mScore));
-		mSecondPlayerScore.setText (String.valueOf (mPlayerOpponent.mScore));
+		mFirstPlayerScore.setText (String.valueOf (mPlayer.getScore ()));
+		mSecondPlayerScore.setText (String.valueOf (mPlayerOpponent.getScore ()));
 	}
 
 
 	public void updateGameLegData ()
 	{
-		mFirstPlayerLeg.setText     (String.valueOf (mPlayer.mLeg));
-		mFirstPlayerScore.setText   (String.valueOf (mPlayer.mScore));
+		mFirstPlayerLeg.setText     (String.valueOf (mPlayer.getLeg ()));
+		mFirstPlayerScore.setText   (String.valueOf (mPlayer.getScore ()));
 
-		mSecondPlayerLeg.setText    (String.valueOf (mPlayerOpponent.mLeg));
-		mSecondPlayerScore.setText  (String.valueOf (mPlayerOpponent.mScore));
+		mSecondPlayerLeg.setText    (String.valueOf (mPlayerOpponent.getLeg ()));
+		mSecondPlayerScore.setText  (String.valueOf (mPlayerOpponent.getScore ()));
 	}
 
 

@@ -9,7 +9,8 @@ import MainController.Menu.MenuGui;
  */
 public class MainController
 {
-	public static MatchController matchController;
+	public static boolean DEBUG_MODE;
+    private static MatchController matchController;
 
 
 	public static void openMenuGui ()
@@ -24,5 +25,17 @@ public class MainController
 			matchController = new MatchController ();
 		else
 			matchController.initializeNewMatch ();
+	}
+
+
+	public static MatchController getMatchController ()
+	{
+		return matchController;
+	}
+
+
+	public static void setMatchController (MatchController matchController)
+	{
+		MainController.matchController = matchController;
 	}
 }

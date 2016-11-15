@@ -43,7 +43,16 @@ public class MatchController
 	{
 		mPlayersNumberInGroup = 2;
 
-		// TODO delete in production
+		if (MainController.DEBUG_MODE)
+			executeDebugCode();
+
+		whetherToKeepOldPlayerList ();
+		mPlayersRegistration = new PlayersRegistration (this);
+	}
+
+
+	private void executeDebugCode ()
+	{
 		mPlayerList = new ArrayList<>();
 
 		mPlayerList.add(new PlayerObject("0", 0));
@@ -52,46 +61,42 @@ public class MatchController
 		mPlayerList.add(new PlayerObject("3", 3));
 
 		mPlayerList.add(new PlayerObject("4", 4));
-		mPlayerList.add(new PlayerObject("5", 5));
-		mPlayerList.add(new PlayerObject("6", 6));
-		mPlayerList.add(new PlayerObject("7", 7));
-
-		mPlayerList.add(new PlayerObject("8", 8));
-		mPlayerList.add(new PlayerObject("9", 9));
-
-		mPlayerList.add(new PlayerObject("10", 10));
-		mPlayerList.add(new PlayerObject("11", 11));
-		mPlayerList.add(new PlayerObject("12", 12));
-		mPlayerList.add(new PlayerObject("13", 13));
-
-		mPlayerList.add(new PlayerObject("14", 14));
-		mPlayerList.add(new PlayerObject("15", 15));
-		mPlayerList.add(new PlayerObject("16", 16));
-		mPlayerList.add(new PlayerObject("17", 17));
-
-		mPlayerList.add(new PlayerObject("18", 18));
-		mPlayerList.add(new PlayerObject("19", 19));
-		mPlayerList.add(new PlayerObject("20", 20));
-		mPlayerList.add(new PlayerObject("21", 21));
-
-		whetherToKeepOldPlayerList ();
-		mPlayersRegistration = new PlayersRegistration (this);
+//		mPlayerList.add(new PlayerObject("5", 5));
+//		mPlayerList.add(new PlayerObject("6", 6));
+//		mPlayerList.add(new PlayerObject("7", 7));
+//
+//		mPlayerList.add(new PlayerObject("8", 8));
+//		mPlayerList.add(new PlayerObject("9", 9));
+//
+//		mPlayerList.add(new PlayerObject("10", 10));
+//		mPlayerList.add(new PlayerObject("11", 11));
+//		mPlayerList.add(new PlayerObject("12", 12));
+//		mPlayerList.add(new PlayerObject("13", 13));
+//
+//		mPlayerList.add(new PlayerObject("14", 14));
+//		mPlayerList.add(new PlayerObject("15", 15));
+//		mPlayerList.add(new PlayerObject("16", 16));
+//		mPlayerList.add(new PlayerObject("17", 17));
+//
+//		mPlayerList.add(new PlayerObject("18", 18));
+//		mPlayerList.add(new PlayerObject("19", 19));
+//		mPlayerList.add(new PlayerObject("20", 20));
+//		mPlayerList.add(new PlayerObject("21", 21));
 	}
 
 
 	private void whetherToKeepOldPlayerList ()
 	{
-		// TODO uncoment in production
-//		if (mPlayerList != null)
-//			if (! keepPlayers ())
-//				mPlayerList = null;
+		if (! MainController.DEBUG_MODE)
+			if (mPlayerList != null)
+				if (! keepPlayers ())
+					mPlayerList = null;
 	}
 
 
 	private boolean keepPlayers ()
 	{
-		int result = JOptionPane.showConfirmDialog (null, "Do you want to keep old player list?",
-		                                            "alert", JOptionPane.OK_CANCEL_OPTION);
+		int result = JOptionPane.showConfirmDialog (null, "Do you want to keep old player list?", "alert", JOptionPane.OK_CANCEL_OPTION);
 		return result == 0;
 	}
 
@@ -219,7 +224,7 @@ public class MatchController
 
 	private void resetPlayerLegData (PlayerObject winningPlayerObject)
 	{
-		winningPlayerObject.mLeg = 0;
+		winningPlayerObject.setLeg(0);
 	}
 
 
