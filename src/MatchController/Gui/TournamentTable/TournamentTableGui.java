@@ -21,7 +21,6 @@ import java.util.HashMap;
 // TODO Change group design
 // TODO Set some BG
 // TODO Style buttons
-// TODO Fix scroll to work
 
 // TODO Refactor
 
@@ -30,7 +29,8 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 	protected abstract void setCurrentPlayingGroupText ();
 
 	private JPanel                                              mControlJPanel;
-	private ImagedPanel                                         mGroupsPanel;
+	private JPanel                                              mGroupsPanelContent;
+	private JPanel                                              mGroupsPanel;
 	private GroupPanelLines                                     mGlassPanel;
 	private JScrollPane                                         mGroupsScrollPane;
 
@@ -41,16 +41,18 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 	TournamentTableGui (MatchController matchController)
 	{
 		super (matchController);
+		setMainFrameResizable (true);
 	}
 
 
 	@Override
 	protected void initializeComponents ()
 	{
-		mGroupsPanel        = new ImagedPanel (ImageLoader.getImage (Constats.CHALK_BOARD));
+		mGroupsPanel        = new JPanel (); //new ImagedPanel (ImageLoader.getImage (Constats.CHALK_BOARD)); // TODO replace with moved image along scroll
 		mControlJPanel      = new JPanel ();
+		mGroupsPanelContent = new JPanel ();
 		mGlassPanel 		= new GroupPanelLines (null);
-		mGroupsScrollPane   = new JScrollPane (mGroupsPanel);
+		mGroupsScrollPane   = new JScrollPane (mGroupsPanelContent, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		mGameStartBtn   	= new JButton ("Start Game");
 		mBackBtn        	= new JButton ("Back");
@@ -74,23 +76,26 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 
 		buildControlPanel ();
 		buildGroupsPanel ();
-		drawGroupsLines ();
 
-		addComponentToPanel (getMainJPanel (), mGlassPanel,    0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 2, GridBagConstraints.NORTHWEST,       mPanelGbc, GridBagConstraints.BOTH);
-		addComponentToPanel (getMainJPanel (), mGroupsPanel,   0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 2, GridBagConstraints.NORTHWEST,       mPanelGbc, GridBagConstraints.BOTH);
-		addComponentToPanel (getMainJPanel (), mControlJPanel, 0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.LAST_LINE_START, mPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (getMainJPanel (), mGroupsScrollPane,   0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.BOTH);
+		addComponentToPanel (getMainJPanel (), mControlJPanel,      0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
 	private void buildGroupsPanel ()
 	{
-		mGroupsScrollPane.setHorizontalScrollBarPolicy (JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		mGroupsScrollPane.setVerticalScrollBarPolicy (JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		GridBagConstraints gbc = new GridBagConstraints ();
+		mGroupsScrollPane.getVerticalScrollBar ().setUnitIncrement (20);
+		mGroupsPanelContent.setLayout (new GridBagLayout ());
 		mGroupsPanel.setLayout (new GridBagLayout ());
 		mGroupsPanel.setBackground (Color.BLACK);
 
 		addGroupsToMainPanel ();
 		setCurrentPlayingGroupText ();
+		drawGroupsLines ();
+
+		addComponentToPanel (mGroupsPanelContent, mGlassPanel,  0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
+		addComponentToPanel (mGroupsPanelContent, mGroupsPanel, 0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
 	}
 
 
@@ -100,8 +105,8 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 		mControlJPanel.setLayout (new GridBagLayout ());
 		controlPanelComponentModification ();
 
-		addComponentToPanel (getMainJPanel (), mBackBtn,      0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
-		addComponentToPanel (getMainJPanel (), mGameStartBtn, 1, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mControlJPanel, mBackBtn,      0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mControlJPanel, mGameStartBtn, 1, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
 	}
 
 

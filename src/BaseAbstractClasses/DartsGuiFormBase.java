@@ -39,7 +39,7 @@ public abstract class DartsGuiFormBase
 	}
 
 
-	protected void addComponentToPanel (JPanel parent, Component child, int xPos, int yPos, Insets insets, int iPady, double weightX, double weighty, int gridWidth, Integer anchor, GridBagConstraints gbc, Integer fill)
+	protected void addComponentToPanel (JComponent parent, Component child, int xPos, int yPos, Insets insets, int iPady, double weightX, double weighty, int gridWidth, Integer anchor, GridBagConstraints gbc, Integer fill)
 	{
 		if (fill != null)
 			gbc.fill    = fill;
