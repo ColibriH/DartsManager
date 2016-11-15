@@ -1,4 +1,4 @@
-package MatchController.GUI.Components;
+package MatchController.Gui.Components;
 
 import Constants.Constats;
 import Tools.ImageLoader;

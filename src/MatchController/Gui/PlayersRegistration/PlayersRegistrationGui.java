@@ -1,13 +1,13 @@
-package MatchController.GUI.PlayersRegistration;
+package MatchController.Gui.PlayersRegistration;
 
 import BaseAbstractClasses.DartsGuiFormBase;
-import MatchController.GUI.Components.ButtonEditor;
-import MatchController.GUI.Components.ButtonRenderer;
-import MatchController.GUI.Components.TableScrollBar;
+import MatchController.Gui.Components.ButtonEditor;
+import MatchController.Gui.Components.ButtonRenderer;
+import MatchController.Gui.Components.TableScrollBar;
 import MatchController.MatchController;
 import Constants.Constats;
 import MatchController.Objects.PlayerObject;
-import GUIComponents.ImagedPanel;
+import GuiComponents.ImagedPanel;
 import Tools.ImageLoader;
 import Tools.ImageViewport;
 
@@ -39,6 +39,7 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	protected abstract void                     tryToRegisterPlayers        ();
 	protected abstract void                     addNewPlayer                ();
 	protected abstract void                     deleteNewPlayerFromTable    ();
+	protected abstract PlayersRegistration      getPlayerRegistrationObject ();
 
 
 	private final String            COLUMN_ID                       = "Id";
@@ -68,7 +69,6 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	PlayersRegistrationGui (MatchController matchController)
 	{
 		super (matchController);
-		mBackGroundImage = ImageLoader.getImage (Constats.OPEN_BOARD_PIC);
 		setEntryComponentFocus ();
 	}
 
@@ -76,6 +76,7 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	@Override
 	protected void initializeComponents ()
 	{
+		mBackGroundImage = ImageLoader.getImage (Constats.OPEN_BOARD_PIC);
 		setMainJPanel (new ImagedPanel (mBackGroundImage));
 
 		mControlJPanel          = new JPanel ();
@@ -191,9 +192,9 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField, 0, 2, new Insets (0,   5, 10, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerNameLabel,        0, 3, new Insets (15,  5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 4, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (100, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (100, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
@@ -292,8 +293,8 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 		mPlayerTable.setTableHeader             (null);
 		mPlayerTable.getColumn                  (Constats.DELETE_BTN_ID).setCellRenderer    (new ButtonRenderer ());
 		mPlayerTable.getColumn                  (Constats.EDIT_BTN_ID  ).setCellRenderer    (new ButtonRenderer ());
-		mPlayerTable.getColumn                  (Constats.DELETE_BTN_ID).setCellEditor      (new ButtonEditor (this, new JCheckBox ()));
-		mPlayerTable.getColumn                  (Constats.EDIT_BTN_ID  ).setCellEditor      (new ButtonEditor (this, new JCheckBox ()));
+		mPlayerTable.getColumn                  (Constats.DELETE_BTN_ID).setCellEditor      (new ButtonEditor (getPlayerRegistrationObject (), new JCheckBox ()));
+		mPlayerTable.getColumn                  (Constats.EDIT_BTN_ID  ).setCellEditor      (new ButtonEditor (getPlayerRegistrationObject (), new JCheckBox ()));
 		mPlayerTable.removeColumn               (mPlayerTable.getColumn (COLUMN_ID));    // To hide Id Column
 		mPlayerTable.setRowHeight               (20);
 		mPlayerTable.setIntercellSpacing        (new Dimension (5, 0));
@@ -310,37 +311,37 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	}
 
 
-	public String getCOLUMN_ID ()
+	String getCOLUMN_ID ()
 	{
 		return COLUMN_ID;
 	}
 
 
-	public String getCOLUMN_NAME ()
+	String getCOLUMN_NAME ()
 	{
 		return COLUMN_NAME;
 	}
 
 
-	public String getPlayerNameTxtFieldDefaultValue ()
+	String getPlayerNameTxtFieldDefaultValue ()
 	{
 		return mPlayerNameTxtFieldDefaultValue;
 	}
 
 
-	public JTable getPlayersTable ()
+	JTable getPlayersTable ()
 	{
 		return mPlayerTable;
 	}
 
 
-	public JTextField getPlayersInGroupTxtField ()
+	JTextField getPlayersInGroupTxtField ()
 	{
 		return mPlayersInGroupTxtField;
 	}
 
 
-	public JTextField getPlayerNameTxtField ()
+	JTextField getPlayerNameTxtField ()
 	{
 		return mPlayerNameTxtField;
 	}

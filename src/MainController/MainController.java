@@ -1,7 +1,8 @@
 package MainController;
 
+import MainController.Menu.Menu;
 import MatchController.MatchController;
-import MenuGui.MenuGui;
+import MainController.Menu.MenuGui;
 
 /**
  * Created by vladislavs on 30.09.2016..
@@ -10,9 +11,10 @@ public class MainController
 {
 	public static MatchController matchController;
 
+
 	public static void openMenuGui ()
 	{
-		new MenuGui ();
+		new Menu ();
 	}
 
 

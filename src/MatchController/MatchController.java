@@ -3,10 +3,10 @@ package MatchController;
 import GameController.GameController;
 import GroupsController.GroupsController;
 import MainController.MainController;
-import MatchController.GUI.*;
-import MatchController.GUI.Components.DisplayGroupPanel;
-import MatchController.GUI.PlayersRegistration.PlayersRegistration;
-import MatchController.GUI.TournamentTable.TournamentTable;
+import MatchController.Gui.Components.DisplayGroupPanel;
+import MatchController.Gui.PlayersRegistration.PlayersRegistration;
+import MatchController.Gui.TournamentTable.TournamentTable;
+import MatchController.Gui.WinnerFrame.WinnerFrame;
 import MatchController.Objects.GroupsTreeNode;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
@@ -25,7 +25,7 @@ public class MatchController
 {
 	private PlayersRegistration         mPlayersRegistration;
 	private TournamentTable             mPlayerGeneratedGroupsGuiForm;
-	private WinnerGuiForm               mWinnerGuiForm;
+	private WinnerFrame                 mWinnerGuiForm;
 	private GameController              mGameController;
 	private GroupsController            mGroupsController;
 
@@ -41,7 +41,7 @@ public class MatchController
 
 	public void initializeNewMatch ()
 	{
-		mPlayersNumberInGroup       = 2;
+		mPlayersNumberInGroup = 2;
 
 		// TODO delete in production
 		mPlayerList = new ArrayList<>();
@@ -225,7 +225,7 @@ public class MatchController
 
 	private void showMatchWinner (PlayerObject winner)
 	{
-		mWinnerGuiForm = new WinnerGuiForm (this, winner);
+		mWinnerGuiForm = new WinnerFrame (this, winner);
 	}
 
 
@@ -280,8 +280,15 @@ public class MatchController
 		return mGroupsController.getAllMatchGroupsPanels ();
 	}
 
+
 	public DisplayGroupPanel getCurrentPlayingGroupPanel ()
 	{
 		return mGroupsController.getCurrentPlayingGroupPanel ();
+	}
+
+
+	public void exitFromApplication ()
+	{
+		System.exit (0);
 	}
 }

@@ -1,4 +1,4 @@
-package MatchController.GUI.PlayersRegistration;
+package MatchController.Gui.PlayersRegistration;
 
 import Constants.Constats;
 import MatchController.MatchController;
@@ -21,13 +21,13 @@ public class PlayersRegistration extends PlayersRegistrationGui
 	public PlayersRegistration (MatchController matchController)
 	{
 		super (matchController);
-		mPlayerTableHeaders = new String[] {getCOLUMN_ID (), getCOLUMN_NAME (), Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID};
 	}
 
 
 	@Override
 	protected void playerTableDataModelInit ()
 	{
+		mPlayerTableHeaders = new String[] {getCOLUMN_ID (), getCOLUMN_NAME (), Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID};
 		mDefaultTableModel = new DefaultTableModel ()
 		{
 			public boolean isCellEditable (int row, int column)
@@ -101,7 +101,7 @@ public class PlayersRegistration extends PlayersRegistrationGui
 
 
 	@Override
-	protected PlayerObject getPlayerObjectNewInstance (Vector rowData) // todo out from gui
+	protected PlayerObject getPlayerObjectNewInstance (Vector rowData)
 	{
 		try
 		{
@@ -117,6 +117,13 @@ public class PlayersRegistration extends PlayersRegistrationGui
 		}
 
 		return null;
+	}
+
+
+	@Override
+	protected PlayersRegistration getPlayerRegistrationObject ()
+	{
+		return this;
 	}
 
 

@@ -1,12 +1,10 @@
-package MatchController.GUI.Components;
+package MatchController.Gui.Components;
 
 import Constants.Constats;
-import MatchController.GUI.PlayersRegistration.PlayersRegistration;
+import MatchController.Gui.PlayersRegistration.PlayersRegistration;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by vladislavs on 12.09.2016..
@@ -22,6 +20,7 @@ public class ButtonEditor extends DefaultCellEditor
 
 	private PlayersRegistration mPlayersRegistration;
 
+
 	public ButtonEditor (PlayersRegistration playersRegistration, JCheckBox checkBox)
 	{
 		super (checkBox);
@@ -30,13 +29,7 @@ public class ButtonEditor extends DefaultCellEditor
 
 		button = new JButton ();
 		button.setOpaque (true);
-		button.addActionListener (new ActionListener ()
-		{
-			public void actionPerformed (ActionEvent e)
-			{
-				fireEditingStopped ();
-			}
-		});
+		button.addActionListener (e -> fireEditingStopped ());
 	}
 
 
@@ -62,7 +55,7 @@ public class ButtonEditor extends DefaultCellEditor
 
 		isPushed = false;
 
-		return new String (label);
+		return label;
 	}
 
 

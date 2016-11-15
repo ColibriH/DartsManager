@@ -1,7 +1,6 @@
-package MenuGui.Components;
+package GuiComponents;
 
 import Constants.Constats;
-import MenuGui.MenuGui;
 import Tools.ImageLoader;
 
 import javax.swing.*;

@@ -1,9 +1,9 @@
-package MatchController.GUI.TournamentTable;
+package MatchController.Gui.TournamentTable;
 
 import BaseAbstractClasses.DartsGuiFormBase;
-import GUIComponents.ImagedPanel;
-import MatchController.GUI.Components.DisplayGroupPanel;
-import MatchController.GUI.Components.GroupPanelLines;
+import GuiComponents.ImagedPanel;
+import MatchController.Gui.Components.DisplayGroupPanel;
+import MatchController.Gui.Components.GroupPanelLines;
 import MatchController.MatchController;
 import MatchController.Objects.GroupsTreeNode;
 import Constants.Constats;

@@ -1,6 +1,6 @@
-package MatchController.GUI.TournamentTable;
+package MatchController.Gui.TournamentTable;
 
-import MatchController.GUI.Components.DisplayGroupPanel;
+import MatchController.Gui.Components.DisplayGroupPanel;
 import MatchController.MatchController;
 
 import java.util.ArrayList;

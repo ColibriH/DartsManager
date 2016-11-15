@@ -1,4 +1,4 @@
-package MatchController.GUI.Components;
+package MatchController.Gui.Components;
 
 /**
  * Created by vladislavs on 06.10.2016..

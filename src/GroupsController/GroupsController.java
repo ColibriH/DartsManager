@@ -1,6 +1,6 @@
 package GroupsController;
 
-import MatchController.GUI.Components.DisplayGroupPanel;
+import MatchController.Gui.Components.DisplayGroupPanel;
 import MatchController.Objects.GroupsTreeNode;
 import MatchController.Objects.Stages;
 import MatchController.Objects.PlayerObject;
