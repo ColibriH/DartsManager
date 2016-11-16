@@ -9,12 +9,6 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Vector;
 
-/**
- * Created by vladislavs on 11.11.2016..
- */
-
-// TODO refactor
-
 public class PlayersRegistration extends PlayersRegistrationGui
 {
 	private DefaultTableModel       mDefaultTableModel;
@@ -28,7 +22,7 @@ public class PlayersRegistration extends PlayersRegistrationGui
 
 
 	@Override
-	protected void playerTableDataModelInit ()
+	protected void initializePlayerTableDataModel ()
 	{
 		mPlayerTableHeaders = new String[] {getCOLUMN_ID (), getCOLUMN_NAME (), Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID};
 		mDefaultTableModel = new DefaultTableModel ()
@@ -70,7 +64,7 @@ public class PlayersRegistration extends PlayersRegistrationGui
 		getMatchController ().runActionsAfterPlayerRegistration (playersNumberInGroup, createdPlayers);
 	}
 
-
+	// TODO Create check on name twin (name should be UNIQUE)
 	@Override
 	protected void addNewPlayer ()
 	{
@@ -154,9 +148,7 @@ public class PlayersRegistration extends PlayersRegistrationGui
 	{
 		// Players Id`s are connected with data model size (to get last id we need to get data model size)
 		int lastInsertedId = mDefaultTableModel.getRowCount ();
-
-		mDefaultTableModel.addRow (new String [] {String.valueOf (lastInsertedId), Name,
-				Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
+		mDefaultTableModel.addRow (new String [] {String.valueOf (lastInsertedId), Name, Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
 	}
 
 

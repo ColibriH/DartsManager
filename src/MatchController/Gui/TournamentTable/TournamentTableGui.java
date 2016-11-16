@@ -16,13 +16,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by vladislavs on 07.10.2016..
- */
-
-// TODO replace bg with moved image along scroll
-// TODO Refactor
-
 abstract class TournamentTableGui extends DartsGuiFormBase
 {
 	protected abstract void setCurrentPlayingGroupText ();
@@ -47,7 +40,9 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 	@Override
 	protected void initializeComponents ()
 	{
-		mGroupsPanel        = new JPanel (); //new ImagedPanel (ImageLoader.getImage (Constats.CHALK_BOARD)); // TODO replace with moved image along scroll
+		setMainJPanel (new ImagedPanel (ImageLoader.getImage (Constats.TOURNAMENT_TABLE_BG)));
+
+		mGroupsPanel        = new JPanel ();
 		mControlJPanel      = new JPanel ();
 		mGroupsPanelContent = new JPanel ();
 		mGlassPanel 		= new GroupPanelLines (null);
@@ -62,7 +57,7 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 	protected void addComponentsListener ()
 	{
 		mGameStartBtn.  addActionListener (e -> getMatchController ().runActionsAfterGroupDisplay ());
-		mBackBtn.       addActionListener (e -> getMatchController ().openGameManagerGuiForm ());
+		mBackBtn.       addActionListener (e -> getMatchController ().openGameManager ());
 	}
 
 
@@ -83,37 +78,50 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 
 	private void buildGroupsPanel ()
 	{
-		GridBagConstraints gbc = new GridBagConstraints ();
-		mGroupsScrollPane.getVerticalScrollBar ().setUnitIncrement (20);
-		mGroupsScrollPane.getVerticalScrollBar().setUI (new TableScrollBar ());
-		mGroupsScrollPane.getVerticalScrollBar().setBackground (Color.GRAY);
-		mGroupsScrollPane.getVerticalScrollBar().setPreferredSize (new Dimension(10, 0));
+		buildGroupsScrollPane ();
+
 		mGroupsPanelContent.setLayout (new GridBagLayout ());
+		mGroupsPanelContent.setOpaque (false);
+		mGroupsPanelContent.setBackground (new Color (255, 255, 255, 0));
 		mGroupsPanel.setLayout (new GridBagLayout ());
-		mGroupsPanel.setBackground (Color.BLACK);
+		mGroupsPanel.setBackground (new Color (255, 255, 255, 0));
 
 		addGroupsToMainPanel ();
-		setCurrentPlayingGroupText ();
 		drawGroupsLines ();
+		setCurrentPlayingGroupText ();
 
+		GridBagConstraints gbc = new GridBagConstraints ();
 		addComponentToPanel (mGroupsPanelContent, mGlassPanel,  0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
 		addComponentToPanel (mGroupsPanelContent, mGroupsPanel, 0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
 	}
 
 
+	private void buildGroupsScrollPane ()
+	{
+		mGroupsScrollPane.getVerticalScrollBar ().setUnitIncrement (20);
+		mGroupsScrollPane.getVerticalScrollBar ().setUI (new TableScrollBar ());
+		mGroupsScrollPane.getVerticalScrollBar ().setBackground (Color.GRAY);
+		mGroupsScrollPane.getVerticalScrollBar ().setPreferredSize (new Dimension(10, 0));
+		mGroupsScrollPane.setOpaque (false);
+		mGroupsScrollPane.getViewport ().setOpaque (false);
+		mGroupsScrollPane.setBackground (new Color (255, 255, 255, 0));
+	}
+
+
 	private void buildControlPanel ()
 	{
-		GridBagConstraints mControlPanelGbc = new GridBagConstraints ();
 		mControlJPanel.setLayout (new GridBagLayout ());
-		mControlJPanel.setBackground (Color.BLACK);
-		controlPanelComponentModification ();
+		mControlJPanel.setBackground (Color.DARK_GRAY);
 
+		modifyControlPanelComponents ();
+
+		GridBagConstraints mControlPanelGbc = new GridBagConstraints ();
 		addComponentToPanel (mControlJPanel, mBackBtn,      0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
 		addComponentToPanel (mControlJPanel, mGameStartBtn, 1, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
-	private void controlPanelComponentModification ()
+	private void modifyControlPanelComponents ()
 	{
 		mGameStartBtn   .setPreferredSize (new Dimension (100, 50));
 		mBackBtn        .setPreferredSize (new Dimension (100, 50));

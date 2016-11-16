@@ -8,13 +8,7 @@ import MatchController.Objects.PlayerObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by vladislavs on 03.11.2016..
- */
-
-// TODO Refactor
-// TODO Create Level Links in nodes to rotate stage groups without find alg.
-
+// TODO Create Level Links in nodes to rotate stage groups without find loop
 public class GroupsController
 {
 	private HashMap<Integer, ArrayList<GroupsTreeNode>> mMatchGroups;
@@ -37,7 +31,7 @@ public class GroupsController
 	{
 		Stages stages = new Stages (generatedMathGroups.size ());
 
-		int rowGap = 1, firstElementPosition = 0;
+		int rowGap = 1, firstElementPosition;
 		for (int i = 0; i < stages.getGroupCountOnStages ().size (); i++)
 		{
 			firstElementPosition = (i == 0) ? 0 : rowGap - 1;
@@ -76,7 +70,7 @@ public class GroupsController
 				groupNode = new GroupsTreeNode (new TournamentTableGroupPanel (row, stageSequenceNumber, weightX, weightY));
 			}
 
-			if (mMatchGroups.get (stageSequenceNumber) == null)       // TODO get (stageSequenceNumber) as sep. variable?
+			if (mMatchGroups.get (stageSequenceNumber) == null)
 				mMatchGroups.put (stageSequenceNumber, new ArrayList <GroupsTreeNode> ()
 				{{
 					add (groupNode);
@@ -153,10 +147,8 @@ public class GroupsController
 		for (int i = 0; i < mMatchGroups.size (); i++)
 		{
 			ArrayList <GroupsTreeNode> nodes = mMatchGroups.get (i);
-			for (int j = 0; j < nodes.size (); j++)
-			{
-				allMatchGroupsPanels.add (nodes.get (j).getDisplayGroupPanel ());
-			}
+			for (GroupsTreeNode node : nodes)
+				allMatchGroupsPanels.add (node.getDisplayGroupPanel ());
 		}
 
 		return allMatchGroupsPanels;

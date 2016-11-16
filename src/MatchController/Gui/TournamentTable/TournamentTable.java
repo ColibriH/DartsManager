@@ -5,12 +5,6 @@ import MatchController.MatchController;
 
 import java.util.ArrayList;
 
-/**
- * Created by vladislavs on 11.11.2016..
- */
-
-// TODO Refactor
-
 public class TournamentTable extends TournamentTableGui
 {
 	public TournamentTable (MatchController matchController)
@@ -29,14 +23,7 @@ public class TournamentTable extends TournamentTableGui
 
 	private void setCurrentPlayingGroupText (TournamentTableGroupPanel panel, boolean state)
 	{
-		try
-		{
-			panel.setCurrentPlayingGroup (state);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace ();
-		}
+		panel.setCurrentPlayingGroup (state);
 	}
 
 

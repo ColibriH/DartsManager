@@ -10,14 +10,6 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * Created by vladislavs on 13.09.2016..
- */
-
-// TODO set better style
-// TODO set preferred size to mPanel
-// TODO refactor code and methods construction
-
 public class TournamentTableGroupPanel extends JPanel
 {
 	private JPanel mFirstPlayerPanel;
@@ -27,8 +19,8 @@ public class TournamentTableGroupPanel extends JPanel
 
 	private JLabel mNameLabel;
 	private JLabel mSNameLabel;
-
 	private JLabel mPlayingLabel;
+
 	private JLabel vsLabel;
 	private JLabel lArrow;
 	private JLabel rArrow;
@@ -37,12 +29,6 @@ public class TournamentTableGroupPanel extends JPanel
 	private int     mColumn;
 	private double  mWeightX;
 	private double  mWeightY;
-
-
-	public TournamentTableGroupPanel (ArrayList<PlayerObject> mPlayerList)
-	{
-		initialization (mPlayerList.get (0).getName(), mPlayerList.get (1).getName());
-	}
 
 
 	public TournamentTableGroupPanel (ArrayList<PlayerObject> mPlayerList, int row, int column, double weightX, double weightY)
@@ -56,12 +42,6 @@ public class TournamentTableGroupPanel extends JPanel
 	}
 
 
-	public TournamentTableGroupPanel ()
-	{
-		initialization ("?", "?");
-	}
-
-
 	public TournamentTableGroupPanel (int row, int column, double weightX, double weightY)
 	{
 		this ();
@@ -70,6 +50,18 @@ public class TournamentTableGroupPanel extends JPanel
 		mColumn     = column;
 		mWeightX    = weightX;
 		mWeightY    = weightY;
+	}
+
+
+	private TournamentTableGroupPanel (ArrayList<PlayerObject> mPlayerList)
+	{
+		initialization (mPlayerList.get (0).getName(), mPlayerList.get (1).getName());
+	}
+
+
+	private TournamentTableGroupPanel ()
+	{
+		initialization ("?", "?");
 	}
 
 
@@ -98,10 +90,10 @@ public class TournamentTableGroupPanel extends JPanel
 	private void buildMainPanel (String fPlayer, String sPlayer)
 	{
 		GridBagConstraints mPanelGbc = new GridBagConstraints ();
-		this.setLayout (new GridBagLayout ());
-		this.setBackground (new Color (255, 255, 255, 0));
-		this.setOpaque (false);
-		this.setForeground (Color.WHITE);
+		setLayout (new GridBagLayout ());
+		setBackground (new Color (255, 255, 255, 0));
+		setOpaque (false);
+		setForeground (Color.WHITE);
 
 		buildPanels ();
 		styleLabels ();
@@ -115,8 +107,7 @@ public class TournamentTableGroupPanel extends JPanel
 	}
 
 
-	private void addComponentToPanel (JPanel parent, Component child, int xPos, int yPos, Insets insets, int ipady,
-	                                  double weightx, double weighty, int gridwidth, Integer anchor, GridBagConstraints gbc, Integer fill)
+	private void addComponentToPanel (JPanel parent, Component child, int xPos, int yPos, Insets insets, int ipady, double weightx, double weighty, int gridwidth, Integer anchor, GridBagConstraints gbc, Integer fill)
 	{
 		if (fill != null)
 			gbc.fill    = fill;
@@ -151,15 +142,6 @@ public class TournamentTableGroupPanel extends JPanel
 	{
 		mNameLabel.setText (fPlayer);
 		mSNameLabel.setText (sPlayer);
-	}
-
-
-	public void setPlayerName (String playerName)
-	{
-		if (mNameLabel.getText ().equals ("?"))
-			mNameLabel.setText (playerName);
-		else
-			mSNameLabel.setText (playerName);
 	}
 
 
@@ -213,6 +195,15 @@ public class TournamentTableGroupPanel extends JPanel
 
 
 		mPlayingTxtPanel.setVisible (false);
+	}
+
+
+	public void setPlayerName (String playerName)
+	{
+		if (mNameLabel.getText ().equals ("?"))
+			mNameLabel.setText (playerName);
+		else
+			mSNameLabel.setText (playerName);
 	}
 
 

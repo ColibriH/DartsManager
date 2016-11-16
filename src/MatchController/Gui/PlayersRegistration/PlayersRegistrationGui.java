@@ -20,27 +20,16 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
-// TODO Create buttons
-// TODO Fix table buttons
-// TODO Focus txtField bug fix
-// TODO Input underline scratched
-
-// TODO Read about UIManager
-// TODO Create check on name twin (name should be UNIQUE)
-
-/**
- * Created by vladislavs on 06.09.2016..
- */
 abstract class PlayersRegistrationGui extends DartsGuiFormBase
 {
-	protected abstract void                     playerTableDataModelInit    ();
-	protected abstract ArrayList<PlayerObject>  getPlayersFromTable         ();
-	protected abstract PlayerObject             getPlayerObjectNewInstance  (Vector rowData);
-	protected abstract boolean                  isTableInnerButton          (int column, boolean hackFlag);
-	protected abstract void                     tryToRegisterPlayers        ();
-	protected abstract void                     addNewPlayer                ();
-	protected abstract void                     deleteNewPlayerFromTable    ();
-	protected abstract PlayersRegistration      getPlayerRegistrationObject ();
+	protected abstract void                     initializePlayerTableDataModel  ();
+	protected abstract ArrayList<PlayerObject>  getPlayersFromTable             ();
+	protected abstract PlayerObject             getPlayerObjectNewInstance      (Vector rowData);
+	protected abstract boolean                  isTableInnerButton              (int column, boolean hackFlag);
+	protected abstract void                     tryToRegisterPlayers            ();
+	protected abstract void                     addNewPlayer                    ();
+	protected abstract void                     deleteNewPlayerFromTable        ();
+	protected abstract PlayersRegistration      getPlayerRegistrationObject     ();
 
 
 	private final String            COLUMN_ID                       = "Id";
@@ -64,8 +53,6 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	private JLabel                  mPlayerInGroupCntLabel;
 	private JLabel                  mPlayerNameLabel;
 
-	private Image                   mBackGroundImage;
-
 
 	PlayersRegistrationGui (MatchController matchController)
 	{
@@ -77,8 +64,7 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	@Override
 	protected void initializeComponents ()
 	{
-		mBackGroundImage = ImageLoader.getImage (Constats.OPEN_BOARD_PIC);
-		setMainJPanel (new ImagedPanel (mBackGroundImage));
+		setMainJPanel (new ImagedPanel (ImageLoader.getImage (Constats.PL_OPEN_BOARD_PIC)));
 
 		mControlJPanel          = new JPanel ();
 		mTableJPanel            = new JPanel ();
@@ -120,7 +106,7 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 			}
 		});
 
-		mBackButton.addActionListener (e -> getMatchController ().openMenuGuiForm ());
+		mBackButton.addActionListener (e -> getMatchController ().openMenuAndDestroyPlayerRegistration ());
 
 		mMatchStartBtn.addActionListener (e -> tryToRegisterPlayers ());
 
@@ -193,9 +179,9 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField, 0, 2, new Insets (0,   5, 10, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerNameLabel,        0, 3, new Insets (15,  5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 4, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc, null/*GridBagConstraints.HORIZONTAL*/);
-		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null/*GridBagConstraints.HORIZONTAL*/);
-		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (100, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null/*GridBagConstraints.HORIZONTAL*/);
+		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (100, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 	}
 
 
@@ -247,7 +233,7 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 		mTableJPanel.setBackground (new Color (255, 255, 255, 0));
 		mTableJPanel.setOpaque (false);
 
-		playerTableDataModelInit ();
+		initializePlayerTableDataModel ();
 		setTableStyle ();
 
 		addComponentToPanel (mTableJPanel, mPlayerTableJScrollPane, 0, 0, new Insets (0, 0, 0, 0), 0, 0, 0, 0, GridBagConstraints.CENTER, tablePanelGbc, null);
@@ -275,7 +261,7 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 
 		setPlayersTableDefaultRenderer ();
 
-		mPlayerTableJScrollPane.setViewport                             (new ImageViewport (ImageLoader.getImage (Constats.RIGHT_BOARD_PIC)));
+		mPlayerTableJScrollPane.setViewport                             (new ImageViewport (ImageLoader.getImage (Constats.TABLE_BOARD_PIC)));
 		mPlayerTableJScrollPane.setViewportView                         (mPlayerTable);
 		mPlayerTableJScrollPane.setBorder                               (new EmptyBorder (0, 0, 0, 0));
 		mPlayerTableJScrollPane.getVerticalScrollBar().setUI            (new TableScrollBar ());

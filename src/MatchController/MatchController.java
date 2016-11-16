@@ -15,17 +15,12 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by vladislavs on 06.09.2016..
- */
-
-//TODO Refactor
-
+// TODO sort in encapsulation order
 public class MatchController
 {
 	private PlayersRegistration         mPlayersRegistration;
-	private TournamentTable             mPlayerGeneratedGroupsGuiForm;
-	private WinnerFrame                 mWinnerGuiForm;
+	private TournamentTable             mTournamentTable;
+	private WinnerFrame                 mWinnerGuiFrame;
 	private GameController              mGameController;
 	private GroupsController            mGroupsController;
 
@@ -61,17 +56,17 @@ public class MatchController
 		mPlayerList.add(new PlayerObject("3", 3));
 
 		mPlayerList.add(new PlayerObject("4", 4));
-//		mPlayerList.add(new PlayerObject("5", 5));
-//		mPlayerList.add(new PlayerObject("6", 6));
-//		mPlayerList.add(new PlayerObject("7", 7));
-//
-//		mPlayerList.add(new PlayerObject("8", 8));
-//		mPlayerList.add(new PlayerObject("9", 9));
-//
-//		mPlayerList.add(new PlayerObject("10", 10));
-//		mPlayerList.add(new PlayerObject("11", 11));
-//		mPlayerList.add(new PlayerObject("12", 12));
-//		mPlayerList.add(new PlayerObject("13", 13));
+		mPlayerList.add(new PlayerObject("5", 5));
+		mPlayerList.add(new PlayerObject("6", 6));
+		mPlayerList.add(new PlayerObject("7", 7));
+
+		mPlayerList.add(new PlayerObject("8", 8));
+		mPlayerList.add(new PlayerObject("9", 9));
+
+		mPlayerList.add(new PlayerObject("10", 10));
+		mPlayerList.add(new PlayerObject("11", 11));
+		mPlayerList.add(new PlayerObject("12", 12));
+		mPlayerList.add(new PlayerObject("13", 13));
 //
 //		mPlayerList.add(new PlayerObject("14", 14));
 //		mPlayerList.add(new PlayerObject("15", 15));
@@ -106,13 +101,13 @@ public class MatchController
 		mPlayerList =  new ArrayList <> (tablePlayerList);
 	}
 
-
+	//TODO Refactor
 	public void runActionsAfterPlayerRegistration (Integer playersNumberInGroup, ArrayList <PlayerObject> tablePlayerList)
 	{
 		mPlayersNumberInGroup = playersNumberInGroup;
 
 		setPlayerList (tablePlayerList);
-		matchManagerGuiFormClose ();
+		destroyPlayerRegistration ();
 		initializeMatchGroupsController ();
 
 		try
@@ -127,7 +122,7 @@ public class MatchController
 		}
 	}
 
-
+	//TODO Refactor
 	private void ifOnePlayerInGroupPromoteToNextStage () throws Exception
 	{
 /*		for (Object o : mPlayerGroupsMap.entrySet ())
@@ -146,16 +141,16 @@ public class MatchController
 	}
 
 
-	private void matchManagerGuiFormClose ()
+	private void destroyPlayerRegistration ()
 	{
 		mPlayersRegistration.destroy ();
 		mPlayersRegistration = null;
 	}
 
 
-	private void playerGeneratedGroupsGuiFormClose ()
+	private void closeTournamentTable ()
 	{
-		mPlayerGeneratedGroupsGuiForm.setVisibility (false);
+		mTournamentTable.setVisibility (false);
 	}
 
 
@@ -169,7 +164,7 @@ public class MatchController
 	{
 		try
 		{
-			playerGeneratedGroupsGuiFormClose ();
+			closeTournamentTable ();
 			startGame ();
 		}
 		catch (Exception e)
@@ -182,7 +177,7 @@ public class MatchController
 
 	private void displayGameGroups ()
 	{
-		mPlayerGeneratedGroupsGuiForm = new TournamentTable (this);
+		mTournamentTable = new TournamentTable (this);
 	}
 
 
@@ -211,7 +206,7 @@ public class MatchController
 				resetPlayerLegData (winningPlayerObject);
 				mGroupsController.promoteWinningPlayerToNextStage (winningPlayerObject);
 				mGroupsController.rotateToNextGroup ();
-				setNextPanelPlayingText ();
+				setNextGroupPlayingText ();
 			}
 		}
 		catch (Exception e)
@@ -230,14 +225,14 @@ public class MatchController
 
 	private void showMatchWinner (PlayerObject winner)
 	{
-		mWinnerGuiForm = new WinnerFrame (this, winner);
+		mWinnerGuiFrame = new WinnerFrame (this, winner);
 	}
 
 
-	private void setNextPanelPlayingText ()
+	private void setNextGroupPlayingText ()
 	{
-		mPlayerGeneratedGroupsGuiForm.displayCurrentPlayingGroupText ();
-		mPlayerGeneratedGroupsGuiForm.setVisibility (true);
+		mTournamentTable.displayCurrentPlayingGroupText ();
+		mTournamentTable.setVisibility (true);
 	}
 
 
@@ -249,8 +244,8 @@ public class MatchController
 
 	public void newMatch ()
 	{
-		if (mWinnerGuiForm != null)
-			mWinnerGuiForm = null;
+		if (mWinnerGuiFrame != null)
+			mWinnerGuiFrame = null;
 
 		initializeNewMatch ();
 	}
@@ -265,18 +260,18 @@ public class MatchController
 	}
 
 
-	public void openMenuGuiForm ()
+	public void openMenuAndDestroyPlayerRegistration ()
 	{
 		mPlayersRegistration.destroy ();
 		mPlayersRegistration = null;
 		MainController.openMenuGui ();
 	}
 
-
-	public void openGameManagerGuiForm ()
+	//TODO Refactor
+	public void openGameManager ()
 	{
-		mPlayerGeneratedGroupsGuiForm.destroy ();
-		mPlayerGeneratedGroupsGuiForm = null;
+		mTournamentTable.destroy ();
+		mTournamentTable = null;
 		mPlayersRegistration = new PlayersRegistration (this);
 	}
 

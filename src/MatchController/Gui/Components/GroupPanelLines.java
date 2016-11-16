@@ -7,9 +7,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by Prud on 10/31/2016.
- */
 public class GroupPanelLines extends JPanel
 {
 	private HashMap <Integer, ArrayList <GroupsTreeNode>> mGroupsPanels;
@@ -21,7 +18,7 @@ public class GroupPanelLines extends JPanel
 			mGroupsPanels = new HashMap <> (groupsPanels);
 	}
 
-	// TODO Refactor
+
 	@Override
 	public void paintComponent (Graphics g)
 	{
@@ -33,10 +30,8 @@ public class GroupPanelLines extends JPanel
 		for (int k = mGroupsPanels.size () - 1; k > 0; k--)
 		{
 			ArrayList <GroupsTreeNode> a = mGroupsPanels.get (k);
-			for (int i = 0; i < a.size (); i++)
+			for (GroupsTreeNode node : a)
 			{
-				GroupsTreeNode node = a.get (i);
-
 				for (int j = 0; j < node.getChildrens ().size (); j++)
 				{
 					TournamentTableGroupPanel curLvlPanel = node.getChildrens ().get (j).getDisplayGroupPanel ();

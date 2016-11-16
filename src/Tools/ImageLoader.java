@@ -1,21 +1,22 @@
 package Tools;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
-/**
- * Created by vladislavs on 14.09.2016..
- */
 public class ImageLoader
 {
 	public static Image getImage (String filePath)
 	{
 		InputStream inputStream = openFile (filePath);
+		Image img = new BufferedImage (10,10, BufferedImage.TYPE_BYTE_GRAY);
 
 		if (inputStream == null)
-			return null;
+			return img;
 
-		return getImageFormStream (inputStream);
+		img = getImageFormStream (inputStream);
+
+		return img;
 	}
 
 

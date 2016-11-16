@@ -7,10 +7,6 @@ import Tools.ImageLoader;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by vladislavs on 07.09.2016..
- */
-
 // TODO Add more styling
 
 public class GameDisplayGuiForm
@@ -76,7 +72,7 @@ public class GameDisplayGuiForm
 	{
 		initializePlayerTurnArrows ();
 
-		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.MAIN_BOARD_PIC)), mMainImage);
+		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.GAME_MAIN_BOARD_PIC)), mMainImage);
 		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_RIGHT)), sPlayerImage);
 		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_LEFT)), fPlayerImage);
 	}
