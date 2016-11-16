@@ -64,13 +64,19 @@ public class PlayersRegistration extends PlayersRegistrationGui
 		getMatchController ().runActionsAfterPlayerRegistration (playersNumberInGroup, createdPlayers);
 	}
 
-	// TODO Create check on name twin (name should be UNIQUE)
+
 	@Override
 	protected void addNewPlayer ()
 	{
 		String playerName = getPlayerNameTxtField ().getText ();
 		if (getPlayerNameTxtFieldDefaultValue ().equals (playerName) || playerName.isEmpty ())
 			return;
+
+		if (! isNameUnique (playerName))
+		{
+			JOptionPane.showMessageDialog(null, "That name already exist. Please, try another one.");
+			return;
+		}
 
 		addNewPlayer (playerName);
 		getPlayerNameTxtField ().setText (getPlayerNameTxtFieldDefaultValue ());
@@ -134,6 +140,16 @@ public class PlayersRegistration extends PlayersRegistrationGui
 		//TODO resolve issue based on hidden column
 		return getPlayersTable ().getColumnName (column - hackInt).equals (Constats.DELETE_BTN_ID) ||
 				getPlayersTable ().getColumnName (column - hackInt).equals (Constats.EDIT_BTN_ID);
+	}
+
+
+	private boolean isNameUnique (String playerName)
+	{
+		for (Object rowData : mDefaultTableModel.getDataVector ())
+			if (getPlayerObjectNewInstance ((Vector) rowData).getName ().equals (playerName))
+				return false;
+
+		return true;
 	}
 
 

@@ -1,8 +1,5 @@
 import MainController.MainController;
 
-// TODO 2 Test for 3 people, 6, 9, 12
-
-// TODO 3 Go through try catch blocks
 
 // TODO 4 more than 2 people in one group -> little bit changes in rules check this! (for this need huge refactor and logic changes) AND Create more game types
 
@@ -16,6 +13,7 @@ import MainController.MainController;
 // TODO In game menu
 //===================================
 
+// TODO Go through try catch blocks
 // TODO How to style playing forms.... and use abstract class
 // TODO Create documentation
 // TODO Global Refactor: split logic

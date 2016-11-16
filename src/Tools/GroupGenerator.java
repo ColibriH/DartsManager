@@ -4,9 +4,6 @@ import MatchController.Objects.PlayerObject;
 
 import java.util.*;
 
-/**
- * Created by vladislavs on 06.09.2016..
- */
 public class GroupGenerator
 {
 	public static HashMap <Integer, ArrayList <PlayerObject>> generateRandomGroups (Integer playersNumberInGroup, ArrayList <PlayerObject> playerList)
@@ -17,8 +14,9 @@ public class GroupGenerator
 			groupCount++;
 
 		HashMap <Integer, ArrayList <PlayerObject>> generatedGroupMap = new HashMap <> ();
+		List<PlayerObject> shuffledListOfPlayerObject= getShuffledListOfPlayerObject (playerList);
 		for (int i = 0; i < groupCount; i++)
-			generatedGroupMap.put (i, getOneCreatedGroup (playersNumberInGroup, getShuffledListOfPlayerObject (playerList)));
+			generatedGroupMap.put (i, getOneCreatedGroup (playersNumberInGroup, shuffledListOfPlayerObject));
 
 		return generatedGroupMap;
 	}

@@ -55,7 +55,10 @@ public class TournamentTableGroupPanel extends JPanel
 
 	private TournamentTableGroupPanel (ArrayList<PlayerObject> mPlayerList)
 	{
-		initialization (mPlayerList.get (0).getName(), mPlayerList.get (1).getName());
+		if (mPlayerList.size () == 1)
+			initialization (mPlayerList.get (0).getName(), "?");
+		else
+			initialization (mPlayerList.get (0).getName(), mPlayerList.get (1).getName());
 	}
 
 

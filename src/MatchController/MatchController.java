@@ -15,7 +15,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// TODO sort in encapsulation order
 public class MatchController
 {
 	private PlayersRegistration         mPlayersRegistration;
@@ -41,20 +40,20 @@ public class MatchController
 		mPlayerList.add(new PlayerObject("0", 0));
 		mPlayerList.add(new PlayerObject("1", 1));
 		mPlayerList.add(new PlayerObject("2", 2));
-		mPlayerList.add(new PlayerObject("3", 3));
-
-		mPlayerList.add(new PlayerObject("4", 4));
-		mPlayerList.add(new PlayerObject("5", 5));
-		mPlayerList.add(new PlayerObject("6", 6));
-		mPlayerList.add(new PlayerObject("7", 7));
-
-		mPlayerList.add(new PlayerObject("8", 8));
-		mPlayerList.add(new PlayerObject("9", 9));
-
-		mPlayerList.add(new PlayerObject("10", 10));
-		mPlayerList.add(new PlayerObject("11", 11));
-		mPlayerList.add(new PlayerObject("12", 12));
-		mPlayerList.add(new PlayerObject("13", 13));
+//		mPlayerList.add(new PlayerObject("3", 3));
+//
+//		mPlayerList.add(new PlayerObject("4", 4));
+//		mPlayerList.add(new PlayerObject("5", 5));
+//		mPlayerList.add(new PlayerObject("6", 6));
+//		mPlayerList.add(new PlayerObject("7", 7));
+//
+//		mPlayerList.add(new PlayerObject("8", 8));
+//		mPlayerList.add(new PlayerObject("9", 9));
+//
+//		mPlayerList.add(new PlayerObject("10", 10));
+//		mPlayerList.add(new PlayerObject("11", 11));
+//		mPlayerList.add(new PlayerObject("12", 12));
+//		mPlayerList.add(new PlayerObject("13", 13));
 //
 //		mPlayerList.add(new PlayerObject("14", 14));
 //		mPlayerList.add(new PlayerObject("15", 15));
@@ -87,25 +86,6 @@ public class MatchController
 	private void setPlayerList (ArrayList <PlayerObject> tablePlayerList)
 	{
 		mPlayerList =  new ArrayList <> (tablePlayerList);
-	}
-
-
-	//TODO Refactor
-	private void ifOnePlayerInGroupPromoteToNextStage () throws Exception
-	{
-/*		for (Object o : mPlayerGroupsMap.entrySet ())
-		{
-			Map.Entry <Integer, ArrayList <Integer>> pair = (Map.Entry <Integer, ArrayList <Integer>>) o;   // Could by cast exception at runtime!
-			ArrayList <Integer> value =  pair.getValue ();
-
-			if (value.size () < mPlayersNumberInGroup)
-			{
-				Integer playerId = pair.getKey ();
-
-				mStageWinnerHashMap.put (playerId, getPlayerObjectById (playerId));
-				mPlayerGroupsMap.remove (pair.getKey ());
-			}
-		}*/
 	}
 
 
@@ -168,7 +148,14 @@ public class MatchController
 	}
 
 
-	//TODO Refactor
+	private void promotePlayerAndRotateToNextStage (PlayerObject winningPlayerObject)
+	{
+		mGroupsController.promoteWinningPlayerToNextStage (winningPlayerObject);
+		mGroupsController.rotateToNextGroup ();
+		setNextGroupPlayingText ();
+	}
+
+
 	public void runActionsAfterPlayerRegistration (Integer playersNumberInGroup, ArrayList <PlayerObject> tablePlayerList)
 	{
 		mPlayersNumberInGroup = playersNumberInGroup;
@@ -179,7 +166,6 @@ public class MatchController
 
 		try
 		{
-			//ifOnePlayerInGroupPromoteToNextStage ();
 			displayGameGroups ();
 		}
 		catch (Exception e)
@@ -234,9 +220,10 @@ public class MatchController
 			else
 			{
 				resetPlayerLegData (winningPlayerObject);
-				mGroupsController.promoteWinningPlayerToNextStage (winningPlayerObject);
-				mGroupsController.rotateToNextGroup ();
-				setNextGroupPlayingText ();
+				promotePlayerAndRotateToNextStage (winningPlayerObject);
+
+				if (mGroupsController.getCurrentPlayingGroup ().getPlayerObjects ().size () == 1)   // Possible only on first stage
+					promotePlayerAndRotateToNextStage (mGroupsController.getCurrentPlayingGroup ().getPlayerObjects ().get (0));
 			}
 		}
 		catch (Exception e)
@@ -270,7 +257,6 @@ public class MatchController
 	}
 
 
-	//TODO Refactor
 	public void openGameManager ()
 	{
 		mTournamentTable.destroy ();

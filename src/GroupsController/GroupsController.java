@@ -8,7 +8,7 @@ import MatchController.Objects.PlayerObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// TODO Create Level Links in nodes to rotate stage groups without find loop
+// TODO Create Level Links in nodes to rotate stage groups without find loop and rething tree structure to create more simpler walk in it
 public class GroupsController
 {
 	private HashMap<Integer, ArrayList<GroupsTreeNode>> mMatchGroups;
@@ -113,7 +113,9 @@ public class GroupsController
 		parent.addChildren (node2);
 
 		node.setParent (parent);
-		node2.setParent (parent);
+
+		if (node2 != null)      // In normal flow it can`t be null
+			node2.setParent (parent);
 	}
 
 
