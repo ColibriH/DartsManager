@@ -34,18 +34,6 @@ public class MatchController
 	}
 
 
-	public void initializeNewMatch ()
-	{
-		mPlayersNumberInGroup = 2;
-
-		if (MainController.DEBUG_MODE)
-			executeDebugCode();
-
-		whetherToKeepOldPlayerList ();
-		mPlayersRegistration = new PlayersRegistration (this);
-	}
-
-
 	private void executeDebugCode ()
 	{
 		mPlayerList = new ArrayList<>();
@@ -101,26 +89,6 @@ public class MatchController
 		mPlayerList =  new ArrayList <> (tablePlayerList);
 	}
 
-	//TODO Refactor
-	public void runActionsAfterPlayerRegistration (Integer playersNumberInGroup, ArrayList <PlayerObject> tablePlayerList)
-	{
-		mPlayersNumberInGroup = playersNumberInGroup;
-
-		setPlayerList (tablePlayerList);
-		destroyPlayerRegistration ();
-		initializeMatchGroupsController ();
-
-		try
-		{
-			//ifOnePlayerInGroupPromoteToNextStage ();
-			displayGameGroups ();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace ();
-			JOptionPane.showMessageDialog (null, e);
-		}
-	}
 
 	//TODO Refactor
 	private void ifOnePlayerInGroupPromoteToNextStage () throws Exception
@@ -160,6 +128,86 @@ public class MatchController
 	}
 
 
+	private void displayGameGroups ()
+	{
+		mTournamentTable = new TournamentTable (this);
+	}
+
+
+	private ArrayList <PlayerObject> getGameOpponents () throws Exception
+	{
+		return mGroupsController.getCurrentPlayingGroup ().getPlayerObjects ();
+	}
+
+
+	private void resetPlayerLegData (PlayerObject winningPlayerObject)
+	{
+		winningPlayerObject.setLeg(0);
+	}
+
+
+	private void showMatchWinner (PlayerObject winner)
+	{
+		mWinnerGuiFrame = new WinnerFrame (this, winner);
+	}
+
+
+	private void setNextGroupPlayingText ()
+	{
+		mTournamentTable.displayCurrentPlayingGroupText ();
+		mTournamentTable.setVisibility (true);
+	}
+
+
+	private void startGame () throws Exception
+	{
+		if (mGameController != null)
+			mGameController = null;
+
+		mGameController = new GameController (this, getGameOpponents ());
+	}
+
+
+	//TODO Refactor
+	public void runActionsAfterPlayerRegistration (Integer playersNumberInGroup, ArrayList <PlayerObject> tablePlayerList)
+	{
+		mPlayersNumberInGroup = playersNumberInGroup;
+
+		setPlayerList (tablePlayerList);
+		destroyPlayerRegistration ();
+		initializeMatchGroupsController ();
+
+		try
+		{
+			//ifOnePlayerInGroupPromoteToNextStage ();
+			displayGameGroups ();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace ();
+			JOptionPane.showMessageDialog (null, e);
+		}
+	}
+
+
+	public void initializeNewMatch ()
+	{
+		mPlayersNumberInGroup = 2;
+
+		if (MainController.DEBUG_MODE)
+			executeDebugCode();
+
+		whetherToKeepOldPlayerList ();
+		mPlayersRegistration = new PlayersRegistration (this);
+	}
+
+
+	public HashMap <Integer, ArrayList <GroupsTreeNode>> getMatchGroups ()
+	{
+		return mGroupsController.getMatchGroups ();
+	}
+
+
 	public void runActionsAfterGroupDisplay ()
 	{
 		try
@@ -172,24 +220,6 @@ public class MatchController
 			e.printStackTrace ();
 			JOptionPane.showMessageDialog (null, e);
 		}
-	}
-
-
-	private void displayGameGroups ()
-	{
-		mTournamentTable = new TournamentTable (this);
-	}
-
-
-	public HashMap <Integer, ArrayList <GroupsTreeNode>> getMatchGroups ()
-	{
-		return mGroupsController.getMatchGroups ();
-	}
-
-
-	private ArrayList <PlayerObject> getGameOpponents () throws Exception
-	{
-		return mGroupsController.getCurrentPlayingGroup ().getPlayerObjects ();
 	}
 
 
@@ -217,25 +247,6 @@ public class MatchController
 	}
 
 
-	private void resetPlayerLegData (PlayerObject winningPlayerObject)
-	{
-		winningPlayerObject.setLeg(0);
-	}
-
-
-	private void showMatchWinner (PlayerObject winner)
-	{
-		mWinnerGuiFrame = new WinnerFrame (this, winner);
-	}
-
-
-	private void setNextGroupPlayingText ()
-	{
-		mTournamentTable.displayCurrentPlayingGroupText ();
-		mTournamentTable.setVisibility (true);
-	}
-
-
 	public ArrayList <PlayerObject> getPlayerList ()
 	{
 		return mPlayerList;
@@ -251,21 +262,13 @@ public class MatchController
 	}
 
 
-	private void startGame () throws Exception
-	{
-		if (mGameController != null)
-			mGameController = null;
-
-		mGameController = new GameController (this, getGameOpponents ());
-	}
-
-
 	public void openMenuAndDestroyPlayerRegistration ()
 	{
 		mPlayersRegistration.destroy ();
 		mPlayersRegistration = null;
 		MainController.openMenuGui ();
 	}
+
 
 	//TODO Refactor
 	public void openGameManager ()
@@ -274,6 +277,7 @@ public class MatchController
 		mTournamentTable = null;
 		mPlayersRegistration = new PlayersRegistration (this);
 	}
+
 
 	public ArrayList<TournamentTableGroupPanel> getAllMatchGroupsPanels ()
 	{

@@ -1,7 +1,5 @@
 import MainController.MainController;
 
-// TODO 1 deal with warnings
-
 // TODO 2 Test for 3 people, 6, 9, 12
 
 // TODO 3 Go through try catch blocks
