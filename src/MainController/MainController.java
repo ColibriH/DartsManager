@@ -1,5 +1,6 @@
 package MainController;
 
+import Constants.Constats;
 import MainController.Menu.Menu;
 import MatchController.MatchController;
 import MainController.Menu.MenuGui;
@@ -19,12 +20,12 @@ public class MainController
 	}
 
 
-	public static void startMatch ()
+	public static void startMatch (Constats.GameType gameType)
 	{
 		if (matchController == null)
-			matchController = new MatchController ();
+			matchController = new MatchController (gameType);
 		else
-			matchController.initializeNewMatch ();
+			matchController.initializeNewMatch (gameType);
 	}
 
 

@@ -15,7 +15,8 @@ import java.awt.*;
  */
 public abstract class MenuGui extends DartsGuiFormBase
 {
-	protected abstract void tournamentButtonAction ();
+	protected abstract void tournamentButtonAction      ();
+	protected abstract void groupTournamentButtonAction ();
 
 	private final int   MENU_BUTTON_WIDTH     = 250;
 	private final int   MENU_BUTTON_HEIGHT    = 50;
@@ -27,7 +28,7 @@ public abstract class MenuGui extends DartsGuiFormBase
 	private MenuButton  mTournamentButton;
 	private MenuButton  mExitButton;
 	private MenuButton  mOptionsButton;
-	private MenuButton  mEachVsEachButton;
+	private MenuButton mGroupTournamentButton;
 
 
 	@Override
@@ -37,18 +38,19 @@ public abstract class MenuGui extends DartsGuiFormBase
 
 		mControlPanel           = new JPanel ();
 
-		mTournamentButton       = new MenuButton ("Tournament",   MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
-		mExitButton             = new MenuButton ("Exit",         MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
-		mOptionsButton          = new MenuButton ("Settings",     MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
-		mEachVsEachButton       = new MenuButton ("Each Vs Each", MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
+		mTournamentButton       = new MenuButton ("Tournament",         MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
+		mExitButton             = new MenuButton ("Exit",               MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
+		mOptionsButton          = new MenuButton ("Settings (In Dev)",  MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
+		mGroupTournamentButton  = new MenuButton ("Group Tournament",   MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
 	}
 
 
 	@Override
 	protected void  addComponentsListener ()
 	{
-		mTournamentButton.  addActionListener (e -> tournamentButtonAction ());
-		mExitButton.        addActionListener (e -> System.exit (1));
+		mTournamentButton.      addActionListener (e -> tournamentButtonAction ());
+		mExitButton.            addActionListener (e -> System.exit (1));
+		mGroupTournamentButton. addActionListener (e -> groupTournamentButtonAction ());
 	}
 
 
@@ -77,7 +79,7 @@ public abstract class MenuGui extends DartsGuiFormBase
 		mControlPanel.setPreferredSize (new Dimension (CTR_PANEL_WIDTH, CTR_PANEL_HEIGHT));
 
 		addComponentToPanel (mControlPanel, mTournamentButton,  0, 0, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
-		addComponentToPanel (mControlPanel, mEachVsEachButton,  0, 1, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mControlPanel, mGroupTournamentButton, 0, 1, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
 		addComponentToPanel (mControlPanel, mOptionsButton,     0, 2, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
 		addComponentToPanel (mControlPanel, mExitButton,        0, 3, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
 	}
@@ -133,12 +135,12 @@ public abstract class MenuGui extends DartsGuiFormBase
 
 	public MenuButton   getEachVsEachButton ()
 	{
-		return mEachVsEachButton;
+		return mGroupTournamentButton;
 	}
 
 
 	public void         setEachVsEachButton (MenuButton mEachVsEachButton)
 	{
-		this.mEachVsEachButton = mEachVsEachButton;
+		this.mGroupTournamentButton = mEachVsEachButton;
 	}
 }

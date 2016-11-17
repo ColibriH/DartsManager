@@ -50,7 +50,7 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	private JButton                 mMatchStartBtn;
 	private JButton                 mBackButton;
 
-	private JLabel                  mPlayerInGroupCntLabel;
+	private JLabel                  mPlayerLooseCntLabel;
 	private JLabel                  mPlayerNameLabel;
 
 
@@ -76,7 +76,7 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 		mMatchStartBtn          = new MenuButton ("Start Match");
 		mBackButton             = new MenuButton ("Back");
 
-		mPlayerInGroupCntLabel  = new JLabel ("Players number in group");
+		mPlayerLooseCntLabel    = new JLabel ("Loose Count");
 		mPlayerNameLabel        = new JLabel ("Name");
 
 		mPlayersInGroupTxtField = new JTextField ();
@@ -175,7 +175,7 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 
 		controlPanelComponentStyling ();
 
-		addComponentToPanel (mControlJPanel, mPlayerInGroupCntLabel,  0, 1, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mPlayerLooseCntLabel, 0, 1, new Insets (0, 5, 5, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField, 0, 2, new Insets (0,   5, 10, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerNameLabel,        0, 3, new Insets (15,  5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 4, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
@@ -189,8 +189,8 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	{
 		Font scratchFont = new Font ("Nail Scratch", Font.TRUETYPE_FONT, 12);
 
-		mPlayerInGroupCntLabel.setForeground (Color.white);
-		mPlayerInGroupCntLabel.setFont (scratchFont);
+		mPlayerLooseCntLabel.setForeground (Color.white);
+		mPlayerLooseCntLabel.setFont (scratchFont);
 
 		mPlayersInGroupTxtField.setEditable (false);
 		mPlayersInGroupTxtField.setText ("2");

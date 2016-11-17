@@ -8,6 +8,12 @@ public class Constats
 	public static final int MAIN_WIDTH                      = 620;
 	public static final int MAIN_HEIGHT                     = 800;
 
+	public static enum GameType
+	{
+		Tournament,
+		GroupTournament
+	}
+
 	private static final String PIC_FOLDER_PATH             = "pic_";
 	private static final String FONT_FOLDER_PATH            = "font_";
 

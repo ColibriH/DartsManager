@@ -1,5 +1,6 @@
 package MatchController;
 
+import Constants.Constats;
 import GameController.GameController;
 import GroupsController.GroupsController;
 import MainController.MainController;
@@ -24,12 +25,14 @@ public class MatchController
 	private GroupsController            mGroupsController;
 
 	private ArrayList <PlayerObject>    mPlayerList;
+	private Constats.GameType           mGameType;
 	private Integer                     mPlayersNumberInGroup;
+	private Integer                     mLooseCount;
 
 
-	public MatchController ()
+	public MatchController (Constats.GameType gameType)
 	{
-		initializeNewMatch ();
+		initializeNewMatch (gameType);
 	}
 
 
@@ -104,7 +107,10 @@ public class MatchController
 
 	private void initializeMatchGroupsController ()
 	{
-		mGroupsController = new GroupsController (GroupGenerator.generateRandomGroups (mPlayersNumberInGroup, mPlayerList));
+		if (isGameTypeTournament ())
+			mGroupsController = new GroupsController (GroupGenerator.generateTournamentRandomGroups (mPlayersNumberInGroup, mPlayerList));
+		else if (isGameTypeGroupTournament ())
+			GroupGenerator.generateGroupTournamentRandomGroups (mGameType, mLooseCount, mPlayerList);
 	}
 
 
@@ -176,15 +182,35 @@ public class MatchController
 	}
 
 
-	public void initializeNewMatch ()
+	public void initializeNewMatch (Constats.GameType gameType)
 	{
-		mPlayersNumberInGroup = 2;
+		mGameType = gameType;
+		setPlayersNumberInGroup ();
 
 		if (MainController.DEBUG_MODE)
 			executeDebugCode();
 
 		whetherToKeepOldPlayerList ();
 		mPlayersRegistration = new PlayersRegistration (this);
+	}
+
+
+	private void setPlayersNumberInGroup ()
+	{
+		if (isGameTypeTournament ())              mPlayersNumberInGroup = 2;
+		else if (isGameTypeGroupTournament ())    mPlayersNumberInGroup = 4;
+	}
+
+
+	private boolean isGameTypeTournament ()
+	{
+		return mGameType == Constats.GameType.Tournament;
+	}
+
+
+	private boolean isGameTypeGroupTournament ()
+	{
+		return mGameType == Constats.GameType.GroupTournament;
 	}
 
 
@@ -245,7 +271,7 @@ public class MatchController
 		if (mWinnerGuiFrame != null)
 			mWinnerGuiFrame = null;
 
-		initializeNewMatch ();
+		initializeNewMatch (mGameType);
 	}
 
 

@@ -1,12 +1,13 @@
 package Tools;
 
+import Constants.Constats;
 import MatchController.Objects.PlayerObject;
 
 import java.util.*;
 
 public class GroupGenerator
 {
-	public static HashMap <Integer, ArrayList <PlayerObject>> generateRandomGroups (Integer playersNumberInGroup, ArrayList <PlayerObject> playerList)
+	public static HashMap <Integer, ArrayList <PlayerObject>> generateTournamentRandomGroups (Integer playersNumberInGroup, ArrayList <PlayerObject> playerList)
 	{
 		int groupCount = playerList.size () / playersNumberInGroup;
 
@@ -19,6 +20,11 @@ public class GroupGenerator
 			generatedGroupMap.put (i, getOneCreatedGroup (playersNumberInGroup, shuffledListOfPlayerObject));
 
 		return generatedGroupMap;
+	}
+
+
+	public static void generateGroupTournamentRandomGroups (Constats.GameType mGameType, Integer looseCount, ArrayList<PlayerObject> mPlayerList)
+	{
 	}
 
 
