@@ -2,7 +2,8 @@ package MatchController;
 
 import Constants.Constats;
 import GameController.GameController;
-import GroupsController.GroupsController;
+import GroupsController.GroupTournamentGroupsController;
+import GroupsController.TournamentGroupsController;
 import MainController.MainController;
 import MatchController.Gui.Components.TournamentTableGroupPanel;
 import MatchController.Gui.PlayersRegistration.PlayersRegistration;
@@ -18,16 +19,16 @@ import java.util.HashMap;
 
 public class MatchController
 {
-	private PlayersRegistration         mPlayersRegistration;
-	private TournamentTable             mTournamentTable;
-	private WinnerFrame                 mWinnerGuiFrame;
-	private GameController              mGameController;
-	private GroupsController            mGroupsController;
+	private PlayersRegistration             mPlayersRegistration;
+	private TournamentTable                 mTournamentTable;
+	private WinnerFrame                     mWinnerGuiFrame;
+	private GameController                  mGameController;
+	private TournamentGroupsController      mTournamentGroupsController;
+	private GroupTournamentGroupsController mGroupsTournamentGroupsController;
 
-	private ArrayList <PlayerObject>    mPlayerList;
-	private Constats.GameType           mGameType;
-	private Integer                     mPlayersNumberInGroup;
-	private Integer                     mLooseCount;
+	private ArrayList <PlayerObject>        mPlayerList;
+	private Constats.GameType               mGameType;
+	private Integer                         mPlayersNumberInGroup;  // TODO REMOVE
 
 
 	public MatchController (Constats.GameType gameType)
@@ -43,12 +44,12 @@ public class MatchController
 		mPlayerList.add(new PlayerObject("0", 0));
 		mPlayerList.add(new PlayerObject("1", 1));
 		mPlayerList.add(new PlayerObject("2", 2));
-//		mPlayerList.add(new PlayerObject("3", 3));
-//
-//		mPlayerList.add(new PlayerObject("4", 4));
-//		mPlayerList.add(new PlayerObject("5", 5));
-//		mPlayerList.add(new PlayerObject("6", 6));
-//		mPlayerList.add(new PlayerObject("7", 7));
+		mPlayerList.add(new PlayerObject("3", 3));
+
+		mPlayerList.add(new PlayerObject("4", 4));
+		mPlayerList.add(new PlayerObject("5", 5));
+		mPlayerList.add(new PlayerObject("6", 6));
+		mPlayerList.add(new PlayerObject("7", 7));
 //
 //		mPlayerList.add(new PlayerObject("8", 8));
 //		mPlayerList.add(new PlayerObject("9", 9));
@@ -108,9 +109,9 @@ public class MatchController
 	private void initializeMatchGroupsController ()
 	{
 		if (isGameTypeTournament ())
-			mGroupsController = new GroupsController (GroupGenerator.generateTournamentRandomGroups (mPlayersNumberInGroup, mPlayerList));
+			mTournamentGroupsController = new TournamentGroupsController (GroupGenerator.generateTournamentRandomGroups (mPlayersNumberInGroup, mPlayerList));
 		else if (isGameTypeGroupTournament ())
-			GroupGenerator.generateGroupTournamentRandomGroups (mGameType, mLooseCount, mPlayerList);
+			mGroupsTournamentGroupsController = new GroupTournamentGroupsController (GroupGenerator.generateGroupTournamentGroups (mPlayerList));
 	}
 
 
@@ -122,7 +123,7 @@ public class MatchController
 
 	private ArrayList <PlayerObject> getGameOpponents () throws Exception
 	{
-		return mGroupsController.getCurrentPlayingGroup ().getPlayerObjects ();
+		return mTournamentGroupsController.getCurrentPlayingGroup ().getPlayerObjects ();
 	}
 
 
@@ -156,8 +157,8 @@ public class MatchController
 
 	private void promotePlayerAndRotateToNextStage (PlayerObject winningPlayerObject)
 	{
-		mGroupsController.promoteWinningPlayerToNextStage (winningPlayerObject);
-		mGroupsController.rotateToNextGroup ();
+		mTournamentGroupsController.promoteWinningPlayerToNextStage (winningPlayerObject);
+		mTournamentGroupsController.rotateToNextGroup ();
 		setNextGroupPlayingText ();
 	}
 
@@ -216,7 +217,7 @@ public class MatchController
 
 	public HashMap <Integer, ArrayList <GroupsTreeNode>> getMatchGroups ()
 	{
-		return mGroupsController.getMatchGroups ();
+		return mTournamentGroupsController.getMatchGroups ();
 	}
 
 
@@ -239,7 +240,7 @@ public class MatchController
 	{
 		try
 		{
-			if (mGroupsController.isLastGroupPlayed ())
+			if (mTournamentGroupsController.isLastGroupPlayed ())
 			{
 				showMatchWinner (winningPlayerObject);
 			}
@@ -248,8 +249,8 @@ public class MatchController
 				resetPlayerLegData (winningPlayerObject);
 				promotePlayerAndRotateToNextStage (winningPlayerObject);
 
-				if (mGroupsController.getCurrentPlayingGroup ().getPlayerObjects ().size () == 1)   // Possible only on first stage
-					promotePlayerAndRotateToNextStage (mGroupsController.getCurrentPlayingGroup ().getPlayerObjects ().get (0));
+				if (mTournamentGroupsController.getCurrentPlayingGroup ().getPlayerObjects ().size () == 1)   // Possible only on first stage
+					promotePlayerAndRotateToNextStage (mTournamentGroupsController.getCurrentPlayingGroup ().getPlayerObjects ().get (0));
 			}
 		}
 		catch (Exception e)
@@ -293,13 +294,13 @@ public class MatchController
 
 	public ArrayList<TournamentTableGroupPanel> getAllMatchGroupsPanels ()
 	{
-		return mGroupsController.getAllMatchGroupsPanels ();
+		return mTournamentGroupsController.getAllMatchGroupsPanels ();
 	}
 
 
 	public TournamentTableGroupPanel getCurrentPlayingGroupPanel ()
 	{
-		return mGroupsController.getCurrentPlayingGroupPanel ();
+		return mTournamentGroupsController.getCurrentPlayingGroupPanel ();
 	}
 
 

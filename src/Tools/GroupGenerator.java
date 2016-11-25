@@ -1,6 +1,5 @@
 package Tools;
 
-import Constants.Constats;
 import MatchController.Objects.PlayerObject;
 
 import java.util.*;
@@ -23,8 +22,22 @@ public class GroupGenerator
 	}
 
 
-	public static void generateGroupTournamentRandomGroups (Constats.GameType mGameType, Integer looseCount, ArrayList<PlayerObject> mPlayerList)
+	public static HashMap <PlayerObject, ArrayList <PlayerObject>> generateGroupTournamentGroups (ArrayList<PlayerObject> mPlayerList)
 	{
+
+		mPlayerList.sort ((o1, o2) -> o1.getId () - o2.getId ());
+		HashMap <PlayerObject, ArrayList <PlayerObject>> groupsMap = new HashMap <> ();
+
+		for (int i = 0; i < mPlayerList.size () - 1; i++)
+		{
+			ArrayList <PlayerObject> playersGroups = new ArrayList <> ();
+			for (int j = i + 1; j < mPlayerList.size (); j++)
+				playersGroups.add (mPlayerList.get (j));
+
+			groupsMap.put (mPlayerList.get (i), playersGroups);
+		}
+
+		return groupsMap;
 	}
 
 
