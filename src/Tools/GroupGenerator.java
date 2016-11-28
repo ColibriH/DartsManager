@@ -24,7 +24,6 @@ public class GroupGenerator
 
 	public static HashMap <PlayerObject, ArrayList <PlayerObject>> generateGroupTournamentGroups (ArrayList<PlayerObject> mPlayerList)
 	{
-
 		mPlayerList.sort ((o1, o2) -> o1.getId () - o2.getId ());
 		HashMap <PlayerObject, ArrayList <PlayerObject>> groupsMap = new HashMap <> ();
 
@@ -37,7 +36,45 @@ public class GroupGenerator
 			groupsMap.put (mPlayerList.get (i), playersGroups);
 		}
 
-		return groupsMap;
+		return  groupsMap;
+	}
+
+
+	public static HashMap <Integer, ArrayList <ArrayList <PlayerObject>>> generateGroupTournamentRandomGroups (int startPos, ArrayList <ArrayList <PlayerObject>> mPlayingGroups)
+	{
+		HashMap <Integer, ArrayList <ArrayList <PlayerObject>>> returnMap = new HashMap <> ();
+
+		Integer i = startPos;
+		int added = 0;
+		while (mPlayingGroups.size () != 0)
+		{
+			Random rand = new Random ();
+			int n = rand.nextInt (mPlayingGroups.size ());
+
+			if (returnMap.get (i) == null)
+			{
+				returnMap.put (i, new ArrayList <ArrayList <PlayerObject>> ()
+				{{
+					add (mPlayingGroups.get (n));
+				}});
+				mPlayingGroups.remove (n);
+				added++;
+			}
+			else
+			{
+				returnMap.get (i).add (mPlayingGroups.get (n));
+				mPlayingGroups.remove (n);
+				added++;
+			}
+
+			if (added == 2)
+			{
+				added = 0;
+				i++;
+			}
+		}
+
+		return returnMap;
 	}
 
 
