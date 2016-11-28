@@ -1,13 +1,12 @@
-package MatchController.Gui.TournamentTable;
+package MatchController.Gui.GroupTournamentTable;
 
 import BaseAbstractClasses.DartsGuiFormBase;
 import GuiComponents.ImagedPanel;
 import GuiComponents.MenuButton;
+import MatchController.Gui.Components.GroupTournamentTableGroupPanel;
 import MatchController.Gui.Components.TableScrollBar;
-import MatchController.Gui.Components.TournamentTableGroupPanel;
-import MatchController.Gui.Components.GroupPanelLines;
 import MatchController.MatchController;
-import MatchController.Objects.GroupsTreeNode;
+import MatchController.Objects.GroupPlayerObject;
 import Constants.Constats;
 import Tools.ImageLoader;
 
@@ -16,24 +15,20 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-abstract class TournamentTableGui extends DartsGuiFormBase
+abstract class GroupTournamentTableGui extends DartsGuiFormBase
 {
-	protected abstract void setCurrentPlayingGroupText ();
-
-	private JPanel                                              mControlJPanel;
+	private JPanel mControlJPanel;
 	private JPanel                                              mGroupsPanelContent;
 	private JPanel                                              mGroupsPanel;
-	private GroupPanelLines                                     mGlassPanel;
 	private JScrollPane                                         mGroupsScrollPane;
 
-	private JButton                                             mGameStartBtn;
 	private JButton                                             mBackBtn;
 
 
-	TournamentTableGui (MatchController matchController)
+	GroupTournamentTableGui (MatchController matchController)
 	{
 		super (matchController);
-		setMainFrameResizable (true);
+		setMainFrameResizable (false);
 	}
 
 
@@ -45,10 +40,8 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 		mGroupsPanel        = new JPanel ();
 		mControlJPanel      = new JPanel ();
 		mGroupsPanelContent = new JPanel ();
-		mGlassPanel 		= new GroupPanelLines (null);
 		mGroupsScrollPane   = new JScrollPane (mGroupsPanelContent, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-		mGameStartBtn   	= new MenuButton ("Start Game");
 		mBackBtn        	= new MenuButton ("Back");
 	}
 
@@ -56,7 +49,6 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 	@Override
 	protected void addComponentsListener ()
 	{
-		mGameStartBtn.  addActionListener (e -> getMatchController ().runActionsAfterTournamentTable ());
 		mBackBtn.       addActionListener (e -> getMatchController ().openPlayerRegistration ());
 	}
 
@@ -87,11 +79,8 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 		mGroupsPanel.setBackground (new Color (255, 255, 255, 0));
 
 		addGroupsToMainPanel ();
-		drawGroupsLines ();
-		setCurrentPlayingGroupText ();
 
 		GridBagConstraints gbc = new GridBagConstraints ();
-		addComponentToPanel (mGroupsPanelContent, mGlassPanel,  0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
 		addComponentToPanel (mGroupsPanelContent, mGroupsPanel, 0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
 	}
 
@@ -117,35 +106,28 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 
 		GridBagConstraints mControlPanelGbc = new GridBagConstraints ();
 		addComponentToPanel (mControlJPanel, mBackBtn,      0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
-		addComponentToPanel (mControlJPanel, mGameStartBtn, 1, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
 	private void modifyControlPanelComponents ()
 	{
-		mGameStartBtn   .setPreferredSize (new Dimension (100, 50));
 		mBackBtn        .setPreferredSize (new Dimension (100, 50));
-	}
-
-
-	private void drawGroupsLines ()
-	{
-		mGlassPanel = new GroupPanelLines (getMatchController ().getTournamentMatchGroups ());
 	}
 
 
 	private void addGroupsToMainPanel ()
 	{
 		GridBagConstraints gbc = new GridBagConstraints ();
-		HashMap <Integer, ArrayList <GroupsTreeNode>> matchGroups = getMatchController ().getTournamentMatchGroups ();
-		for (int i = 0; i < matchGroups.size (); i++)
+		HashMap <Integer, ArrayList <GroupPlayerObject>> matchGroups = getMatchController ().getGroupTournamentGameGroups ();
+
+		int size = matchGroups.size ();
+		for (int i = 0; i < size; i++)
 		{
-			ArrayList <GroupsTreeNode> nodes = matchGroups.get (i);
-			for (GroupsTreeNode node : nodes)
-			{
-				TournamentTableGroupPanel dgp = node.getDisplayGroupPanel ();
-				addComponentToPanel (mGroupsPanel, dgp, dgp.getColumn (), dgp.getRow (), new Insets (0, 0, 0, 0), 0, dgp.getWeightX (), dgp.getWeightY (), 1, GridBagConstraints.NORTHWEST, gbc, null);
-			}
+			int row = i;
+
+			GroupPlayerObject groups = matchGroups.get (i).get (0);
+			GroupTournamentTableGroupPanel dgp = groups.getGroupTournamentGroupPanel ();
+			addComponentToPanel (mGroupsPanel, dgp, 0, row, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.NORTHWEST, gbc, null);
 		}
 	}
 

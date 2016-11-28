@@ -6,9 +6,11 @@ import GroupsController.GroupTournamentGroupsController;
 import GroupsController.TournamentGroupsController;
 import MainController.MainController;
 import MatchController.Gui.Components.TournamentTableGroupPanel;
+import MatchController.Gui.GroupTournamentTable.GroupTournamentTable;
 import MatchController.Gui.PlayersRegistration.PlayersRegistration;
 import MatchController.Gui.TournamentTable.TournamentTable;
 import MatchController.Gui.WinnerFrame.WinnerFrame;
+import MatchController.Objects.GroupPlayerObject;
 import MatchController.Objects.GroupsTreeNode;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
@@ -19,16 +21,20 @@ import java.util.HashMap;
 
 public class MatchController
 {
+	// TODO Create Base class to some of next classes to reduce cnt of it
 	private PlayersRegistration             mPlayersRegistration;
-	private TournamentTable                 mTournamentTable;
-	private WinnerFrame                     mWinnerGuiFrame;
-	private GameController                  mGameController;
 	private TournamentGroupsController      mTournamentGroupsController;
 	private GroupTournamentGroupsController mGroupsTournamentGroupsController;
+	private TournamentTable                 mTournamentTable;
+	private GroupTournamentTable            mGroupTournamentTable;
+	private WinnerFrame                     mWinnerGuiFrame;
+	private GameController                  mGameController;
+
 
 	private ArrayList <PlayerObject>        mPlayerList;
 	private Constats.GameType               mGameType;
 	private Integer                         mPlayersNumberInGroup;  // TODO REMOVE
+
 
 
 	public MatchController (Constats.GameType gameType)
@@ -117,7 +123,10 @@ public class MatchController
 
 	private void displayGameGroups ()
 	{
-		mTournamentTable = new TournamentTable (this);
+		if (isGameTypeTournament ())
+			mTournamentTable = new TournamentTable (this);
+		else if (isGameTypeGroupTournament ())
+			mGroupTournamentTable = new GroupTournamentTable (this);
 	}
 
 
@@ -215,13 +224,13 @@ public class MatchController
 	}
 
 
-	public HashMap <Integer, ArrayList <GroupsTreeNode>> getMatchGroups ()
+	public HashMap <Integer, ArrayList <GroupsTreeNode>> getTournamentMatchGroups ()
 	{
 		return mTournamentGroupsController.getMatchGroups ();
 	}
 
 
-	public void runActionsAfterGroupDisplay ()
+	public void runActionsAfterTournamentTable ()
 	{
 		try
 		{
@@ -284,7 +293,7 @@ public class MatchController
 	}
 
 
-	public void openGameManager ()
+	public void openPlayerRegistration ()
 	{
 		mTournamentTable.destroy ();
 		mTournamentTable = null;
@@ -307,5 +316,11 @@ public class MatchController
 	public void exitFromApplication ()
 	{
 		System.exit (0);
+	}
+
+
+	public HashMap <Integer, ArrayList <GroupPlayerObject>> getGroupTournamentGameGroups ()
+	{
+		return mGroupsTournamentGroupsController.getGameGroups ();
 	}
 }

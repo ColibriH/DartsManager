@@ -1,32 +1,49 @@
 package GroupsController;
 
+import MatchController.Gui.Components.GroupTournamentTableGroupPanel;
+import MatchController.Objects.GroupPlayerObject;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
 
 import java.util.*;
 
-/**
- * Created by vladislavs on 23.11.2016..
- */
+// TODO BIG REFACTOR
+
 public class GroupTournamentGroupsController
 {
 	private HashMap <PlayerObject, ArrayList <PlayerObject>>        mMatchGroups;
-	private HashMap <Integer, ArrayList <ArrayList <PlayerObject>>> mGameGroups;
+	private HashMap <Integer, ArrayList <GroupPlayerObject>>        mGameGroups;
 
 	public GroupTournamentGroupsController (HashMap <PlayerObject, ArrayList <PlayerObject>> matchGroups)
 	{
 		mGameGroups = new HashMap <> ();
-				mMatchGroups = matchGroups;
+		mMatchGroups = matchGroups;
 
 		// Done twice!
 		mGameGroups.putAll (GroupGenerator.generateGroupTournamentRandomGroups (mGameGroups.size (), generatePlayingGroups ()));
 		mGameGroups.putAll (GroupGenerator.generateGroupTournamentRandomGroups (mGameGroups.size (), generatePlayingGroups ()));
+
+		linkGroupsWithPlayersAndCreatePanelObject ();
 	}
 
 
-	private ArrayList <ArrayList <PlayerObject>> generatePlayingGroups ()
+	private void linkGroupsWithPlayersAndCreatePanelObject ()
 	{
-		ArrayList <ArrayList <PlayerObject>> playingGroups = new ArrayList <> ();
+		for (int i = 0; i < mGameGroups.size (); i++)
+		{
+			GroupTournamentTableGroupPanel gp = new GroupTournamentTableGroupPanel (mGameGroups.get (i));
+			GroupPlayerObject fGroup = mGameGroups.get (i).get (0);
+			GroupPlayerObject sGroup = mGameGroups.get (i).get (1);
+
+			fGroup.setGroupTournamentGroupPanel (gp);
+			sGroup.setGroupTournamentGroupPanel (gp);
+		}
+	}
+
+
+	private ArrayList <GroupPlayerObject> generatePlayingGroups ()
+	{
+		ArrayList <GroupPlayerObject> playingGroups = new ArrayList <> ();
 		HashMap <PlayerObject, ArrayList <PlayerObject>> matchGroups = hashMapDeepCopy (mMatchGroups);
 
 		matchGroups = sortHashMapByKey (matchGroups);
@@ -42,20 +59,14 @@ public class GroupTournamentGroupsController
 			if (playerOpponent == null)
 				continue;
 
-			playingGroups.add (new ArrayList <PlayerObject> ()
-			{
-				{
-					add (pair.getKey ());
-					add (playerOpponent);
-				}
-			});
+			playingGroups.add (new GroupPlayerObject (pair.getKey (), playerOpponent));
 		}
 
 		return playingGroups;
 	}
 
 
-	private PlayerObject tryToGetPlayerOpponent (ArrayList <ArrayList <PlayerObject>> playingGroups, ArrayList <PlayerObject> opponentVariation, Integer pId)
+	private PlayerObject tryToGetPlayerOpponent (ArrayList <GroupPlayerObject> playingGroups, ArrayList <PlayerObject> opponentVariation, Integer pId)
 	{
 		while (opponentVariation.size () != 0)
 		{
@@ -67,9 +78,9 @@ public class GroupTournamentGroupsController
 				return possibleOpponent;
 
 			boolean isUnique = true;
-			for (ArrayList <PlayerObject> playersInOneGroup : playingGroups)
+			for (GroupPlayerObject playersInOneGroup : playingGroups)
 			{
-				if ((playersInOneGroup.get (1).getId ().equals (possibleOpponent.getId ())) || (playersInOneGroup.get (1).getId ().equals (pId)))
+				if ((playersInOneGroup.getSecondPlayer ().getId ().equals (possibleOpponent.getId ())) || (playersInOneGroup.getSecondPlayer ().getId ().equals (pId)))
 				{
 					isUnique = false;
 					break;
@@ -116,5 +127,11 @@ public class GroupTournamentGroupsController
 		}
 
 		return sortedHashMap;
+	}
+
+
+	public HashMap <Integer, ArrayList <GroupPlayerObject>> getGameGroups ()
+	{
+		return mGameGroups;
 	}
 }

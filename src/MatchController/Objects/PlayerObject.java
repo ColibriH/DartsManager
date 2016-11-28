@@ -17,6 +17,7 @@ public class PlayerObject
 	private Integer             		mLeg       = 0;
 	private Integer             		mScore     = 301;
 	private Integer             		mPrevScore = 301;
+	private Integer                     mLooses    = 0;
 
 
 	public PlayerObject (String name, Integer id)
@@ -32,6 +33,7 @@ public class PlayerObject
 		mId     = playerObject.mId;
 		mLeg    = playerObject.mLeg;
 		mScore  = playerObject.mScore;
+		mLooses  = playerObject.mLooses;
 	}
 
 
@@ -116,5 +118,17 @@ public class PlayerObject
 	public void setPrevScore (Integer mPrevScore)
 	{
 		this.mPrevScore = mPrevScore;
+	}
+
+
+	public Integer getmLooses ()
+	{
+		return mLooses;
+	}
+
+
+	public void setmLooses (Integer mLooses)
+	{
+		this.mLooses = mLooses;
 	}
 }

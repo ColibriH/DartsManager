@@ -11,7 +11,7 @@ import java.util.HashMap;
 // TODO Create Level Links in nodes to rotate stage groups without find loop and rething tree structure to create more simpler walk in it
 public class TournamentGroupsController
 {
-	private HashMap<Integer, ArrayList<GroupsTreeNode>> mMatchGroups;
+	private HashMap <Integer, ArrayList<GroupsTreeNode>> mMatchGroups;
 	private GroupsTreeNode mCurrentPlayingGroup;
 
 

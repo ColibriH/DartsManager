@@ -1,5 +1,6 @@
 package Tools;
 
+import MatchController.Objects.GroupPlayerObject;
 import MatchController.Objects.PlayerObject;
 
 import java.util.*;
@@ -40,9 +41,9 @@ public class GroupGenerator
 	}
 
 
-	public static HashMap <Integer, ArrayList <ArrayList <PlayerObject>>> generateGroupTournamentRandomGroups (int startPos, ArrayList <ArrayList <PlayerObject>> mPlayingGroups)
+	public static HashMap <Integer, ArrayList <GroupPlayerObject>> generateGroupTournamentRandomGroups (int startPos, ArrayList <GroupPlayerObject> mPlayingGroups)
 	{
-		HashMap <Integer, ArrayList <ArrayList <PlayerObject>>> returnMap = new HashMap <> ();
+		HashMap <Integer, ArrayList <GroupPlayerObject>> returnMap = new HashMap <> ();
 
 		Integer i = startPos;
 		int added = 0;
@@ -53,7 +54,7 @@ public class GroupGenerator
 
 			if (returnMap.get (i) == null)
 			{
-				returnMap.put (i, new ArrayList <ArrayList <PlayerObject>> ()
+				returnMap.put (i, new ArrayList <GroupPlayerObject> ()
 				{{
 					add (mPlayingGroups.get (n));
 				}});
