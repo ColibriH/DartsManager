@@ -132,10 +132,8 @@ public class GroupTournamentGroupsController
 
 	private boolean isLeftMinimumPlayers ()
 	{
-		if (mMatchGroups.size () == 2)
-			return getLeftPlayerCount () == mMinimumPlayers;
+		return mMatchGroups.size () == 2 && getLeftPlayerCount () == mMinimumPlayers;
 
-		return false;
 	}
 
 
@@ -201,13 +199,9 @@ public class GroupTournamentGroupsController
 	private HashMap <PlayerObject, ArrayList <PlayerObject>> hashMapDeepCopy (HashMap <PlayerObject, ArrayList <PlayerObject>> map)
 	{
 		HashMap <PlayerObject, ArrayList <PlayerObject>> copy = new HashMap <> ();
-		Iterator iterator  = map.entrySet ().iterator ();
 
-		while (iterator.hasNext ())
-		{
-			Map.Entry <PlayerObject, ArrayList <PlayerObject>> pair = (Map.Entry <PlayerObject, ArrayList <PlayerObject>>) iterator.next ();    // TODO how to avoid this warning
+		for (Map.Entry <PlayerObject, ArrayList <PlayerObject>> pair : map.entrySet ())
 			copy.put (pair.getKey (), new ArrayList <> (pair.getValue ()));
-		}
 
 		return copy;
 	}
