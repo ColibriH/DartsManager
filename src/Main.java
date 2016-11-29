@@ -5,6 +5,8 @@ import MainController.MainController;
 
 // TODO On/Off Game interface
 
+// TODO REFACTOR GLOBAL
+
 // Additional features
 // ==================================
 // TODO Create logging system

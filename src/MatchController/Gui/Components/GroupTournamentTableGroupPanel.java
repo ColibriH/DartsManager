@@ -12,6 +12,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+// TODO REFACTOR
+
 public class GroupTournamentTableGroupPanel extends JPanel
 {
 	private JPanel mFirstPlayerPanel;
@@ -29,15 +31,19 @@ public class GroupTournamentTableGroupPanel extends JPanel
 	private JLabel lArrow;
 	private JLabel rArrow;
 
+	private TableUpdateMethod updateTable;
+	private GroupTournamentMethod notifyGroupPlayed;
+
+	private boolean isGamePlayed = false;
 
 
-	public GroupTournamentTableGroupPanel (ArrayList <GroupPlayerObject> mGroupList)
+	public GroupTournamentTableGroupPanel (ArrayList <GroupPlayerObject> mGroupList, GroupLoserMethod method)
 	{
-		initialization (mGroupList.get (0), mGroupList.get (1));
+		initialization (mGroupList.get (0), mGroupList.get (1), method);
 	}
 
 
-	private void initialization (GroupPlayerObject fGroup, GroupPlayerObject sGroup)
+	private void initialization (GroupPlayerObject fGroup, GroupPlayerObject sGroup, GroupLoserMethod method)
 	{
 		initializeComponents ();
 
@@ -47,7 +53,7 @@ public class GroupTournamentTableGroupPanel extends JPanel
 		buildMainPanel ();
 		buildPanels ();
 
-		addComponentsListeners ();
+		addComponentsListeners (method);
 	}
 
 
@@ -64,24 +70,46 @@ public class GroupTournamentTableGroupPanel extends JPanel
 	}
 
 
-	private void addComponentsListeners ()
+	private void addComponentsListeners (GroupLoserMethod proceedLoserGroup)
 	{
 		mFirstPlayerPanel.addMouseListener (new MouseAdapter ()
 		{
 			@Override
 			public void mouseClicked (MouseEvent e)
 			{
-				super.mouseClicked (e);
+				if (! isGamePlayed)
+				{
+					isGamePlayed = true;
+					changeWinnerPanelStyle (mFirstPlayerPanel);
+					proceedLoserGroup.execute (mSecondGroup);
+					updateTable.execute ();
+					notifyGroupPlayed.execute ();
+				}
 			}
 		});
+
 		mSecondPlayerPanel.addMouseListener (new MouseAdapter ()
 		{
 			@Override
 			public void mouseClicked (MouseEvent e)
 			{
-				super.mouseClicked (e);
+				if (! isGamePlayed)
+				{
+					isGamePlayed = true;
+					changeWinnerPanelStyle (mSecondPlayerPanel);
+					proceedLoserGroup.execute (mFirstGroup);
+					updateTable.execute ();
+					notifyGroupPlayed.execute ();
+				}
 			}
 		});
+	}
+
+
+	private void changeWinnerPanelStyle (JPanel mFirstPlayerPanel)
+	{
+		mFirstPlayerPanel.setOpaque (true);
+		mFirstPlayerPanel.setBackground (Color.LIGHT_GRAY);
 	}
 
 
@@ -190,5 +218,17 @@ public class GroupTournamentTableGroupPanel extends JPanel
 
 
 		mPlayingTxtPanel.setVisible (false);
+	}
+
+
+	public void setTableUpdateMethod (TableUpdateMethod tableUpdateMethod)
+	{
+		updateTable = tableUpdateMethod;
+	}
+
+
+	public void setTableNotifyGroupPlayedMethod (GroupTournamentMethod tableNotifyGroupPlayedMethod)
+	{
+		notifyGroupPlayed = tableNotifyGroupPlayedMethod;
 	}
 }

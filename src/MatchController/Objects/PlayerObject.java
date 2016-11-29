@@ -121,13 +121,13 @@ public class PlayerObject
 	}
 
 
-	public Integer getmLooses ()
+	public Integer getLooses ()
 	{
 		return mLooses;
 	}
 
 
-	public void setmLooses (Integer mLooses)
+	public void setLooses (Integer mLooses)
 	{
 		this.mLooses = mLooses;
 	}

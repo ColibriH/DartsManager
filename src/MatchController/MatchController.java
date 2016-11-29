@@ -35,6 +35,7 @@ public class MatchController
 	private Constats.GameType               mGameType;
 	private Integer                         mPlayersNumberInGroup;  // TODO REMOVE
 
+	private Integer                         mMaxPlayerLosePoints;
 
 
 	public MatchController (Constats.GameType gameType)
@@ -124,9 +125,18 @@ public class MatchController
 	private void displayGameGroups ()
 	{
 		if (isGameTypeTournament ())
+		{
 			mTournamentTable = new TournamentTable (this);
+		}
 		else if (isGameTypeGroupTournament ())
+		{
+			if (mGroupTournamentTable != null)
+			{
+				mGroupTournamentTable.destroy ();
+				mGroupTournamentTable = null;
+			}
 			mGroupTournamentTable = new GroupTournamentTable (this);
+		}
 	}
 
 
@@ -194,6 +204,7 @@ public class MatchController
 
 	public void initializeNewMatch (Constats.GameType gameType)
 	{
+		mMaxPlayerLosePoints = 5;
 		mGameType = gameType;
 		setPlayersNumberInGroup ();
 
@@ -322,5 +333,32 @@ public class MatchController
 	public HashMap <Integer, ArrayList <GroupPlayerObject>> getGroupTournamentGameGroups ()
 	{
 		return mGroupsTournamentGroupsController.getGameGroups ();
+	}
+
+
+	public void notifyGroupTournamentGroupPlayed ()
+	{
+		mGroupsTournamentGroupsController.incrementGroupPlayedCount ();
+
+		if (mGroupsTournamentGroupsController.isAllGroupsPlayed ())
+		{
+			ArrayList <PlayerObject> losers = tryToFindLosers ();
+			if (losers != null)
+				mGroupsTournamentGroupsController.removePlayersFromMatchGroup (losers);
+
+			mGroupsTournamentGroupsController.reload ();
+			mGroupTournamentTable.reloadGroupPanel ();
+		}
+	}
+
+
+	private ArrayList<PlayerObject> tryToFindLosers ()
+	{
+		ArrayList <PlayerObject> losers = new ArrayList <> ();
+		for (PlayerObject player : mPlayerList)
+			if (player.getLooses ().equals (mMaxPlayerLosePoints))
+				losers.add (player);
+
+		return losers.size () != 0 ? losers : null;
 	}
 }

@@ -14,11 +14,22 @@ public class GroupTournamentGroupsController
 	private HashMap <PlayerObject, ArrayList <PlayerObject>>        mMatchGroups;
 	private HashMap <Integer, ArrayList <GroupPlayerObject>>        mGameGroups;
 
+	private int groupsPlayed;
+
+
 	public GroupTournamentGroupsController (HashMap <PlayerObject, ArrayList <PlayerObject>> matchGroups)
 	{
-		mGameGroups = new HashMap <> ();
+
 		mMatchGroups = matchGroups;
 
+		initialize ();
+	}
+
+
+	private void initialize ()
+	{
+		mGameGroups = new HashMap <> ();
+		mGameGroups.clear ();
 		// Done twice!
 		mGameGroups.putAll (GroupGenerator.generateGroupTournamentRandomGroups (mGameGroups.size (), generatePlayingGroups ()));
 		mGameGroups.putAll (GroupGenerator.generateGroupTournamentRandomGroups (mGameGroups.size (), generatePlayingGroups ()));
@@ -31,13 +42,23 @@ public class GroupTournamentGroupsController
 	{
 		for (int i = 0; i < mGameGroups.size (); i++)
 		{
-			GroupTournamentTableGroupPanel gp = new GroupTournamentTableGroupPanel (mGameGroups.get (i));
+			GroupTournamentTableGroupPanel gp = new GroupTournamentTableGroupPanel (mGameGroups.get (i), this::proceedLoserGroup);
 			GroupPlayerObject fGroup = mGameGroups.get (i).get (0);
 			GroupPlayerObject sGroup = mGameGroups.get (i).get (1);
 
 			fGroup.setGroupTournamentGroupPanel (gp);
 			sGroup.setGroupTournamentGroupPanel (gp);
 		}
+	}
+
+
+	private void proceedLoserGroup (GroupPlayerObject loserGroup)
+	{
+		PlayerObject fLoser = loserGroup.getFirstPlayer ();
+		PlayerObject sLoser = loserGroup.getSecondPlayer ();
+
+		fLoser.setLooses (fLoser.getLooses () + 1);
+		sLoser.setLooses (sLoser.getLooses () + 1);
 	}
 
 
@@ -105,7 +126,7 @@ public class GroupTournamentGroupsController
 		while (iterator.hasNext ())
 		{
 			Map.Entry <PlayerObject, ArrayList <PlayerObject>> pair = (Map.Entry <PlayerObject, ArrayList <PlayerObject>>) iterator.next ();
-			copy.put (new PlayerObject (pair.getKey ()), new ArrayList <> (pair.getValue ()));
+			copy.put (pair.getKey (), new ArrayList <> (pair.getValue ()));
 		}
 
 		return copy;
@@ -133,5 +154,42 @@ public class GroupTournamentGroupsController
 	public HashMap <Integer, ArrayList <GroupPlayerObject>> getGameGroups ()
 	{
 		return mGameGroups;
+	}
+
+
+	public void incrementGroupPlayedCount ()
+	{
+		groupsPlayed++;
+	}
+
+
+	public boolean isAllGroupsPlayed ()
+	{
+		return groupsPlayed == mGameGroups.size ();
+	}
+
+
+	public void removePlayersFromMatchGroup (ArrayList <PlayerObject> losers)
+	{
+		Iterator iter = mMatchGroups.entrySet ().iterator ();
+		while (iter.hasNext ())
+		{
+			Map.Entry <PlayerObject, ArrayList <PlayerObject>> pair = (Map.Entry <PlayerObject, ArrayList <PlayerObject>>) iter.next ();
+
+			if (losers.contains (pair.getKey ()))
+			{
+				iter.remove();
+				continue;
+			}
+
+			pair.getValue ().removeAll (losers);
+		}
+	}
+
+
+	public void reload ()
+	{
+		groupsPlayed = 0;
+		initialize ();
 	}
 }
