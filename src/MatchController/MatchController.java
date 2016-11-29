@@ -33,7 +33,6 @@ public class MatchController
 
 	private ArrayList <PlayerObject>        mPlayerList;
 	private Constats.GameType               mGameType;
-	private Integer                         mPlayersNumberInGroup;  // TODO REMOVE
 
 	private Integer                         mMaxPlayerLosePoints;
 
@@ -116,33 +115,18 @@ public class MatchController
 	private void initializeMatchGroupsController ()
 	{
 		if (isGameTypeTournament ())
-			mTournamentGroupsController = new TournamentGroupsController (GroupGenerator.generateTournamentRandomGroups (mPlayersNumberInGroup, mPlayerList));
+			mTournamentGroupsController = new TournamentGroupsController (GroupGenerator.generateTournamentRandomGroups (2, mPlayerList));  // 2 - two people - 1 vs 1
 		else if (isGameTypeGroupTournament ())
-			mGroupsTournamentGroupsController = new GroupTournamentGroupsController (GroupGenerator.generateGroupTournamentGroups (mPlayerList));
+			mGroupsTournamentGroupsController = new GroupTournamentGroupsController (this, GroupGenerator.generateGroupTournamentGroups (mPlayerList));
 	}
 
 
 	private void displayGameGroups ()
 	{
 		if (isGameTypeTournament ())
-		{
 			mTournamentTable = new TournamentTable (this);
-		}
 		else if (isGameTypeGroupTournament ())
-		{
-			if (mGroupTournamentTable != null)
-			{
-				mGroupTournamentTable.destroy ();
-				mGroupTournamentTable = null;
-			}
 			mGroupTournamentTable = new GroupTournamentTable (this);
-		}
-	}
-
-
-	private ArrayList <PlayerObject> getGameOpponents () throws Exception
-	{
-		return mTournamentGroupsController.getCurrentPlayingGroup ().getPlayerObjects ();
 	}
 
 
@@ -182,10 +166,32 @@ public class MatchController
 	}
 
 
-	public void runActionsAfterPlayerRegistration (Integer playersNumberInGroup, ArrayList <PlayerObject> tablePlayerList)
+	public void initializeNewMatch (Constats.GameType gameType)
 	{
-		mPlayersNumberInGroup = playersNumberInGroup;
+		mMaxPlayerLosePoints = 5;
+		mGameType = gameType;
 
+		if (MainController.DEBUG_MODE)
+			executeDebugCode();
+
+		whetherToKeepOldPlayerList ();
+		mPlayersRegistration = new PlayersRegistration (this);
+	}
+
+
+	private ArrayList<PlayerObject> tryToFindLosers ()
+	{
+		ArrayList <PlayerObject> losers = new ArrayList <> ();
+		for (PlayerObject player : mPlayerList)
+			if (player.getLooses ().equals (mMaxPlayerLosePoints))
+				losers.add (player);
+
+		return losers.size () != 0 ? losers : null;
+	}
+
+
+	public void runActionsAfterPlayerRegistration (ArrayList <PlayerObject> tablePlayerList)
+	{
 		setPlayerList (tablePlayerList);
 		destroyPlayerRegistration ();
 		initializeMatchGroupsController ();
@@ -199,45 +205,6 @@ public class MatchController
 			e.printStackTrace ();
 			JOptionPane.showMessageDialog (null, e);
 		}
-	}
-
-
-	public void initializeNewMatch (Constats.GameType gameType)
-	{
-		mMaxPlayerLosePoints = 5;
-		mGameType = gameType;
-		setPlayersNumberInGroup ();
-
-		if (MainController.DEBUG_MODE)
-			executeDebugCode();
-
-		whetherToKeepOldPlayerList ();
-		mPlayersRegistration = new PlayersRegistration (this);
-	}
-
-
-	private void setPlayersNumberInGroup ()
-	{
-		if (isGameTypeTournament ())              mPlayersNumberInGroup = 2;
-		else if (isGameTypeGroupTournament ())    mPlayersNumberInGroup = 4;
-	}
-
-
-	private boolean isGameTypeTournament ()
-	{
-		return mGameType == Constats.GameType.Tournament;
-	}
-
-
-	private boolean isGameTypeGroupTournament ()
-	{
-		return mGameType == Constats.GameType.GroupTournament;
-	}
-
-
-	public HashMap <Integer, ArrayList <GroupsTreeNode>> getTournamentMatchGroups ()
-	{
-		return mTournamentGroupsController.getMatchGroups ();
 	}
 
 
@@ -281,12 +248,6 @@ public class MatchController
 	}
 
 
-	public ArrayList <PlayerObject> getPlayerList ()
-	{
-		return mPlayerList;
-	}
-
-
 	public void newMatch ()
 	{
 		if (mWinnerGuiFrame != null)
@@ -312,6 +273,46 @@ public class MatchController
 	}
 
 
+	public void notifyGroupTournamentGroupPlayed ()
+	{
+		mGroupsTournamentGroupsController.incrementGroupPlayedCount ();
+
+		if (mGroupsTournamentGroupsController.isAllGroupsPlayed ())
+		{
+			ArrayList <PlayerObject> losers = tryToFindLosers ();
+			if (losers != null)
+				mGroupsTournamentGroupsController.removePlayersFromMatchGroup (losers);
+
+			mGroupsTournamentGroupsController.rotateGame ();
+			mGroupTournamentTable.reloadGroupPanel ();
+		}
+	}
+
+
+	private boolean isGameTypeTournament ()
+	{
+		return mGameType == Constats.GameType.Tournament;
+	}
+
+
+	private boolean isGameTypeGroupTournament ()
+	{
+		return mGameType == Constats.GameType.GroupTournament;
+	}
+
+
+	private ArrayList <PlayerObject> getGameOpponents () throws Exception
+	{
+		return mTournamentGroupsController.getCurrentPlayingGroup ().getPlayerObjects ();
+	}
+
+
+	public HashMap <Integer, ArrayList <GroupsTreeNode>> getTournamentMatchGroups ()
+	{
+		return mTournamentGroupsController.getMatchGroups ();
+	}
+
+
 	public ArrayList<TournamentTableGroupPanel> getAllMatchGroupsPanels ()
 	{
 		return mTournamentGroupsController.getAllMatchGroupsPanels ();
@@ -324,41 +325,26 @@ public class MatchController
 	}
 
 
-	public void exitFromApplication ()
-	{
-		System.exit (0);
-	}
-
-
 	public HashMap <Integer, ArrayList <GroupPlayerObject>> getGroupTournamentGameGroups ()
 	{
 		return mGroupsTournamentGroupsController.getGameGroups ();
 	}
 
 
-	public void notifyGroupTournamentGroupPlayed ()
+	public ArrayList <PlayerObject> getPlayerList ()
 	{
-		mGroupsTournamentGroupsController.incrementGroupPlayedCount ();
-
-		if (mGroupsTournamentGroupsController.isAllGroupsPlayed ())
-		{
-			ArrayList <PlayerObject> losers = tryToFindLosers ();
-			if (losers != null)
-				mGroupsTournamentGroupsController.removePlayersFromMatchGroup (losers);
-
-			mGroupsTournamentGroupsController.reload ();
-			mGroupTournamentTable.reloadGroupPanel ();
-		}
+		return mPlayerList;
 	}
 
 
-	private ArrayList<PlayerObject> tryToFindLosers ()
+	public Integer getMaxPlayerLosePoints ()
 	{
-		ArrayList <PlayerObject> losers = new ArrayList <> ();
-		for (PlayerObject player : mPlayerList)
-			if (player.getLooses ().equals (mMaxPlayerLosePoints))
-				losers.add (player);
+		return mMaxPlayerLosePoints;
+	}
 
-		return losers.size () != 0 ? losers : null;
+
+	public void exitFromApplication ()
+	{
+		System.exit (0);
 	}
 }

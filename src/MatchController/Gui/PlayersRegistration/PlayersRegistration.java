@@ -47,21 +47,14 @@ public class PlayersRegistration extends PlayersRegistrationGui
 	{
 		ArrayList <PlayerObject> createdPlayers = getPlayersFromTable ();
 
-		if (! isPlayersInGroupNumberCorrect ())
+		// 2 - minimum 2 players 1 vs 1
+		if (createdPlayers.size () < 2)
 		{
-			JOptionPane.showMessageDialog (null, "Number of players in group is incorrect.");
+			JOptionPane.showMessageDialog (null, "Number of players have to be at least " + 2 + ".");
 			return;
 		}
 
-		Integer playersNumberInGroup = Integer.parseInt (getPlayersInGroupTxtField ().getText ());
-
-		if (createdPlayers.size () < playersNumberInGroup)
-		{
-			JOptionPane.showMessageDialog (null, "Number of players have to be at least " + playersNumberInGroup + ".");
-			return;
-		}
-
-		getMatchController ().runActionsAfterPlayerRegistration (playersNumberInGroup, createdPlayers);
+		getMatchController ().runActionsAfterPlayerRegistration (createdPlayers);
 	}
 
 
@@ -189,15 +182,6 @@ public class PlayersRegistration extends PlayersRegistrationGui
 		String result = JOptionPane.showInputDialog (frame, "Enter new name:");
 
 		return  (result.isEmpty ()) ? oldTxt : result;
-	}
-
-
-	private boolean isPlayersInGroupNumberCorrect ()
-	{
-		String digitRegEx = "[0-9]+";
-		String playersInGroup = getPlayersInGroupTxtField ().getText ();
-
-		return playersInGroup.matches (digitRegEx);
 	}
 
 

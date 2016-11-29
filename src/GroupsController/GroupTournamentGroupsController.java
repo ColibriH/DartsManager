@@ -1,6 +1,7 @@
 package GroupsController;
 
 import MatchController.Gui.Components.GroupTournamentTableGroupPanel;
+import MatchController.MatchController;
 import MatchController.Objects.GroupPlayerObject;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
@@ -11,30 +12,165 @@ import java.util.*;
 
 public class GroupTournamentGroupsController
 {
+	private MatchController mMatchController;
+
 	private HashMap <PlayerObject, ArrayList <PlayerObject>>        mMatchGroups;
 	private HashMap <Integer, ArrayList <GroupPlayerObject>>        mGameGroups;
 
 	private int groupsPlayed;
+	private int mMinimumPlayers = 3;
 
-
-	public GroupTournamentGroupsController (HashMap <PlayerObject, ArrayList <PlayerObject>> matchGroups)
+	public GroupTournamentGroupsController (MatchController matchController, HashMap <PlayerObject, ArrayList <PlayerObject>> matchGroups)
 	{
-
+		mMatchController = matchController;
 		mMatchGroups = matchGroups;
-
 		initialize ();
 	}
 
 
 	private void initialize ()
 	{
+		if (isLeftMinimumPlayers ())
+		{
+			// todo winner panel
+		}
+
+		generateGameGroups ();
+		linkGroupsWithPlayersAndCreatePanelObject ();
+	}
+
+
+	private void generateGameGroups ()
+	{
 		mGameGroups = new HashMap <> ();
 		mGameGroups.clear ();
-		// Done twice!
-		mGameGroups.putAll (GroupGenerator.generateGroupTournamentRandomGroups (mGameGroups.size (), generatePlayingGroups ()));
-		mGameGroups.putAll (GroupGenerator.generateGroupTournamentRandomGroups (mGameGroups.size (), generatePlayingGroups ()));
 
-		linkGroupsWithPlayersAndCreatePanelObject ();
+		ArrayList <GroupPlayerObject> generatedPlayingGroups = generatePlayingGroups ();
+		ArrayList <GroupPlayerObject> generatedPlayingGroups2 = generatePlayingGroups ();
+
+		if (generatedPlayingGroups.size () % 2 != 0)
+		{
+			int randomNumber = new Random ().nextInt (generatedPlayingGroups2.size ());
+			GroupPlayerObject groupFromSecondGeneratedGroups = generatedPlayingGroups2.get (randomNumber);
+
+			generatedPlayingGroups.add (groupFromSecondGeneratedGroups);
+		}
+
+		if (generatedPlayingGroups2.size () % 2 != 0)
+		{
+			int randomNumber = new Random ().nextInt (generatedPlayingGroups2.size ());
+			generatedPlayingGroups2.remove (randomNumber);
+		}
+
+		mGameGroups.putAll (GroupGenerator.generateGroupTournamentRandomGroups (mGameGroups.size (), generatedPlayingGroups));
+
+		if (generatedPlayingGroups2.size () != 0)
+			mGameGroups.putAll (GroupGenerator.generateGroupTournamentRandomGroups (mGameGroups.size (), generatedPlayingGroups2));
+	}
+
+
+	private ArrayList <GroupPlayerObject> generatePlayingGroups ()
+	{
+		ArrayList <GroupPlayerObject> playingGroups = new ArrayList <> ();
+
+		for (Map.Entry <PlayerObject, ArrayList <PlayerObject>> hashMapPair : getSortedHashMapCopy ().entrySet ())
+		{
+			PlayerObject player = hashMapPair.getKey ();
+			PlayerObject playerOpponent = tryToGetPlayerOpponent (playingGroups, hashMapPair.getValue (), player.getId ());
+
+			if (isPlayerOpponentNullOrPlayerHasLastChanceToPlay (player, playerOpponent))
+				continue;
+
+			playingGroups.add (new GroupPlayerObject (player, playerOpponent));
+		}
+
+		return playingGroups;
+	}
+
+
+	private PlayerObject tryToGetPlayerOpponent (ArrayList <GroupPlayerObject> playingGroups, ArrayList <PlayerObject> playerOpponents, Integer playerId)
+	{
+		int playerOpponentCount;
+		while ((playerOpponentCount = playerOpponents.size ()) != 0)
+		{
+			int randomNumber = new Random ().nextInt (playerOpponentCount);
+
+			PlayerObject playerRandomOpponent = playerOpponents.get (randomNumber);
+
+			if (playingGroups.size () == 0)     // if first entry
+				return playerRandomOpponent;
+
+			if (! isOpponentAlreadyInGameGroup (playingGroups, playerRandomOpponent, playerId))
+				playerOpponents.remove (randomNumber);
+			else if (hasPlayersLastChanceToWin (playerRandomOpponent))
+				playerOpponents.remove (randomNumber);
+			else
+				return playerRandomOpponent;
+		}
+
+		return null;
+	}
+
+
+	private int getLeftPlayerCount ()
+	{
+		ArrayList <PlayerObject> leftPlayers = new ArrayList <> ();
+
+		for (Map.Entry <PlayerObject, ArrayList <PlayerObject>> hashMapPair : mMatchGroups.entrySet ())
+		{
+			leftPlayers.add (hashMapPair.getKey ());
+			for (PlayerObject player : hashMapPair.getValue ())
+			{
+				if (! leftPlayers.contains (player))
+					leftPlayers.add (player);
+			}
+		}
+
+		return leftPlayers.size ();
+	}
+
+
+	private boolean isLeftMinimumPlayers ()
+	{
+		if (mMatchGroups.size () == 2)
+			return getLeftPlayerCount () == mMinimumPlayers;
+
+		return false;
+	}
+
+
+	private boolean isOpponentAlreadyInGameGroup (ArrayList <GroupPlayerObject> playingGroups, PlayerObject playerRandomOpponent, Integer playerId)
+	{
+		for (GroupPlayerObject playersInOneGroup : playingGroups)
+			if ((playersInOneGroup.getSecondPlayer ().getId ().equals (playerRandomOpponent.getId ())) || (playersInOneGroup.getSecondPlayer ().getId ().equals (playerId)))
+				return true;
+
+		return false;
+	}
+
+
+	private boolean isPlayerOpponentNullOrPlayerHasLastChanceToPlay (PlayerObject player, PlayerObject playerOpponent)
+	{
+		if (playerOpponent == null)
+			return true;
+
+		if (mGameGroups.size () != 0)
+			if (hasPlayersLastChanceToWin (player))
+				return true;
+
+		return false;
+	}
+
+
+	private boolean hasPlayersLastChanceToWin (PlayerObject player)
+	{
+		return player.getLooses ().equals (mMatchController.getMaxPlayerLosePoints () - 1);
+	}
+
+
+	private HashMap <PlayerObject, ArrayList <PlayerObject>> getSortedHashMapCopy ()
+	{
+		return sortHashMapByKey (hashMapDeepCopy (mMatchGroups));
 	}
 
 
@@ -62,62 +198,6 @@ public class GroupTournamentGroupsController
 	}
 
 
-	private ArrayList <GroupPlayerObject> generatePlayingGroups ()
-	{
-		ArrayList <GroupPlayerObject> playingGroups = new ArrayList <> ();
-		HashMap <PlayerObject, ArrayList <PlayerObject>> matchGroups = hashMapDeepCopy (mMatchGroups);
-
-		matchGroups = sortHashMapByKey (matchGroups);
-		Iterator iterator  = matchGroups.entrySet ().iterator ();
-
-		while (iterator.hasNext ())
-		{
-			Map.Entry <PlayerObject, ArrayList <PlayerObject>> pair = (Map.Entry <PlayerObject, ArrayList <PlayerObject>>) iterator.next ();
-			ArrayList <PlayerObject> playerGroupVariations = pair.getValue ();
-
-			PlayerObject playerOpponent = tryToGetPlayerOpponent (playingGroups, playerGroupVariations, pair.getKey ().getId ());
-
-			if (playerOpponent == null)
-				continue;
-
-			playingGroups.add (new GroupPlayerObject (pair.getKey (), playerOpponent));
-		}
-
-		return playingGroups;
-	}
-
-
-	private PlayerObject tryToGetPlayerOpponent (ArrayList <GroupPlayerObject> playingGroups, ArrayList <PlayerObject> opponentVariation, Integer pId)
-	{
-		while (opponentVariation.size () != 0)
-		{
-			Random rand = new Random ();
-			int n = rand.nextInt (opponentVariation.size ());
-			PlayerObject possibleOpponent = opponentVariation.get (n);
-
-			if (playingGroups.size () == 0)
-				return possibleOpponent;
-
-			boolean isUnique = true;
-			for (GroupPlayerObject playersInOneGroup : playingGroups)
-			{
-				if ((playersInOneGroup.getSecondPlayer ().getId ().equals (possibleOpponent.getId ())) || (playersInOneGroup.getSecondPlayer ().getId ().equals (pId)))
-				{
-					isUnique = false;
-					break;
-				}
-			}
-
-			if (! isUnique)
-				opponentVariation.remove (n);
-			else
-				return possibleOpponent;
-		}
-
-		return null;
-	}
-
-
 	private HashMap <PlayerObject, ArrayList <PlayerObject>> hashMapDeepCopy (HashMap <PlayerObject, ArrayList <PlayerObject>> map)
 	{
 		HashMap <PlayerObject, ArrayList <PlayerObject>> copy = new HashMap <> ();
@@ -125,7 +205,7 @@ public class GroupTournamentGroupsController
 
 		while (iterator.hasNext ())
 		{
-			Map.Entry <PlayerObject, ArrayList <PlayerObject>> pair = (Map.Entry <PlayerObject, ArrayList <PlayerObject>>) iterator.next ();
+			Map.Entry <PlayerObject, ArrayList <PlayerObject>> pair = (Map.Entry <PlayerObject, ArrayList <PlayerObject>>) iterator.next ();    // TODO how to avoid this warning
 			copy.put (pair.getKey (), new ArrayList <> (pair.getValue ()));
 		}
 
@@ -133,7 +213,7 @@ public class GroupTournamentGroupsController
 	}
 
 
-	private static HashMap <PlayerObject, ArrayList <PlayerObject>> sortHashMapByKey (HashMap <PlayerObject, ArrayList <PlayerObject>> map)
+	private static HashMap <PlayerObject, ArrayList <PlayerObject>> sortHashMapByKey (HashMap <PlayerObject, ArrayList <PlayerObject>> map)    // TODO how to avoid this warning
 	{
 		List list = new LinkedList (map.entrySet ());
 
@@ -151,9 +231,28 @@ public class GroupTournamentGroupsController
 	}
 
 
-	public HashMap <Integer, ArrayList <GroupPlayerObject>> getGameGroups ()
+	public void removePlayersFromMatchGroup (ArrayList <PlayerObject> losers)
 	{
-		return mGameGroups;
+		Iterator iterator = mMatchGroups.entrySet ().iterator ();
+		while (iterator.hasNext ())
+		{
+			Map.Entry <PlayerObject, ArrayList <PlayerObject>> pair = (Map.Entry <PlayerObject, ArrayList <PlayerObject>>) iterator.next ();    // TODO how to avoid this warning
+
+			if (losers.contains (pair.getKey ()))
+			{
+				iterator.remove();
+				continue;
+			}
+
+			pair.getValue ().removeAll (losers);
+		}
+	}
+
+
+	public void rotateGame ()
+	{
+		groupsPlayed = 0;
+		initialize ();
 	}
 
 
@@ -169,27 +268,8 @@ public class GroupTournamentGroupsController
 	}
 
 
-	public void removePlayersFromMatchGroup (ArrayList <PlayerObject> losers)
+	public HashMap <Integer, ArrayList <GroupPlayerObject>> getGameGroups ()
 	{
-		Iterator iter = mMatchGroups.entrySet ().iterator ();
-		while (iter.hasNext ())
-		{
-			Map.Entry <PlayerObject, ArrayList <PlayerObject>> pair = (Map.Entry <PlayerObject, ArrayList <PlayerObject>>) iter.next ();
-
-			if (losers.contains (pair.getKey ()))
-			{
-				iter.remove();
-				continue;
-			}
-
-			pair.getValue ().removeAll (losers);
-		}
-	}
-
-
-	public void reload ()
-	{
-		groupsPlayed = 0;
-		initialize ();
+		return mGameGroups;
 	}
 }

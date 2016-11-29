@@ -43,7 +43,6 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 
 	private JScrollPane             mPlayerTableJScrollPane;
 
-	private JTextField              mPlayersInGroupTxtField;
 	private JTextField              mPlayerNameTxtField;
 
 	private JButton                 mPlayerAddBtn;
@@ -79,7 +78,6 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 		mPlayerLooseCntLabel    = new JLabel ("Loose Count");
 		mPlayerNameLabel        = new JLabel ("Name");
 
-		mPlayersInGroupTxtField = new JTextField ();
 		mPlayerNameTxtField     = new JTextField ();
 	}
 
@@ -175,13 +173,12 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 
 		controlPanelComponentStyling ();
 
-		addComponentToPanel (mControlJPanel, mPlayerLooseCntLabel, 0, 1, new Insets (0, 5, 5, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mPlayersInGroupTxtField, 0, 2, new Insets (0,   5, 10, 5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mPlayerNameLabel,        0, 3, new Insets (15,  5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 4, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 5, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mBackButton,             0, 7, new Insets (5,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
-		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 6, new Insets (100, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mPlayerLooseCntLabel,    0, 1, new Insets (0,   5, 5,  5), 0, 0, 0, 2,  GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mPlayerNameLabel,        0, 2, new Insets (15,  5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 3, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 4, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mBackButton,             0, 6, new Insets (5,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mMatchStartBtn,          0, 5, new Insets (100, 5, 0,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 	}
 
 
@@ -191,14 +188,6 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 
 		mPlayerLooseCntLabel.setForeground (Color.white);
 		mPlayerLooseCntLabel.setFont (scratchFont);
-
-		mPlayersInGroupTxtField.setEditable (false);
-		mPlayersInGroupTxtField.setText ("2");
-		mPlayersInGroupTxtField.setFont (scratchFont);
-		mPlayersInGroupTxtField.setBorder (new EmptyBorder (0, 0, 0, 0));
-		mPlayersInGroupTxtField.setBackground (new Color (255, 255, 255, 0));
-		mPlayersInGroupTxtField.setForeground (Color.WHITE);
-		mPlayersInGroupTxtField.setOpaque (false);
 
 		mPlayerNameLabel.setForeground (Color.white);
 		mPlayerNameLabel.setFont (scratchFont);
@@ -322,12 +311,6 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	JTable getPlayersTable ()
 	{
 		return mPlayerTable;
-	}
-
-
-	JTextField getPlayersInGroupTxtField ()
-	{
-		return mPlayersInGroupTxtField;
 	}
 
 
