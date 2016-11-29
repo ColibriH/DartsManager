@@ -207,25 +207,22 @@ public class GroupTournamentGroupsController
 	}
 
 
-	private static HashMap <PlayerObject, ArrayList <PlayerObject>> sortHashMapByKey (HashMap <PlayerObject, ArrayList <PlayerObject>> map)    // TODO how to avoid this warning
+	private static HashMap <PlayerObject, ArrayList <PlayerObject>> sortHashMapByKey (HashMap <PlayerObject, ArrayList <PlayerObject>> map)
 	{
-		List list = new LinkedList (map.entrySet ());
+		LinkedList <Map.Entry <PlayerObject, ArrayList <PlayerObject>>> linkedList = new LinkedList <> (map.entrySet ());
 
-		Collections.sort(list, (o1, o2) -> ((Comparable) ((Map.Entry <PlayerObject, ArrayList <PlayerObject>>) (o1)).getKey ().getId ()).compareTo (((Map.Entry <PlayerObject, ArrayList <PlayerObject>>) (o2)).getKey ().getId ()));
+		Collections.sort (linkedList, (o1, o2) -> (o1.getKey ().getId ()).compareTo (o2.getKey ().getId ()));
 
-		// using LinkedHashMap to preserve the insertion order
-		HashMap sortedHashMap = new LinkedHashMap ();
-		for (Iterator it = list.iterator(); it.hasNext ();)
-		{
-			Map.Entry entry = (Map.Entry) it.next();
-			sortedHashMap.put(entry.getKey (), entry.getValue ());
-		}
+		HashMap <PlayerObject, ArrayList <PlayerObject>> sortedHashMap = new LinkedHashMap <> ();
+		for (Map.Entry <PlayerObject, ArrayList <PlayerObject>> aLinkedList : linkedList)
+			sortedHashMap.put (aLinkedList.getKey (), aLinkedList.getValue ());
 
 		return sortedHashMap;
 	}
 
 
-	public void removePlayersFromMatchGroup (ArrayList <PlayerObject> losers)
+	@SuppressWarnings ("unchecked")
+	public void removePlayersFromMatchGroup (ArrayList <PlayerObject> losers)       // TODO remove suppress
 	{
 		Iterator iterator = mMatchGroups.entrySet ().iterator ();
 		while (iterator.hasNext ())
