@@ -6,6 +6,7 @@ import MatchController.Objects.GroupPlayerObject;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
 
+import javax.swing.*;
 import java.util.*;
 
 // TODO BIG REFACTOR
@@ -30,23 +31,39 @@ public class GroupTournamentGroupsController
 
 	private void initialize ()
 	{
+		ifExistHasMapKeyRemove ();
+
 		if (isLeftMinimumPlayers ())
 		{
+			JOptionPane.showMessageDialog (null, "Game ends");
+			return;
 			// todo winner panel
 		}
 
 		generateGameGroups ();
 		linkGroupsWithPlayersAndCreatePanelObject ();
 	}
-
-
+	
+	private void ifExistHasMapKeyRemove ()
+	{
+		Iterator iterator = mMatchGroups.entrySet ().iterator ();
+		
+		while (iterator.hasNext ())
+		{
+			Map.Entry <PlayerObject, ArrayList <PlayerObject>> pair = (Map.Entry <PlayerObject, ArrayList <PlayerObject>>) iterator.next ();    // TODO how to avoid this warning
+			if (pair.getValue ().size () == 0)
+				iterator.remove();
+		}
+	}
+	
+	
 	private void generateGameGroups ()
 	{
 		mGameGroups = new HashMap <> ();
 		mGameGroups.clear ();
 
-		ArrayList <GroupPlayerObject> generatedPlayingGroups = generatePlayingGroups ();
-		ArrayList <GroupPlayerObject> generatedPlayingGroups2 = generatePlayingGroups ();
+		ArrayList <GroupPlayerObject> generatedPlayingGroups = generatePlayingGroups (true);
+		ArrayList <GroupPlayerObject> generatedPlayingGroups2 = generatePlayingGroups (false);
 
 		if (generatedPlayingGroups.size () % 2 != 0)
 		{
@@ -69,16 +86,16 @@ public class GroupTournamentGroupsController
 	}
 
 
-	private ArrayList <GroupPlayerObject> generatePlayingGroups ()
+	private ArrayList <GroupPlayerObject> generatePlayingGroups (boolean isFirstGeneratedGameGroups)
 	{
 		ArrayList <GroupPlayerObject> playingGroups = new ArrayList <> ();
 
 		for (Map.Entry <PlayerObject, ArrayList <PlayerObject>> hashMapPair : getSortedHashMapCopy ().entrySet ())
 		{
 			PlayerObject player = hashMapPair.getKey ();
-			PlayerObject playerOpponent = tryToGetPlayerOpponent (playingGroups, hashMapPair.getValue (), player.getId ());
+			PlayerObject playerOpponent = tryToGetPlayerOpponent (playingGroups, hashMapPair.getValue (), player.getId (), isFirstGeneratedGameGroups);
 
-			if (isPlayerOpponentNullOrPlayerHasLastChanceToPlay (player, playerOpponent))
+			if (isPlayerOpponentNullOrPlayerHasLastChanceToPlay (player, playerOpponent, isFirstGeneratedGameGroups))
 				continue;
 
 			playingGroups.add (new GroupPlayerObject (player, playerOpponent));
@@ -88,7 +105,7 @@ public class GroupTournamentGroupsController
 	}
 
 
-	private PlayerObject tryToGetPlayerOpponent (ArrayList <GroupPlayerObject> playingGroups, ArrayList <PlayerObject> playerOpponents, Integer playerId)
+	private PlayerObject tryToGetPlayerOpponent (ArrayList <GroupPlayerObject> playingGroups, ArrayList <PlayerObject> playerOpponents, Integer playerId, boolean isFirstGeneratedGameGroups)
 	{
 		int playerOpponentCount;
 		while ((playerOpponentCount = playerOpponents.size ()) != 0)
@@ -100,9 +117,9 @@ public class GroupTournamentGroupsController
 			if (playingGroups.size () == 0)     // if first entry
 				return playerRandomOpponent;
 
-			if (! isOpponentAlreadyInGameGroup (playingGroups, playerRandomOpponent, playerId))
+			if (isOpponentAlreadyInGameGroup (playingGroups, playerRandomOpponent, playerId))
 				playerOpponents.remove (randomNumber);
-			else if (hasPlayersLastChanceToWin (playerRandomOpponent))
+			else if (! isFirstGeneratedGameGroups && hasPlayersLastChanceToWin (playerRandomOpponent))
 				playerOpponents.remove (randomNumber);
 			else
 				return playerRandomOpponent;
@@ -118,7 +135,9 @@ public class GroupTournamentGroupsController
 
 		for (Map.Entry <PlayerObject, ArrayList <PlayerObject>> hashMapPair : mMatchGroups.entrySet ())
 		{
-			leftPlayers.add (hashMapPair.getKey ());
+			if (! leftPlayers.contains (hashMapPair.getKey ()))
+				leftPlayers.add (hashMapPair.getKey ());
+
 			for (PlayerObject player : hashMapPair.getValue ())
 			{
 				if (! leftPlayers.contains (player))
@@ -132,8 +151,7 @@ public class GroupTournamentGroupsController
 
 	private boolean isLeftMinimumPlayers ()
 	{
-		return mMatchGroups.size () == 2 && getLeftPlayerCount () == mMinimumPlayers;
-
+		return mMatchGroups.size () == 2 && getLeftPlayerCount () <= mMinimumPlayers;
 	}
 
 
@@ -147,12 +165,12 @@ public class GroupTournamentGroupsController
 	}
 
 
-	private boolean isPlayerOpponentNullOrPlayerHasLastChanceToPlay (PlayerObject player, PlayerObject playerOpponent)
+	private boolean isPlayerOpponentNullOrPlayerHasLastChanceToPlay (PlayerObject player, PlayerObject playerOpponent, boolean isFirstGeneratedGameGroups)
 	{
 		if (playerOpponent == null)
 			return true;
 
-		if (mGameGroups.size () != 0)
+		if (! isFirstGeneratedGameGroups)
 			if (hasPlayersLastChanceToWin (player))
 				return true;
 

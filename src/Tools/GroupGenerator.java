@@ -41,7 +41,7 @@ public class GroupGenerator
 	}
 
 
-	public static HashMap <Integer, ArrayList <GroupPlayerObject>> generateGroupTournamentRandomGroups (int startPos, ArrayList <GroupPlayerObject> mPlayingGroups)
+	public static HashMap <Integer, ArrayList <GroupPlayerObject>> generateGroupTournamentRandomGroups (int startPos, ArrayList <GroupPlayerObject> mPlayingGroups) // TODO Make statements for uniqueness of players in playing groups
 	{
 		HashMap <Integer, ArrayList <GroupPlayerObject>> returnMap = new HashMap <> ();
 
