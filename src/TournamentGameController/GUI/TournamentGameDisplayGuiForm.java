@@ -41,12 +41,13 @@ public class TournamentGameDisplayGuiForm
 	private void initializeForm ()
 	{
 		mJFrame = new JFrame ("GameDisplayGuiForm");
+		mJFrame.setContentPane (mJPanel);
+		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
+		mJFrame.setUndecorated(true);
+		mJFrame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
-		mJFrame.setContentPane (mJPanel);
-		mJFrame.setUndecorated(true);
-		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
-		mJFrame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
+
 		setMJFrameLocation ();
 	}
 
