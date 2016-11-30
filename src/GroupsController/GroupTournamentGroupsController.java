@@ -9,17 +9,13 @@ import Tools.GroupGenerator;
 
 import java.util.*;
 
-// TODO BIG REFACTOR
-
 public class GroupTournamentGroupsController
 {
-	private MatchController mMatchController;
-
+	private MatchController                                         mMatchController;
 	private HashMap <PlayerObject, ArrayList <PlayerObject>>        mMatchGroups;
 	private HashMap <Integer, ArrayList <GroupPlayerObject>>        mGameGroups;
-
-	private int groupsPlayed;
-	private int mMinimumPlayers = 3;
+	private int                                                     groupsPlayed;
+	private int                                                     mMinimumPlayers = 3;
 
 
 	public GroupTournamentGroupsController (MatchController matchController, HashMap <PlayerObject, ArrayList <PlayerObject>> matchGroups)
@@ -267,17 +263,15 @@ public class GroupTournamentGroupsController
 
 	private void proceedWinnerLoserGroup (GroupPlayerObject loserGroup, GroupPlayerObject winnerGroup)
 	{
-		PlayerObject fLoser = loserGroup.getFirstPlayer ();
-		PlayerObject sLoser = loserGroup.getSecondPlayer ();
+		PlayerObject firstPlayerLoser   = loserGroup.getFirstPlayer ();
+		PlayerObject secondPlayer       = loserGroup.getSecondPlayer ();
+		PlayerObject firstWinner        = winnerGroup.getFirstPlayer ();
+		PlayerObject secondWinner       = winnerGroup.getSecondPlayer ();
 
-		PlayerObject fWinner = winnerGroup.getFirstPlayer ();
-		PlayerObject sWinner = winnerGroup.getSecondPlayer ();
-
-		fLoser.setLooses (fLoser.getLooses () + 1);
-		sLoser.setLooses (sLoser.getLooses () + 1);
-
-		fWinner.setWinPoints (fLoser.getWinPoints () + 1);
-		sWinner.setWinPoints (sLoser.getWinPoints () + 1);
+		firstPlayerLoser.setLooses  (firstPlayerLoser.getLooses ()      + 1);
+		secondPlayer.setLooses      (secondPlayer.getLooses ()          + 1);
+		firstWinner.setWinPoints    (firstPlayerLoser.getWinPoints ()   + 1);
+		secondWinner.setWinPoints   (secondPlayer.getWinPoints ()       + 1);
 	}
 
 

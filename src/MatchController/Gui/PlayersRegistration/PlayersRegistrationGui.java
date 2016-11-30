@@ -38,17 +38,12 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 
 	private JPanel                  mTableJPanel;
 	private JPanel                  mControlJPanel;
-
 	private JTable                  mPlayerTable;
-
 	private JScrollPane             mPlayerTableJScrollPane;
-
 	private JTextField              mPlayerNameTxtField;
-
 	private JButton                 mPlayerAddBtn;
 	private JButton                 mMatchStartBtn;
 	private JButton                 mBackButton;
-
 	private JLabel                  mPlayerLooseCntLabel;
 	private JLabel                  mPlayerNameLabel;
 
@@ -67,18 +62,15 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 
 		mControlJPanel          = new JPanel ();
 		mTableJPanel            = new JPanel ();
-
 		mPlayerTable            = new JTable ();
 		mPlayerTableJScrollPane = new JScrollPane (mPlayerTable);
-
 		mPlayerAddBtn           = new MenuButton ("Add player");
 		mMatchStartBtn          = new MenuButton ("Start Match");
 		mBackButton             = new MenuButton ("Back");
-
 		mPlayerLooseCntLabel    = new JLabel ("Loose Count");
 		mPlayerNameLabel        = new JLabel ("Name");
-
 		mPlayerNameTxtField     = new JTextField ();
+		mPlayerTableJScrollPane = new JScrollPane (mPlayerTable);
 	}
 
 
@@ -104,11 +96,9 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 			}
 		});
 
-		mBackButton.addActionListener (e -> getMatchController ().openMenuAndDestroyPlayerRegistration ());
-
-		mMatchStartBtn.addActionListener (e -> tryToRegisterPlayers ());
-
-		mPlayerAddBtn.addActionListener (e -> addNewPlayer ());
+		mBackButton.    addActionListener (e -> getMatchController ().openMenuAndDestroyPlayerRegistration ());
+		mMatchStartBtn. addActionListener (e -> tryToRegisterPlayers ());
+		mPlayerAddBtn.  addActionListener (e -> addNewPlayer ());
 
 		mPlayerNameTxtField.addKeyListener (new KeyAdapter ()
 		{
@@ -152,28 +142,28 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	@Override
 	protected void buildMainPanel ()
 	{
-		GridBagConstraints mPanelGbc = new GridBagConstraints ();
-		getMainJPanel ().setLayout (new GridBagLayout ());
-		getMainJPanel ().setPreferredSize (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT));
+		getMainJPanel ().setLayout          (new GridBagLayout ());
+		getMainJPanel ().setPreferredSize   (new Dimension (Constats.MAIN_WIDTH, Constats.MAIN_HEIGHT));
 
 		buildControlPanel ();
 		buildTablePanel ();
 
-		addComponentToPanel (getMainJPanel (), mControlJPanel,   0, 0, new Insets (210,  35, 0,  0), 0, 0, 0, 1, GridBagConstraints.NORTHWEST, mPanelGbc, null);
-		addComponentToPanel (getMainJPanel (), mTableJPanel,     1, 0, new Insets (282, 245, 0, 10), 0, 1, 1, 1, GridBagConstraints.NORTHWEST, mPanelGbc, null);
+		GridBagConstraints mPanelGbc = new GridBagConstraints ();
+		addComponentToPanel (getMainJPanel (), mControlJPanel, 0, 0, new Insets (210,  35, 0,  0), 0, 0, 0, 1, GridBagConstraints.NORTHWEST, mPanelGbc, null);
+		addComponentToPanel (getMainJPanel (), mTableJPanel,   1, 0, new Insets (282, 245, 0, 10), 0, 1, 1, 1, GridBagConstraints.NORTHWEST, mPanelGbc, null);
 	}
 
 
 	private void buildControlPanel ()
 	{
+		mControlJPanel.setLayout        (new GridBagLayout ());
+		mControlJPanel.setOpaque        (false);
+		mControlJPanel.setBackground    (new Color (255, 255, 255 , 0));
+
+		styleControlPanelComponents ();
+
 		GridBagConstraints ctrPanelGbc = new GridBagConstraints ();
-		mControlJPanel.setLayout (new GridBagLayout ());
-		mControlJPanel.setBackground (new Color (255, 255, 255 , 0));
-		mControlJPanel.setOpaque (false);
-
-		controlPanelComponentStyling ();
-
-		addComponentToPanel (mControlJPanel, mPlayerLooseCntLabel,    0, 1, new Insets (0,   5, 5,  5), 0, 0, 0, 2,  GridBagConstraints.CENTER, ctrPanelGbc, null);
+		addComponentToPanel (mControlJPanel, mPlayerLooseCntLabel,    0, 1, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerNameLabel,        0, 2, new Insets (15,  5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerNameTxtField,     0, 3, new Insets (0,   5, 5,  5), 0, 0, 0, 2, GridBagConstraints.CENTER, ctrPanelGbc, null);
 		addComponentToPanel (mControlJPanel, mPlayerAddBtn,           1, 4, new Insets (2,   5, 0,  5), 0, 0, 0, 1, GridBagConstraints.CENTER, ctrPanelGbc, null);
@@ -182,49 +172,43 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	}
 
 
-	private void controlPanelComponentStyling ()
+	private void styleControlPanelComponents ()
 	{
 		Font scratchFont = new Font ("Nail Scratch", Font.TRUETYPE_FONT, 12);
 
-		mPlayerLooseCntLabel.setForeground (Color.white);
-		mPlayerLooseCntLabel.setFont (scratchFont);
+		mPlayerNameLabel.setFont            (scratchFont);
+		mPlayerNameTxtField.setFont         (scratchFont);
+		mPlayerNameTxtField.setText         (mPlayerNameTxtFieldDefaultValue);
+		mPlayerLooseCntLabel.setFont        (scratchFont);
+		mBackButton.setPreferredSize        (new Dimension (150, 25));
+		mPlayerNameTxtField.setOpaque       (false);
+		mPlayerNameTxtField.setBorder       (new EmptyBorder (0, 0, 0, 0));
+		mPlayerAddBtn.setPreferredSize      (new Dimension (150, 25));
+		mPlayerNameLabel.setForeground      (Color.white);
+		mMatchStartBtn.setPreferredSize     (new Dimension (150, 25));
+		mPlayerNameTxtField.setBackground   (new Color (255, 255, 255, 0));
+		mPlayerNameTxtField.setForeground   (Color.WHITE);
+		mPlayerLooseCntLabel.setForeground  (Color.white);
 
-		mPlayerNameLabel.setForeground (Color.white);
-		mPlayerNameLabel.setFont (scratchFont);
-
-		mPlayerNameTxtField.setText (mPlayerNameTxtFieldDefaultValue);
-		mPlayerNameTxtField.setFont (scratchFont);
-		mPlayerNameTxtField.setBorder (new EmptyBorder (0, 0, 0, 0));
-		mPlayerNameTxtField.setBackground (new Color (255, 255, 255, 0));
-		mPlayerNameTxtField.setForeground (Color.WHITE);
-		mPlayerNameTxtField.setOpaque (false);
-
-		mPlayerAddBtn.setPreferredSize (new Dimension (150, 25));
-		mBackButton.setPreferredSize (new Dimension (150, 25));
-		mMatchStartBtn.setPreferredSize (new Dimension (150, 25));
-
-		mPlayerAddBtn.setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC_150x25)));
-		mPlayerAddBtn.setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC_150x25)));
-
-		mBackButton.setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC_150x25)));
-		mBackButton.setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC_150x25)));
-
-		mMatchStartBtn.setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC_150x25)));
-		mMatchStartBtn.setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC_150x25)));
+		mBackButton.setIcon                 (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC_150x25)));
+		mPlayerAddBtn.setIcon               (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC_150x25)));
+		mMatchStartBtn.setIcon              (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC_150x25)));
+		mBackButton.setRolloverIcon         (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC_150x25)));
+		mPlayerAddBtn.setRolloverIcon       (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC_150x25)));
+		mMatchStartBtn.setRolloverIcon      (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC_150x25)));
 	}
 
 
 	private void buildTablePanel ()
 	{
-		GridBagConstraints tablePanelGbc = new GridBagConstraints ();
-		mTableJPanel.setLayout (new GridBagLayout ());
-		mPlayerTableJScrollPane = new JScrollPane (mPlayerTable);
-		mTableJPanel.setBackground (new Color (255, 255, 255, 0));
-		mTableJPanel.setOpaque (false);
+		mTableJPanel.setLayout      (new GridBagLayout ());
+		mTableJPanel.setOpaque      (false);
+		mTableJPanel.setBackground  (new Color (255, 255, 255, 0));
 
 		initializePlayerTableDataModel ();
 		setTableStyle ();
 
+		GridBagConstraints tablePanelGbc = new GridBagConstraints ();
 		addComponentToPanel (mTableJPanel, mPlayerTableJScrollPane, 0, 0, new Insets (0, 0, 0, 0), 0, 0, 0, 0, GridBagConstraints.CENTER, tablePanelGbc, null);
 	}
 
@@ -250,37 +234,35 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 
 		setPlayersTableDefaultRenderer ();
 
+		mPlayerTableJScrollPane.setBorder                               (new EmptyBorder (0, 0, 0, 0));
 		mPlayerTableJScrollPane.setViewport                             (new ImageViewport (ImageLoader.getImage (Constats.TABLE_BOARD_PIC)));
 		mPlayerTableJScrollPane.setViewportView                         (mPlayerTable);
-		mPlayerTableJScrollPane.setBorder                               (new EmptyBorder (0, 0, 0, 0));
+		mPlayerTableJScrollPane.setPreferredSize                        (new Dimension (161, 275));
+		mPlayerTableJScrollPane.setHorizontalScrollBarPolicy            (ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		mPlayerTableJScrollPane.getVerticalScrollBar().setUI            (new TableScrollBar ());
 		mPlayerTableJScrollPane.getVerticalScrollBar().setBackground    (Color.GRAY);
 		mPlayerTableJScrollPane.getVerticalScrollBar().setPreferredSize (new Dimension(10, 0));
 
-		mPlayerTableJScrollPane.setHorizontalScrollBarPolicy    (ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		mPlayerTableJScrollPane.setPreferredSize                (new Dimension (161, 275));
-
-		mPlayerTable.setFont                    (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 9));
-		mPlayerTable.setForeground              (Color.WHITE);
-		mPlayerTable.setAutoResizeMode          (JTable.AUTO_RESIZE_OFF);
-		mPlayerTable.setOpaque                  (false);
-		mPlayerTable.setBackground              (transparentColor);
-		mPlayerTable.setShowGrid                (false);
-		mPlayerTable.setSelectionBackground     (transparentColor);
-		mPlayerTable.setSelectionForeground     (Color.WHITE);
-		mPlayerTable.setBorder                  (new EmptyBorder (0, 0, 0, 0));
-		mPlayerTable.setTableHeader             (null);
-		mPlayerTable.getColumn                  (Constats.DELETE_BTN_ID).setCellRenderer    (new ButtonRenderer ());
-		mPlayerTable.getColumn                  (Constats.EDIT_BTN_ID  ).setCellRenderer    (new ButtonRenderer ());
-		mPlayerTable.getColumn                  (Constats.DELETE_BTN_ID).setCellEditor      (new ButtonEditor (getPlayerRegistrationObject (), new JCheckBox ()));
-		mPlayerTable.getColumn                  (Constats.EDIT_BTN_ID  ).setCellEditor      (new ButtonEditor (getPlayerRegistrationObject (), new JCheckBox ()));
-		mPlayerTable.removeColumn               (mPlayerTable.getColumn (COLUMN_ID));    // To hide Id Column
-		mPlayerTable.setRowHeight               (20);
-		mPlayerTable.setIntercellSpacing        (new Dimension (5, 0));
-
-		mPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth (100);
-		mPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth (25);
-		mPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth (25);
+		mPlayerTable.setFont                                            (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 9));
+		mPlayerTable.setOpaque                                          (false);
+		mPlayerTable.setBorder                                          (new EmptyBorder (0, 0, 0, 0));
+		mPlayerTable.getColumn                                          (Constats.DELETE_BTN_ID).setCellRenderer    (new ButtonRenderer ());
+		mPlayerTable.getColumn                                          (Constats.EDIT_BTN_ID  ).setCellRenderer    (new ButtonRenderer ());
+		mPlayerTable.getColumn                                          (Constats.DELETE_BTN_ID).setCellEditor      (new ButtonEditor (getPlayerRegistrationObject (), new JCheckBox ()));
+		mPlayerTable.getColumn                                          (Constats.EDIT_BTN_ID  ).setCellEditor      (new ButtonEditor (getPlayerRegistrationObject (), new JCheckBox ()));
+		mPlayerTable.setShowGrid                                        (false);
+		mPlayerTable.setRowHeight                                       (20);
+		mPlayerTable.removeColumn                                       (mPlayerTable.getColumn (COLUMN_ID));    // To hide Id Column
+		mPlayerTable.setBackground                                      (transparentColor);
+		mPlayerTable.setForeground                                      (Color.WHITE);
+		mPlayerTable.setTableHeader                                     (null);
+		mPlayerTable.setAutoResizeMode                                  (JTable.AUTO_RESIZE_OFF);
+		mPlayerTable.setIntercellSpacing                                (new Dimension (5, 0));
+		mPlayerTable.setSelectionBackground                             (transparentColor);
+		mPlayerTable.setSelectionForeground                             (Color.WHITE);
+		mPlayerTable.getColumnModel ().getColumn (0).setPreferredWidth  (100);
+		mPlayerTable.getColumnModel ().getColumn (1).setPreferredWidth  (25);
+		mPlayerTable.getColumnModel ().getColumn (2).setPreferredWidth  (25);
 	}
 
 

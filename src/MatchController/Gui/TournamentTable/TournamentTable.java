@@ -17,21 +17,21 @@ public class TournamentTable extends TournamentTableGui
 	protected void setCurrentPlayingGroupText ()
 	{
 		hideCurrentPlayingGroupPanelForAllGroups ();
-		setCurrentPlayingGroupText (getMatchController ().getCurrentPlayingGroupPanel (), true);
+		setCurrentPlayingGroupText (getMatchController ().getCurrentTournamentPlayingGroupPanel (), true);
 	}
 
 
-	private void setCurrentPlayingGroupText (TournamentTableGroupPanel panel, boolean state)
+	private void setCurrentPlayingGroupText (TournamentTableGroupPanel tournamentTableGroupPanel, boolean visibilityState)
 	{
-		panel.setCurrentPlayingGroup (state);
+		tournamentTableGroupPanel.setCurrentPlayingGroup (visibilityState);
 	}
 
 
 	private void hideCurrentPlayingGroupPanelForAllGroups ()
 	{
-		ArrayList<TournamentTableGroupPanel> allMatchGroupsPanels = getMatchController ().getAllMatchGroupsPanels ();
-		for (TournamentTableGroupPanel allMatchGroupsPanel : allMatchGroupsPanels)
-			setCurrentPlayingGroupText (allMatchGroupsPanel, false);
+		ArrayList<TournamentTableGroupPanel> allTournamentMatchGroupsPanels = getMatchController ().getAllTournamentMatchGroupsPanels ();
+		for (TournamentTableGroupPanel tournamentTableGroupPanel : allTournamentMatchGroupsPanels)
+			setCurrentPlayingGroupText (tournamentTableGroupPanel, false);
 	}
 
 

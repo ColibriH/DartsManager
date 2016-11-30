@@ -6,12 +6,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by vladislavs on 29.09.2016..
- */
 public class FontLoader
 {
-	public static final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment ();
+	private static final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment ();
 
 
 	public static void loadFont ()

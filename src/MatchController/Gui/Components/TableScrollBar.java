@@ -4,9 +4,6 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 
-/**
- * Created by vladislavs on 06.10.2016..
- */
 public class TableScrollBar extends BasicScrollBarUI
 {
 	private final Dimension mDimension = new Dimension ();

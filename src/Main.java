@@ -1,26 +1,19 @@
 import MainController.MainController;
 
 
-// TODO REFACTOR GLOBAL
-
+// TODO TEST GroupTournament
+// TODO CREATE GroupTournament result save function in file
 // Additional features
 // ==================================
 // TODO Create logging system
 // TODO Game Save for unexpected exit
-// TODO all player result?
-// TODO allPlayer places?
-// TODO style configuration
-// TODO In game menu
 //===================================
-
 // TODO On/Off Game interface
 // TODO Go through try catch blocks
 // TODO How to style playing forms.... and use abstract class
 // TODO Create documentation
-// TODO Global Refactor: split logic
-// TODO Global End Refactor
-
 // TODO check memory leak
+// TODO Global End Refactor
 
 public class Main
 {

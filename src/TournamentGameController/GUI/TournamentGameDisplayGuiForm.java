@@ -1,4 +1,4 @@
-package GameController.GUI;
+package TournamentGameController.GUI;
 
 import MatchController.Objects.PlayerObject;
 import Constants.Constats;
@@ -7,74 +7,57 @@ import Tools.ImageLoader;
 import javax.swing.*;
 import java.awt.*;
 
-// TODO Add more styling
-
-public class GameDisplayGuiForm
+public class TournamentGameDisplayGuiForm
 {
 	private JFrame          mJFrame;
 	private JPanel          mJPanel;
-
 	private JTextField      mFirstPlayerName;
 	private JTextField      mFirstPlayerLeg;
 	private JTextField      mFirstPlayerScore;
 	private JLabel          mFPlayerLabel;
-
 	private JTextField      mSecondPlayerName;
 	private JTextField      mSecondPlayerLeg;
 	private JTextField      mSecondPlayerScore;
 	private JLabel          mSPlayerLabel;
-
 	private JLabel          mMainImage;
 	private JLabel          fPlayerImage;
 	private JLabel          sPlayerImage;
 	private JLabel          mMPlayerArrow;
 	private JLabel          mOpponentPlayerArrow;
-
 	private PlayerObject    mPlayer;
 	private PlayerObject    mPlayerOpponent;
 
 
-
-	public GameDisplayGuiForm (PlayerObject firstPlayer, PlayerObject secondPlayer)
+	public TournamentGameDisplayGuiForm (PlayerObject firstPlayer, PlayerObject secondPlayer)
 	{
 		mPlayer         = firstPlayer;
 		mPlayerOpponent = secondPlayer;
-
-		formInitialization ();
-		iconsInitialization ();
-		playerTableInitialization ();
+		initializeForm ();
+		initializeIcons ();
+		initializePlayerTable ();
 	}
 
 
-	private void formInitialization ()
+	private void initializeForm ()
 	{
 		mJFrame = new JFrame ("GameDisplayGuiForm");
-		mJFrame.setContentPane (mJPanel);
-		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
-		mJFrame.setUndecorated(true);
-		mJFrame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
-
+		mJFrame.setContentPane (mJPanel);
+		mJFrame.setUndecorated(true);
+		mJFrame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
+		mJFrame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
 		setMJFrameLocation ();
 	}
 
 
-	private void setMJFrameLocation ()
-	{
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-
-		mJFrame.setLocation (dim.width / 2 - mJFrame.getSize ().width / 2, 0);
-	}
-
-
-	private void iconsInitialization ()
+	private void initializeIcons ()
 	{
 		initializePlayerTurnArrows ();
 
-		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.GAME_MAIN_BOARD_PIC)), mMainImage);
+		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.GAME_MAIN_BOARD_PIC)),      mMainImage);
 		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_RIGHT)), sPlayerImage);
-		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_LEFT)), fPlayerImage);
+		setIconToLabel (new ImageIcon (ImageLoader.getImage   (Constats.DEFAULT_PLAYER_PIC_LEFT)),  fPlayerImage);
 	}
 
 
@@ -85,11 +68,10 @@ public class GameDisplayGuiForm
 		setIconToLabel (arrow, mOpponentPlayerArrow);
 		setIconToLabel (arrow, mMPlayerArrow);
 
-		mOpponentPlayerArrow    .setVisible (false);
-		mMPlayerArrow           .setVisible (false);
-
-		mPlayer         .setTurnArrow (mMPlayerArrow);
-		mPlayerOpponent .setTurnArrow (mOpponentPlayerArrow);
+		mPlayer.setTurnArrow            (mMPlayerArrow);
+		mMPlayerArrow.setVisible        (false);
+		mPlayerOpponent.setTurnArrow    (mOpponentPlayerArrow);
+		mOpponentPlayerArrow.setVisible (false);
 	}
 
 
@@ -100,17 +82,23 @@ public class GameDisplayGuiForm
 	}
 
 
-	private void playerTableInitialization ()
+	private void initializePlayerTable ()
 	{
 		mSPlayerLabel.setText       (mPlayer.getName ());
 		mFirstPlayerName.setText    (mPlayer.getName ());
 		mFirstPlayerLeg.setText     (String.valueOf (mPlayer.getLeg ()));
 		mFirstPlayerScore.setText   (String.valueOf (mPlayer.getScore ()));
-
 		mFPlayerLabel.setText       (mPlayerOpponent.getName ());
 		mSecondPlayerName.setText   (mPlayerOpponent.getName ());
 		mSecondPlayerLeg.setText    (String.valueOf (mPlayerOpponent.getLeg ()));
 		mSecondPlayerScore.setText  (String.valueOf (mPlayerOpponent.getScore ()));
+	}
+
+
+	private void setMJFrameLocation ()
+	{
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		mJFrame.setLocation (dim.width / 2 - mJFrame.getSize ().width / 2, 0);
 	}
 
 

@@ -1,37 +1,31 @@
-package GameController.GUI;
+package TournamentGameController.GUI;
 
-import GameController.GameController;
+import TournamentGameController.TournamentGameController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-/**
- * Created by vladislavs on 07.09.2016..
- */
-
-public class GameControlGuiForm
+public class TournamentGameControlGuiForm
 {
-	private final GameController mGameController;
+	private final TournamentGameController mTournamentGameController;
 
 	private JFrame      mJFrame;
-	private JTextField  mNewScoreTxtField;
-	private JButton     mNewScoreCalculationBtn;
 	private JPanel      mJPanel;
 	private JPanel      mInnerJPanel;
+	private JTextField  mNewScoreTxtField;
+	private JButton     mNewScoreCalculationBtn;
 
 
-	public GameControlGuiForm (GameController gameController)
+	public TournamentGameControlGuiForm (TournamentGameController tournamentGameController)
 	{
-		mGameController = gameController;
-		formInitialization ();
+		mTournamentGameController = tournamentGameController;
+		initializeForm ();
 	}
 
 
-	private void formInitialization ()
+	private void initializeForm ()
 	{
 		mJFrame = new JFrame ("GameControlGuiForm");
 		mJFrame.setContentPane (mJPanel);
@@ -39,11 +33,11 @@ public class GameControlGuiForm
 		mJFrame.pack ();
 		mJFrame.setVisible (true);
 
-		componentsModification ();
+		modifyComponents ();
 	}
 
 
-	private void componentsModification ()
+	private void modifyComponents ()
 	{
 		setMJFrameLocation ();
 		addComponentsListeners ();
@@ -52,8 +46,8 @@ public class GameControlGuiForm
 
 	private void setMJFrameLocation ()
 	{
-		Dimension gameDisplayGuiSize = new Dimension (mGameController.getGameDisplayGuiSize ());
-		Point gameDisplayGuiLocation = new Point (mGameController.getGameDisplayGuiLocation ());
+		Dimension gameDisplayGuiSize = new Dimension (mTournamentGameController.getGameDisplayGuiSize ());
+		Point gameDisplayGuiLocation = new Point (mTournamentGameController.getGameDisplayGuiLocation ());
 
 		mJFrame.setLocation (gameDisplayGuiLocation.x, gameDisplayGuiLocation.y + gameDisplayGuiSize.height);
 	}
@@ -61,27 +55,20 @@ public class GameControlGuiForm
 
 	private void addComponentsListeners ()
 	{
-		mNewScoreCalculationBtn.addActionListener (new ActionListener ()
-		{
-			@Override
-			public void actionPerformed (ActionEvent e)
-			{
-				inputHandler ();
-			}
-		});
+		mNewScoreCalculationBtn.addActionListener (e -> handleInput ());
 		mNewScoreTxtField.addKeyListener (new KeyAdapter ()
 		{
 			@Override
 			public void keyPressed (KeyEvent e)
 			{
 				if (e.getKeyCode () == KeyEvent.VK_ENTER)
-					inputHandler ();
+					handleInput ();
 			}
 		});
 	}
 
 
-	private void inputHandler ()
+	private void handleInput ()
 	{
 		if (isInputInCorrectFormat ())
 		{
@@ -100,7 +87,7 @@ public class GameControlGuiForm
 		try
 		{
 			int newEarnedScores = Integer.valueOf (mNewScoreTxtField.getText ());
-			mGameController.handleScoreInputFromControlGuiForm (newEarnedScores);
+			mTournamentGameController.handleScoreInputFromControlGuiForm (newEarnedScores);
 		}
 		catch (Exception e)
 		{

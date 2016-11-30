@@ -2,21 +2,17 @@ package MatchController.Objects;
 
 import java.util.HashMap;
 
-/**
- * Created by vladislavs on 01.11.2016..
- */
 public class Stages
 {
-	private HashMap <Integer, Integer> mGroupCountOnStages = new HashMap <> ();
+	private HashMap <Integer, Integer>  mGroupCountOnStages  = new HashMap <> ();
+	private int                         mStageCount          = 0;
+	private int                         mEvenLvl             = 0;
 
-	private int mStageCount = 0;
-	private int mEvenLvl    = 0;
 
-
-	public Stages (int groupCnt)
+	public Stages (int groupCount)
 	{
-		addStage (mStageCount, groupCnt);
-		initialization (groupCnt);
+		addStage (mStageCount, groupCount);
+		initialization (groupCount);
 	}
 
 

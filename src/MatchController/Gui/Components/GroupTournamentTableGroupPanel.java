@@ -12,48 +12,41 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-// TODO REFACTOR
-
 public class GroupTournamentTableGroupPanel extends JPanel
 {
-	private JPanel mFirstPlayerPanel;
-	private JPanel mSecondPlayerPanel;
-	private JPanel mVersusPanel;
-	private JPanel mPlayingTxtPanel;
-
-	private GroupPlayerObject mFirstGroup;
-	private GroupPlayerObject mSecondGroup;
-
-	private JLabel mNameLabel;
-	private JLabel mSNameLabel;
-
-	private JLabel vsLabel;
-	private JLabel lArrow;
-	private JLabel rArrow;
-
-	private GroupTournamentMethod updateTable;
-	private GroupTournamentMethod notifyGroupPlayed;
-
-	private boolean isGamePlayed = false;
+	private JPanel                  mFirstPlayerPanel;
+	private JPanel                  mSecondPlayerPanel;
+	private JPanel                  mVersusPanel;
+	private JPanel                  mPlayingTxtPanel;
+	private JLabel                  mNameLabel;
+	private JLabel                  mSNameLabel;
+	private JLabel                  vsLabel;
+	private JLabel                  lArrow;
+	private JLabel                  rArrow;
+	private GroupPlayerObject       mFirstGroup;
+	private GroupPlayerObject       mSecondGroup;
+	private GroupTournamentMethod   updateTable;
+	private GroupTournamentMethod   notifyGroupPlayed;
+	private boolean                 isGamePlayed = false;
 
 
-	public GroupTournamentTableGroupPanel (ArrayList <GroupPlayerObject> mGroupList, GroupTournamentMethod proceedWinnerAndLoserGroup)
+	public GroupTournamentTableGroupPanel (ArrayList <GroupPlayerObject> playersGroupList, GroupTournamentMethod proceedWinnerAndLoserGroupMethod)
 	{
-		initialization (mGroupList.get (0), mGroupList.get (1), proceedWinnerAndLoserGroup);
+		initialization (playersGroupList.get (0), playersGroupList.get (1), proceedWinnerAndLoserGroupMethod);
 	}
 
 
-	private void initialization (GroupPlayerObject fGroup, GroupPlayerObject sGroup, GroupTournamentMethod proceedWinnerAndLoserGroup)
+	private void initialization (GroupPlayerObject firstGroup, GroupPlayerObject secondGroup, GroupTournamentMethod proceedWinnerAndLoserGroupMethod)
 	{
 		initializeComponents ();
 
-		mFirstGroup     = fGroup;
-		mSecondGroup    = sGroup;
+		mFirstGroup     = firstGroup;
+		mSecondGroup    = secondGroup;
 
 		buildMainPanel ();
 		buildPanels ();
 
-		addComponentsListeners (proceedWinnerAndLoserGroup);
+		addComponentsListeners (proceedWinnerAndLoserGroupMethod);
 	}
 
 
@@ -70,21 +63,14 @@ public class GroupTournamentTableGroupPanel extends JPanel
 	}
 
 
-	private void addComponentsListeners (GroupTournamentMethod proceedWinnerAndLoserGroup)
+	private void addComponentsListeners (GroupTournamentMethod proceedWinnerAndLoserGroupMethod)
 	{
 		mFirstPlayerPanel.addMouseListener (new MouseAdapter ()
 		{
 			@Override
 			public void mouseClicked (MouseEvent e)
 			{
-				if (! isGamePlayed)
-				{
-					isGamePlayed = true;
-					changeWinnerPanelStyle (mFirstPlayerPanel);
-					proceedWinnerAndLoserGroup.execute (mSecondGroup, mFirstGroup);
-					updateTable.execute ();
-					notifyGroupPlayed.execute ();
-				}
+				clickedOnPlayersGroupPanel (proceedWinnerAndLoserGroupMethod, mSecondPlayerPanel, mSecondGroup, mFirstGroup);
 			}
 		});
 
@@ -93,16 +79,22 @@ public class GroupTournamentTableGroupPanel extends JPanel
 			@Override
 			public void mouseClicked (MouseEvent e)
 			{
-				if (! isGamePlayed)
-				{
-					isGamePlayed = true;
-					changeWinnerPanelStyle (mSecondPlayerPanel);
-					proceedWinnerAndLoserGroup.execute (mFirstGroup, mSecondGroup);
-					updateTable.execute ();
-					notifyGroupPlayed.execute ();
-				}
+				clickedOnPlayersGroupPanel (proceedWinnerAndLoserGroupMethod, mSecondPlayerPanel, mFirstGroup, mSecondGroup);
 			}
 		});
+	}
+
+
+	private void clickedOnPlayersGroupPanel (GroupTournamentMethod proceedWinnerAndLoserGroupMethod, JPanel winnerGroupPanel,  GroupPlayerObject mFirstGroup,  GroupPlayerObject mSecondGroup)
+	{
+		if (! isGamePlayed)
+		{
+			isGamePlayed = true;
+			changeWinnerPanelStyle (winnerGroupPanel);
+			proceedWinnerAndLoserGroupMethod.execute (mFirstGroup, mSecondGroup);
+			updateTable.execute ();
+			notifyGroupPlayed.execute ();
+		}
 	}
 
 
@@ -115,10 +107,9 @@ public class GroupTournamentTableGroupPanel extends JPanel
 
 	private void buildMainPanel ()
 	{
-		GridBagConstraints mPanelGbc = new GridBagConstraints ();
 		setLayout (new GridBagLayout ());
-		setBackground (new Color (255, 255, 255, 0));
 		setOpaque (false);
+		setBackground (new Color (255, 255, 255, 0));
 		setForeground (Color.WHITE);
 
 		buildPanels ();
@@ -126,6 +117,7 @@ public class GroupTournamentTableGroupPanel extends JPanel
 		stylePanels ();
 		setPlayersNames ();
 
+		GridBagConstraints mPanelGbc = new GridBagConstraints ();
 		addComponentToPanel (this, mPlayingTxtPanel,    0, 0, new Insets (0, 2, 0, 2), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
 		addComponentToPanel (this, mFirstPlayerPanel,   0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
 		addComponentToPanel (this, mVersusPanel,        0, 2, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
@@ -165,7 +157,7 @@ public class GroupTournamentTableGroupPanel extends JPanel
 
 	private void setPlayersNames ()
 	{
-		mNameLabel.setText (mFirstGroup.getFirstPlayer ().getName () + " - " + mFirstGroup.getSecondPlayer ().getName ());
+		mNameLabel.setText  (mFirstGroup.getFirstPlayer ().getName () + " - " + mFirstGroup.getSecondPlayer ().getName ());
 		mSNameLabel.setText (mSecondGroup.getFirstPlayer ().getName () + " - " + mSecondGroup.getSecondPlayer ().getName ());
 	}
 
@@ -173,17 +165,13 @@ public class GroupTournamentTableGroupPanel extends JPanel
 	private void styleLabels ()
 	{
 		vsLabel         .setHorizontalAlignment (SwingConstants.CENTER);
-
 		mNameLabel      .setOpaque (true);
 		mSNameLabel     .setOpaque (false);
-
 		mNameLabel      .setBackground (new Color(255, 255, 255, 0));
 		mSNameLabel     .setBackground (new Color(255, 255, 255, 0));
-
 		mNameLabel      .setForeground (Color.WHITE);
 		mSNameLabel     .setForeground (Color.WHITE);
 		vsLabel         .setForeground (Color.WHITE);
-
 		mNameLabel      .setFont (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 12));
 		mSNameLabel     .setFont (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 12));
 		vsLabel         .setFont (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 12));
@@ -192,13 +180,13 @@ public class GroupTournamentTableGroupPanel extends JPanel
 
 	private void setImages ()
 	{
-		Image leftImage = ImageLoader.getImage(Constats.LEFT_DART_PIC);
-		Icon leftIcon = new ImageIcon(leftImage);
-		lArrow = new JLabel(leftIcon);
+		Image leftImage     = ImageLoader.getImage(Constats.LEFT_DART_PIC);
+		Icon leftIcon       = new ImageIcon(leftImage);
+		lArrow              = new JLabel(leftIcon);
 
-		Image rightImage = ImageLoader.getImage(Constats.RIGHT_DART_PIC);
-		Icon rightIcon = new ImageIcon(rightImage);
-		rArrow = new JLabel(rightIcon);
+		Image rightImage    = ImageLoader.getImage(Constats.RIGHT_DART_PIC);
+		Icon rightIcon      = new ImageIcon(rightImage);
+		rArrow              = new JLabel(rightIcon);
 	}
 
 
@@ -210,16 +198,13 @@ public class GroupTournamentTableGroupPanel extends JPanel
 		mSecondPlayerPanel  .setOpaque (false);
 		mVersusPanel        .setOpaque (false);
 		mPlayingTxtPanel    .setOpaque (false);
-
 		mFirstPlayerPanel   .setBackground (new Color(255, 255, 255, 0));
 		mSecondPlayerPanel  .setBackground (new Color(255, 255, 255, 0));
 		mVersusPanel        .setBackground (new Color(255, 255, 255, 0));
 		mPlayingTxtPanel    .setBackground (new Color(255, 255, 255, 0));
-
 		mPlayingTxtPanel    .setBorder (new MatteBorder (0, 1, 1, 1, Color.GRAY));
 		mFirstPlayerPanel   .setBorder (new MatteBorder (0, 0, 1, 0, Color.LIGHT_GRAY));
 		mSecondPlayerPanel  .setBorder (new MatteBorder (1, 0, 0, 0, Color.LIGHT_GRAY));
-
 
 		mPlayingTxtPanel.setVisible (false);
 	}

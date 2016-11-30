@@ -11,14 +11,14 @@ import java.util.HashMap;
 // TODO Create Level Links in nodes to rotate stage groups without find loop and rething tree structure to create more simpler walk in it
 public class TournamentGroupsController
 {
-	private HashMap <Integer, ArrayList<GroupsTreeNode>> mMatchGroups;
-	private GroupsTreeNode mCurrentPlayingGroup;
+	private HashMap <Integer, ArrayList<GroupsTreeNode>>    mMatchGroups;
+	private GroupsTreeNode                                  mCurrentPlayingGroup;
 
 
-	public TournamentGroupsController (HashMap <Integer, ArrayList <PlayerObject>> generatedMathGroups)
+	public TournamentGroupsController (HashMap <Integer, ArrayList <PlayerObject>> generatedTournamentMathGroups)
 	{
 		mMatchGroups = new HashMap <> ();
-		initializeGroups (generatedMathGroups);
+		initializeGroups (generatedTournamentMathGroups);
 		setCurrentPlayingGroup ();
 	}
 
@@ -28,41 +28,40 @@ public class TournamentGroupsController
 	}
 
 
-	private void initializeGroups (HashMap <Integer, ArrayList <PlayerObject>> generatedMathGroups)
+	private void initializeGroups (HashMap <Integer, ArrayList <PlayerObject>> generatedTournamentMathGroups)
 	{
-		Stages stages = new Stages (generatedMathGroups.size ());
+		Stages stages = new Stages (generatedTournamentMathGroups.size ());
 
 		int rowGap = 1, firstElementPosition;
 		for (int i = 0; i < stages.getGroupCountOnStages ().size (); i++)
 		{
 			firstElementPosition = (i == 0) ? 0 : rowGap - 1;
 			rowGap *= 2;
-
-			addStageGroupToGroupHashMap (rowGap, firstElementPosition, i, stages.getGroupCountOnStages ().get (i), generatedMathGroups);
+			addStageGroupToGroupHashMap (rowGap, firstElementPosition, i, stages.getGroupCountOnStages ().get (i), generatedTournamentMathGroups);
 		}
 
 		createGroupsTree ();
 	}
 
 
-	private void addStageGroupToGroupHashMap (int rowGap, int firstElementPosition, int stageSequenceNumber, int groupCount, HashMap <Integer, ArrayList <PlayerObject>> generatedMathGroups)
+	private void addStageGroupToGroupHashMap (int rowGap, int firstElementPosition, int stageSequenceNumber, int groupCount, HashMap <Integer, ArrayList <PlayerObject>> generatedTournamentMathGroups)
 	{
 		for (int j = 0; j < groupCount; j++)
 		{
 			int     row         = (j * rowGap) + firstElementPosition;
 			double  weightX     = (j == 0) ? 1 : 0;
-			double  weightY     = (j == generatedMathGroups.size () - 1) ? 1 : 0;
+			double  weightY     = (j == generatedTournamentMathGroups.size () - 1) ? 1 : 0;
 
 			final GroupsTreeNode groupNode;
 			if (stageSequenceNumber == 0)
 			{
-				ArrayList <PlayerObject> playersInGroup = generatedMathGroups.get (j);      // Get (i) - Get players in group from generatedMathGroups
+				ArrayList <PlayerObject> playersInGroup = generatedTournamentMathGroups.get (j);      // Get (i) - Get players in group from generatedMathGroups
 				groupNode = new GroupsTreeNode (new TournamentTableGroupPanel (playersInGroup, row, stageSequenceNumber, weightX, weightY), playersInGroup);
 				linkPanelsWithPlayerObject (playersInGroup, groupNode.getDisplayGroupPanel ());
 			}
 			else
 			{
-				if (j != 0 && j != generatedMathGroups.size () - 1)
+				if (j != 0 && j != generatedTournamentMathGroups.size () - 1)
 				{
 					weightX = 0;
 					weightY = 0.5;
@@ -84,8 +83,8 @@ public class TournamentGroupsController
 
 	private void linkPanelsWithPlayerObject (ArrayList <PlayerObject> playersInGroup, TournamentTableGroupPanel tournamentTableGroupPanel)
 	{
-		for (PlayerObject player : playersInGroup)
-			player.setTournamentTableGroupPanel(tournamentTableGroupPanel);
+		for (PlayerObject playerInGroup : playersInGroup)
+			playerInGroup.setTournamentTableGroupPanel(tournamentTableGroupPanel);
 	}
 
 
@@ -138,23 +137,23 @@ public class TournamentGroupsController
 
 	private void updateDisplayPanelData (GroupsTreeNode node)
 	{
-		ArrayList <PlayerObject> players = node.getPlayerObjects ();
+		ArrayList <PlayerObject> players = node.getPlayer ();
 		for (PlayerObject player : players)
 			node.getDisplayGroupPanel ().setPlayerName (player.getName());
 	}
 
 
-	public ArrayList <TournamentTableGroupPanel> getAllMatchGroupsPanels ()
+	public ArrayList <TournamentTableGroupPanel> getAllTournamentMatchGroupsPanels ()
 	{
-		ArrayList <TournamentTableGroupPanel> allMatchGroupsPanels = new ArrayList <> ();
+		ArrayList <TournamentTableGroupPanel> tournamentTableGroupPanels = new ArrayList <> ();
 		for (int i = 0; i < mMatchGroups.size (); i++)
 		{
 			ArrayList <GroupsTreeNode> nodes = mMatchGroups.get (i);
 			for (GroupsTreeNode node : nodes)
-				allMatchGroupsPanels.add (node.getDisplayGroupPanel ());
+				tournamentTableGroupPanels.add (node.getDisplayGroupPanel ());
 		}
 
-		return allMatchGroupsPanels;
+		return tournamentTableGroupPanels;
 	}
 
 
@@ -182,26 +181,26 @@ public class TournamentGroupsController
 	}
 
 
-	public void promoteWinningPlayerToNextStage (PlayerObject winningPlayerObject)
+	public void promoteWinningPlayerToNextStage (PlayerObject winningPlayer)
 	{
-		ArrayList <PlayerObject> players = mCurrentPlayingGroup.getPlayerObjects ();
+		ArrayList <PlayerObject> players = mCurrentPlayingGroup.getPlayer ();
 		for (PlayerObject player : players)
 		{
-			if (winningPlayerObject.equals (player))
+			if (winningPlayer.equals (player))
 			{
 				GroupsTreeNode node = mCurrentPlayingGroup.getParent ();
-				if (node.getPlayerObjects () == null)
+				if (node.getPlayer () == null)
 				{
 					mCurrentPlayingGroup.getParent ().setPlayerObjects (new ArrayList <PlayerObject> ()
 					{
 						{
-							add (winningPlayerObject);
+							add (winningPlayer);
 						}
 					});
 				}
 				else
 				{
-					node.getPlayerObjects ().add (winningPlayerObject);
+					node.getPlayer ().add (winningPlayer);
 				}
 
 				updateDisplayPanelData (node);

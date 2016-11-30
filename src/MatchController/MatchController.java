@@ -1,7 +1,7 @@
 package MatchController;
 
 import Constants.Constats;
-import GameController.GameController;
+import TournamentGameController.TournamentGameController;
 import GroupsController.GroupTournamentGroupsController;
 import GroupsController.TournamentGroupsController;
 import MainController.MainController;
@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 public class MatchController
 {
+	// TODO Divide Match controller on fame types
 	// TODO Create Base class to some of next classes to reduce cnt of it
 	private PlayersRegistration             mPlayersRegistration;
 	private TournamentGroupsController      mTournamentGroupsController;
@@ -32,12 +33,9 @@ public class MatchController
 	private GroupTournamentTable            mGroupTournamentTable;
 	private TournamentWinnerFrame           mTournamentWinnerFrame;
 	private GroupTournamentWinnerFrame      mGroupTournamentWinnerFrame;
-	private GameController                  mGameController;
-
-
+	private TournamentGameController        mTournamentGameController;
 	private ArrayList <PlayerObject>        mPlayerList;
 	private Constats.GameType               mGameType;
-
 	private Integer                         mMaxPlayerLosePoints;
 
 
@@ -96,12 +94,6 @@ public class MatchController
 	}
 
 
-	private void setPlayerList (ArrayList <PlayerObject> tablePlayerList)
-	{
-		mPlayerList =  new ArrayList <> (tablePlayerList);
-	}
-
-
 	private void destroyPlayerRegistration ()
 	{
 		mPlayersRegistration.destroy ();
@@ -124,7 +116,7 @@ public class MatchController
 	}
 
 
-	private void displayGameGroups ()
+	private void displayTournamentGameGroups ()
 	{
 		if (isGameTypeTournament ())
 			mTournamentTable = new TournamentTable (this);
@@ -133,52 +125,32 @@ public class MatchController
 	}
 
 
-	private void resetPlayerLegData (PlayerObject winningPlayerObject)
-	{
-		winningPlayerObject.setLeg(0);
-	}
-
-
-	private void showMatchWinner (PlayerObject winner)
+	private void showTournamentWinner (PlayerObject winner)
 	{
 		mTournamentWinnerFrame = new TournamentWinnerFrame (this, winner);
 	}
 
 
-	private void setNextGroupPlayingText ()
+	private void resetPlayerLegData (PlayerObject winningPlayer)
 	{
-		mTournamentTable.displayCurrentPlayingGroupText ();
-		mTournamentTable.setVisibility (true);
+		winningPlayer.setLeg(0);
 	}
 
 
-	private void startGame () throws Exception
+	private void startTournamentGame () throws Exception
 	{
-		if (mGameController != null)
-			mGameController = null;
+		if (mTournamentGameController != null)
+			mTournamentGameController = null;
 
-		mGameController = new GameController (this, getGameOpponents ());
+		mTournamentGameController = new TournamentGameController (this, getTournamentGameOpponents ());
 	}
 
 
-	private void promotePlayerAndRotateToNextStage (PlayerObject winningPlayerObject)
+	private void promotePlayerAndRotateToNextStage (PlayerObject winningPlayer)
 	{
-		mTournamentGroupsController.promoteWinningPlayerToNextStage (winningPlayerObject);
+		mTournamentGroupsController.promoteWinningPlayerToNextStage (winningPlayer);
 		mTournamentGroupsController.rotateToNextGroup ();
 		setNextGroupPlayingText ();
-	}
-
-
-	public void initializeNewMatch (Constats.GameType gameType)
-	{
-		mMaxPlayerLosePoints = 5;
-		mGameType = gameType;
-
-		if (MainController.DEBUG_MODE)
-			executeDebugCode();
-
-		whetherToKeepOldPlayerList ();
-		mPlayersRegistration = new PlayersRegistration (this);
 	}
 
 
@@ -193,6 +165,32 @@ public class MatchController
 	}
 
 
+	private void setNextGroupPlayingText ()
+	{
+		mTournamentTable.displayCurrentPlayingGroupText ();
+		mTournamentTable.setVisibility (true);
+	}
+
+
+	private void setPlayerList (ArrayList <PlayerObject> tablePlayerList)
+	{
+		mPlayerList =  new ArrayList <> (tablePlayerList);
+	}
+
+
+	public void initializeNewMatch (Constats.GameType gameType)
+	{
+		mMaxPlayerLosePoints = 5;   // TODO set default + in UI
+		mGameType = gameType;
+
+		if (MainController.DEBUG_MODE)
+			executeDebugCode();
+
+		whetherToKeepOldPlayerList ();
+		mPlayersRegistration = new PlayersRegistration (this);
+	}
+
+
 	public void runActionsAfterPlayerRegistration (ArrayList <PlayerObject> tablePlayerList)
 	{
 		setPlayerList (tablePlayerList);
@@ -201,7 +199,7 @@ public class MatchController
 
 		try
 		{
-			displayGameGroups ();
+			displayTournamentGameGroups ();
 		}
 		catch (Exception e)
 		{
@@ -216,7 +214,7 @@ public class MatchController
 		try
 		{
 			closeTournamentTable ();
-			startGame ();
+			startTournamentGame ();
 		}
 		catch (Exception e)
 		{
@@ -226,21 +224,21 @@ public class MatchController
 	}
 
 
-	public void runActionsAfterGameController (PlayerObject winningPlayerObject)
+	public void runActionsAfterTournamentGameController (PlayerObject winningPlayer)
 	{
 		try
 		{
 			if (mTournamentGroupsController.isLastGroupPlayed ())
 			{
-				showMatchWinner (winningPlayerObject);
+				showTournamentWinner (winningPlayer);
 			}
 			else
 			{
-				resetPlayerLegData (winningPlayerObject);
-				promotePlayerAndRotateToNextStage (winningPlayerObject);
+				resetPlayerLegData (winningPlayer);
+				promotePlayerAndRotateToNextStage (winningPlayer);
 
-				if (mTournamentGroupsController.getCurrentPlayingGroup ().getPlayerObjects ().size () == 1)   // Possible only on first stage
-					promotePlayerAndRotateToNextStage (mTournamentGroupsController.getCurrentPlayingGroup ().getPlayerObjects ().get (0));
+				if (mTournamentGroupsController.getCurrentPlayingGroup ().getPlayer ().size () == 1)   // Possible only on first stage
+					promotePlayerAndRotateToNextStage (mTournamentGroupsController.getCurrentPlayingGroup ().getPlayer ().get (0));
 			}
 		}
 		catch (Exception e)
@@ -249,7 +247,6 @@ public class MatchController
 			JOptionPane.showMessageDialog (null, e);
 		}
 	}
-
 
 
 	public void proceedGroupTournamentWinnerForm ()
@@ -337,9 +334,9 @@ public class MatchController
 	}
 
 
-	private ArrayList <PlayerObject> getGameOpponents () throws Exception
+	private ArrayList <PlayerObject> getTournamentGameOpponents () throws Exception
 	{
-		return mTournamentGroupsController.getCurrentPlayingGroup ().getPlayerObjects ();
+		return mTournamentGroupsController.getCurrentPlayingGroup ().getPlayer ();
 	}
 
 
@@ -349,13 +346,13 @@ public class MatchController
 	}
 
 
-	public ArrayList<TournamentTableGroupPanel> getAllMatchGroupsPanels ()
+	public ArrayList<TournamentTableGroupPanel> getAllTournamentMatchGroupsPanels ()
 	{
-		return mTournamentGroupsController.getAllMatchGroupsPanels ();
+		return mTournamentGroupsController.getAllTournamentMatchGroupsPanels ();
 	}
 
 
-	public TournamentTableGroupPanel getCurrentPlayingGroupPanel ()
+	public TournamentTableGroupPanel getCurrentTournamentPlayingGroupPanel ()
 	{
 		return mTournamentGroupsController.getCurrentPlayingGroupPanel ();
 	}
@@ -379,7 +376,7 @@ public class MatchController
 	}
 
 
-	public String getTopThreeWinnersString ()
+	public String getGroupTournamentTopThreeWinnersString ()
 	{
 		orderPlayersArrayList ();
 

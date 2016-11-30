@@ -10,7 +10,6 @@ public class PlayerObject
 	private Integer              		mId;
 	private TournamentTableGroupPanel 	mTournamentTableGroupPanel;
 	private JLabel               		mTurnArrow;
-
 	private Integer             		mLeg       = 0;
 	private Integer             		mScore     = 301;
 	private Integer             		mPrevScore = 301;

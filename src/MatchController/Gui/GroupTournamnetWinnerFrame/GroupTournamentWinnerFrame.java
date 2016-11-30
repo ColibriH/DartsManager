@@ -51,6 +51,13 @@ public class GroupTournamentWinnerFrame extends GroupTournamentWinnerFrameGui
 	private void populateTableModelWithPlayersData (ArrayList<PlayerObject> playerObjectArrayList)
 	{
 		for (PlayerObject playerObject : playerObjectArrayList)
-			mDefaultTableModel.addRow (new String [] {playerObject.getName(), playerObject.getLooses ().toString (), playerObject.getWinPoints ().toString ()});
+		{
+			mDefaultTableModel.addRow (new String[]
+			{
+				playerObject.getName (),
+				playerObject.getLooses ().toString (),
+				playerObject.getWinPoints ().toString ()
+			});
+		}
 	}
 }

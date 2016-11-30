@@ -21,10 +21,10 @@ abstract class GroupTournamentWinnerFrameGui extends DartsGuiFormBase
 	private JPanel          mControlPanel;
 	private JPanel          mHeaderPanel;
 	private JTable          mPlayersTable;
-	private JScrollPane     mPlayersTableScrollPane;
 	private JButton         mMenuButton;
 	private JButton         mExitButton;
 	private JButton         mSaveResultButton;
+	private JScrollPane     mPlayersTableScrollPane;
 
 
 	GroupTournamentWinnerFrameGui (MatchController matchController)
@@ -58,12 +58,12 @@ abstract class GroupTournamentWinnerFrameGui extends DartsGuiFormBase
 	@Override
 	protected void buildMainPanel ()
 	{
-		GridBagConstraints gbc = new GridBagConstraints ();
 		getMainJPanel ().setLayout (new GridBagLayout ());
 
 		buildContentPanel ();
 		buildControlPanel ();
 
+		GridBagConstraints gbc = new GridBagConstraints ();
 		addComponentToPanel (getMainJPanel (), mContentPanel, 0, 0, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
 		addComponentToPanel (getMainJPanel (), mControlPanel, 0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
 	}
@@ -71,9 +71,8 @@ abstract class GroupTournamentWinnerFrameGui extends DartsGuiFormBase
 
 	private void buildControlPanel ()
 	{
-		GridBagConstraints gbc = new GridBagConstraints ();
 		mControlPanel.setLayout (new GridBagLayout ());
-
+		GridBagConstraints gbc = new GridBagConstraints ();
 		addComponentToPanel (mControlPanel, mMenuButton, 1, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.HORIZONTAL);
 		addComponentToPanel (mControlPanel, mExitButton, 0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.HORIZONTAL);
 	}
@@ -96,12 +95,11 @@ abstract class GroupTournamentWinnerFrameGui extends DartsGuiFormBase
 	{
 		mHeaderPanel.setLayout (new GridBagLayout ());
 
-		GridBagConstraints gbc = new GridBagConstraints ();
-
 		JLabel headerLabel  = new JLabel ("Top 3 winners:");
-		JLabel winnersLabel = new JLabel (getMatchController ().getTopThreeWinnersString ());
+		JLabel winnersLabel = new JLabel (getMatchController ().getGroupTournamentTopThreeWinnersString ());
 		JLabel dateLabel    = new JLabel (new Date ().toString ());
 
+		GridBagConstraints gbc = new GridBagConstraints ();
 		addComponentToPanel (mHeaderPanel, headerLabel,        0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 1, 1, GridBagConstraints.WEST, gbc, GridBagConstraints.BOTH);
 		addComponentToPanel (mHeaderPanel, winnersLabel,       0, 1, new Insets (0, 0, 0, 0), 0, 0.5, 1, 1, GridBagConstraints.WEST, gbc, GridBagConstraints.BOTH);
 		addComponentToPanel (mHeaderPanel, dateLabel,          1, 0, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.NORTH, gbc, GridBagConstraints.BOTH);
@@ -119,33 +117,33 @@ abstract class GroupTournamentWinnerFrameGui extends DartsGuiFormBase
 	private void setTableStyle ()
 	{
 		mPlayersTable.setOpaque                 (false);
+		mPlayersTable.setEnabled                (false);
 		mPlayersTable.setBackground             (new Color (255, 255, 255, 0));
-		mPlayersTable.setIntercellSpacing     (new Dimension (5, 0));
-		mPlayersTable.setRowSelectionAllowed  (false);
-		mPlayersTable.setCellSelectionEnabled (false);
-		mPlayersTable.setEnabled (false);
+		mPlayersTable.setIntercellSpacing       (new Dimension (5, 0));
+		mPlayersTable.setRowSelectionAllowed    (false);
+		mPlayersTable.setCellSelectionEnabled   (false);
 	}
 
 
-	public JTable getPlayersTable ()
+	JTable getPlayersTable ()
 	{
 		return mPlayersTable;
 	}
 
 
-	public String getCOLUMN_WIN_POINTS ()
+	String getCOLUMN_WIN_POINTS ()
 	{
 		return COLUMN_WIN_POINTS;
 	}
 
 
-	public String getCOLUMN_NAME ()
+	String getCOLUMN_NAME ()
 	{
 		return COLUMN_NAME;
 	}
 
 
-	public String getCOLUMN_LOSES ()
+	String getCOLUMN_LOSES ()
 	{
 		return COLUMN_LOSES;
 	}

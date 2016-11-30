@@ -5,9 +5,6 @@ import MatchController.MatchController;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by vladislavs on 11.11.2016..
- */
 public abstract class DartsGuiFormBase
 {
 	protected abstract void initializeComponents    ();
@@ -59,6 +56,31 @@ public abstract class DartsGuiFormBase
 	}
 
 
+	protected JFrame getMainJFrame ()
+	{
+		return mJFrame;
+	}
+
+
+	protected JPanel getMainJPanel ()
+	{
+		return mJPanel;
+	}
+
+
+	protected void setMainJPanel (JPanel panel)
+	{
+		mJPanel = panel;
+	}
+
+
+	protected void setMainFrameResizable (boolean isResizable)
+	{
+		mIsMainFrameResizable = isResizable;
+		mJFrame.setResizable (mIsMainFrameResizable);
+	}
+
+
 	private void setMainJFrameLocation ()
 	{
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -81,31 +103,6 @@ public abstract class DartsGuiFormBase
 	public void setVisibility (boolean visibilityFlag)
 	{
 		mJFrame.setVisible (visibilityFlag);
-	}
-
-
-	public JFrame getMainJFrame ()
-	{
-		return mJFrame;
-	}
-
-
-	public JPanel getMainJPanel ()
-	{
-		return mJPanel;
-	}
-
-
-	public void setMainJPanel (JPanel panel)
-	{
-		mJPanel = panel;
-	}
-
-
-	public void setMainFrameResizable (boolean isResizable)
-	{
-		mIsMainFrameResizable = isResizable;
-		mJFrame.setResizable (mIsMainFrameResizable);
 	}
 
 

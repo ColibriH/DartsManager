@@ -251,7 +251,7 @@ abstract class GroupTournamentTableGui extends DartsGuiFormBase
 	}
 
 
-	public void setColumnWidth ()
+	void setColumnWidth ()
 	{
 		mPlayersTable.getColumnModel ().getColumn (0).setPreferredWidth (99);
 		mPlayersTable.getColumnModel ().getColumn (1).setPreferredWidth (99);
@@ -261,25 +261,25 @@ abstract class GroupTournamentTableGui extends DartsGuiFormBase
 	}
 
 
-	public JTable getPlayersTable ()
+	JTable getPlayersTable ()
 	{
 		return mPlayersTable;
 	}
 
 
-	public String getCOLUMN_WIN_POINTS ()
+	String getCOLUMN_WIN_POINTS ()
 	{
 		return COLUMN_WIN_POINTS;
 	}
 
 
-	public String getCOLUMN_NAME ()
+	String getCOLUMN_NAME ()
 	{
 		return COLUMN_NAME;
 	}
 
 
-	public String getCOLUMN_LOSES ()
+	String getCOLUMN_LOSES ()
 	{
 		return COLUMN_LOSES;
 	}

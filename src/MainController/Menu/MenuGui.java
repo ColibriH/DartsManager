@@ -10,10 +10,7 @@ import Tools.ImageLoader;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by vladislavs on 23.09.2016..
- */
-public abstract class MenuGui extends DartsGuiFormBase
+abstract class MenuGui extends DartsGuiFormBase
 {
 	protected abstract void tournamentButtonAction      ();
 	protected abstract void groupTournamentButtonAction ();
@@ -24,11 +21,10 @@ public abstract class MenuGui extends DartsGuiFormBase
 	private final int   CTR_PANEL_HEIGHT      = 325;
 
 	private JPanel      mControlPanel;
-
 	private MenuButton  mTournamentButton;
 	private MenuButton  mExitButton;
 	private MenuButton  mOptionsButton;
-	private MenuButton mGroupTournamentButton;
+	private MenuButton  mGroupTournamentButton;
 
 
 	@Override
@@ -37,7 +33,6 @@ public abstract class MenuGui extends DartsGuiFormBase
 		setMainJPanel (new ImagedPanel (ImageLoader.getImage (Constats.MENU_BG_PIC)));
 
 		mControlPanel           = new JPanel ();
-
 		mTournamentButton       = new MenuButton ("Tournament",         MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
 		mExitButton             = new MenuButton ("Exit",               MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
 		mOptionsButton          = new MenuButton ("Settings (In Dev)",  MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
@@ -57,31 +52,28 @@ public abstract class MenuGui extends DartsGuiFormBase
 	@Override
 	protected void  buildMainPanel ()
 	{
-		GridBagConstraints gbc = new GridBagConstraints ();
-
 		FontLoader.loadFont ();
 		getMainJPanel ().setLayout (new GridBagLayout ());
 		getMainJPanel ().setPreferredSize (new Dimension (Constats.MAIN_WIDTH - 10, Constats.MAIN_HEIGHT - 10));
-
 		buildControlPanel ();
 
+		GridBagConstraints gbc = new GridBagConstraints ();
 		addComponentToPanel (getMainJPanel (), mControlPanel, 0, 0, new Insets (90, 20, 0 ,0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
 	private void    buildControlPanel ()
 	{
+		mControlPanel.setLayout         (new GridBagLayout ());
+		mControlPanel.setOpaque         (false);
+		mControlPanel.setBackground     (new Color (255, 255, 0, 0));
+		mControlPanel.setPreferredSize  (new Dimension (CTR_PANEL_WIDTH, CTR_PANEL_HEIGHT));
+
 		GridBagConstraints gbc = new GridBagConstraints ();
-
-		mControlPanel.setBackground (new Color (255, 255, 0, 0));
-		mControlPanel.setLayout (new GridBagLayout ());
-		mControlPanel.setOpaque (false);
-		mControlPanel.setPreferredSize (new Dimension (CTR_PANEL_WIDTH, CTR_PANEL_HEIGHT));
-
-		addComponentToPanel (mControlPanel, mTournamentButton,  0, 0, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mControlPanel, mTournamentButton,      0, 0, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
 		addComponentToPanel (mControlPanel, mGroupTournamentButton, 0, 1, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
-		addComponentToPanel (mControlPanel, mOptionsButton,     0, 2, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
-		addComponentToPanel (mControlPanel, mExitButton,        0, 3, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mControlPanel, mOptionsButton,         0, 2, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mControlPanel, mExitButton,            0, 3, new Insets (5, 0, 5, 0), 0, 0, 0, 1, null, gbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
@@ -91,9 +83,9 @@ public abstract class MenuGui extends DartsGuiFormBase
 	}
 
 
-	public void         setControlPanel (JPanel mControlPanel)
+	public void         setControlPanel (JPanel controlPanel)
 	{
-		this.mControlPanel = mControlPanel;
+		mControlPanel = controlPanel;
 	}
 
 
@@ -103,9 +95,9 @@ public abstract class MenuGui extends DartsGuiFormBase
 	}
 
 
-	public void         setTournamentButton (MenuButton mTournamentButton)
+	public void         setTournamentButton (MenuButton tournamentButton)
 	{
-		this.mTournamentButton = mTournamentButton;
+		mTournamentButton = tournamentButton;
 	}
 
 
@@ -115,9 +107,9 @@ public abstract class MenuGui extends DartsGuiFormBase
 	}
 
 
-	public void         setExitButton (MenuButton mExitButton)
+	public void         setExitButton (MenuButton exitButton)
 	{
-		this.mExitButton = mExitButton;
+		mExitButton = exitButton;
 	}
 
 
@@ -127,9 +119,9 @@ public abstract class MenuGui extends DartsGuiFormBase
 	}
 
 
-	public void         setOptionsButton (MenuButton mOptionsButton)
+	public void         setOptionsButton (MenuButton optionsButton)
 	{
-		this.mOptionsButton = mOptionsButton;
+		mOptionsButton = optionsButton;
 	}
 
 
@@ -139,8 +131,8 @@ public abstract class MenuGui extends DartsGuiFormBase
 	}
 
 
-	public void         setEachVsEachButton (MenuButton mEachVsEachButton)
+	public void         setEachVsEachButton (MenuButton eachVsEachButton)
 	{
-		this.mGroupTournamentButton = mEachVsEachButton;
+		mGroupTournamentButton = eachVsEachButton;
 	}
 }

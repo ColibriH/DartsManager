@@ -65,7 +65,7 @@ public class PlayersRegistration extends PlayersRegistrationGui
 		if (getPlayerNameTxtFieldDefaultValue ().equals (playerName) || playerName.isEmpty ())
 			return;
 
-		if (! isNameUnique (playerName))
+		if (! isPlayerNameUnique (playerName))
 		{
 			JOptionPane.showMessageDialog(null, "That name already exist. Please, try another one.");
 			return;
@@ -101,9 +101,9 @@ public class PlayersRegistration extends PlayersRegistrationGui
 	{
 		try
 		{
-			String playerName = (String) rowData.get (getColumnNumberByName (getCOLUMN_NAME ()));
-			String playerIdString = (String) rowData.get (getColumnNumberByName (getCOLUMN_ID ()));
-			Integer playerId = Integer.parseInt (playerIdString);
+			String playerName       = (String) rowData.get (getColumnNumberByName (getCOLUMN_NAME ()));
+			String playerIdString   = (String) rowData.get (getColumnNumberByName (getCOLUMN_ID ()));
+			Integer playerId        = Integer.parseInt (playerIdString);
 
 			return new PlayerObject (playerName, playerId);
 		}
@@ -136,7 +136,7 @@ public class PlayersRegistration extends PlayersRegistrationGui
 	}
 
 
-	private boolean isNameUnique (String playerName)
+	private boolean isPlayerNameUnique (String playerName)
 	{
 		for (Object rowData : mDefaultTableModel.getDataVector ())
 			if (getPlayerObjectNewInstance ((Vector) rowData).getName ().equals (playerName))
@@ -146,10 +146,18 @@ public class PlayersRegistration extends PlayersRegistrationGui
 	}
 
 
-	private void populateTableModelWithOldPlayers (ArrayList <PlayerObject> playerObjectArrayList)
+	private void populateTableModelWithOldPlayers (ArrayList <PlayerObject> playersArrayList)
 	{
-		for (PlayerObject playerObject : playerObjectArrayList)
-			mDefaultTableModel.addRow (new String [] {String.valueOf (playerObject.getId()), playerObject.getName(), Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
+		for (PlayerObject playerObject : playersArrayList)
+		{
+			mDefaultTableModel.addRow (new String[]
+			{
+				String.valueOf (playerObject.getId ()),
+				playerObject.getName (),
+				Constats.DELETE_BTN_ID,
+				Constats.EDIT_BTN_ID
+			});
+		}
 	}
 
 
@@ -157,7 +165,13 @@ public class PlayersRegistration extends PlayersRegistrationGui
 	{
 		// Players Id`s are connected with data model size (to get last id we need to get data model size)
 		int lastInsertedId = mDefaultTableModel.getRowCount ();
-		mDefaultTableModel.addRow (new String [] {String.valueOf (lastInsertedId), Name, Constats.DELETE_BTN_ID, Constats.EDIT_BTN_ID});
+		mDefaultTableModel.addRow (new String []
+		{
+			String.valueOf (lastInsertedId),
+			Name,
+			Constats.DELETE_BTN_ID,
+			Constats.EDIT_BTN_ID
+		});
 	}
 
 

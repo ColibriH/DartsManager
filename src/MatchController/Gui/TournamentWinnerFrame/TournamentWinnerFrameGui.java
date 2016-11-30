@@ -16,12 +16,9 @@ abstract class TournamentWinnerFrameGui extends DartsGuiFormBase
 
 	private JPanel          mWinnerPanel;
 	private JPanel          mControlPanel;
-
 	private JButton         mMenuButton;
 	private JButton         mExitButton;
-
 	private JLabel          mWinnerName;
-
 	private PlayerObject    mWinner;
 
 
@@ -29,7 +26,7 @@ abstract class TournamentWinnerFrameGui extends DartsGuiFormBase
 	{
 		super (matchController);
 		mWinner = winner;
-		mWinnerName.setText (mWinner.getName());
+		mWinnerName.setText (mWinner.getName ());
 	}
 
 
@@ -55,13 +52,13 @@ abstract class TournamentWinnerFrameGui extends DartsGuiFormBase
 	@Override
 	protected void buildMainPanel ()
 	{
-		GridBagConstraints gbc = new GridBagConstraints ();
 		getMainJPanel ().setLayout (new GridBagLayout ());
 
 		imageInitialization ();
 		buildWinnerPanel ();
 		buildControlPanel ();
 
+		GridBagConstraints gbc = new GridBagConstraints ();
 		addComponentToPanel (getMainJPanel (), mWinnerPanel,  0, 0, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
 		addComponentToPanel (getMainJPanel (), mControlPanel, 0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
 	}
@@ -69,9 +66,8 @@ abstract class TournamentWinnerFrameGui extends DartsGuiFormBase
 
 	private void buildControlPanel ()
 	{
-		GridBagConstraints gbc = new GridBagConstraints ();
 		mControlPanel.setLayout (new GridBagLayout ());
-
+		GridBagConstraints gbc = new GridBagConstraints ();
 		addComponentToPanel (mControlPanel, mMenuButton, 1, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.HORIZONTAL);
 		addComponentToPanel (mControlPanel, mExitButton, 0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.HORIZONTAL);
 	}
@@ -79,20 +75,18 @@ abstract class TournamentWinnerFrameGui extends DartsGuiFormBase
 
 	private void buildWinnerPanel ()
 	{
-		GridBagConstraints gbc = new GridBagConstraints ();
 		mWinnerPanel.setLayout (new GridBagLayout ());
-
+		GridBagConstraints gbc = new GridBagConstraints ();
 		addComponentToPanel (mWinnerPanel, mWinnerName, 0, 0, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, gbc, GridBagConstraints.BOTH);
 	}
 
 
 	private void imageInitialization ()
 	{
-		mWinnerName.setVerticalAlignment      (SwingConstants.CENTER);
-		mWinnerName.setVerticalTextPosition   (SwingConstants.CENTER);
-		mWinnerName.setHorizontalAlignment    (SwingConstants.CENTER);
-		mWinnerName.setHorizontalTextPosition (SwingConstants.CENTER);
-
-		mWinnerName.setIcon (new ImageIcon (ImageLoader.getImage (Constats.WINNER_PIC)));
+		mWinnerName.setIcon                     (new ImageIcon (ImageLoader.getImage (Constats.WINNER_PIC)));
+		mWinnerName.setVerticalAlignment        (SwingConstants.CENTER);
+		mWinnerName.setHorizontalAlignment      (SwingConstants.CENTER);
+		mWinnerName.setVerticalTextPosition     (SwingConstants.CENTER);
+		mWinnerName.setHorizontalTextPosition   (SwingConstants.CENTER);
 	}
 }

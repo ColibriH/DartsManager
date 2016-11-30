@@ -4,41 +4,38 @@ import MatchController.Gui.Components.TournamentTableGroupPanel;
 
 import java.util.ArrayList;
 
-/**
- * Created by vladislavs on 03.11.2016..
- */
 public class GroupsTreeNode
 {
-	private ArrayList <GroupsTreeNode> mChildrens;
-	private ArrayList <PlayerObject> mPlayerObjects;
-	private TournamentTableGroupPanel mTournamentTableGroupPanel;
-	private GroupsTreeNode mParent;
+	private ArrayList <GroupsTreeNode>  mChildrens;
+	private ArrayList <PlayerObject>    mPlayer;
+	private TournamentTableGroupPanel   mTournamentTableGroupPanel;
+	private GroupsTreeNode              mParent;
 
 
-	public GroupsTreeNode (TournamentTableGroupPanel group)
+	public GroupsTreeNode (TournamentTableGroupPanel tournamentTableGroupPanel)
 	{
-		mPlayerObjects      = new ArrayList <> ();
-		mChildrens          = new ArrayList <> ();
-		mTournamentTableGroupPanel = group;
+		mPlayer = new ArrayList <> ();
+		mChildrens                  = new ArrayList <> ();
+		mTournamentTableGroupPanel  = tournamentTableGroupPanel;
 	}
 
 
-	public GroupsTreeNode (TournamentTableGroupPanel group, ArrayList <PlayerObject> playersInGroup)
+	public GroupsTreeNode (TournamentTableGroupPanel tournamentTableGroupPanel, ArrayList <PlayerObject> playersInGroup)
 	{
-		this (group);
-		mPlayerObjects = new ArrayList <> (playersInGroup);
+		this (tournamentTableGroupPanel);
+		mPlayer = new ArrayList <> (playersInGroup);
 	}
 
 
-	public void addChildren (GroupsTreeNode children)
+	public void addChildren (GroupsTreeNode childrenNodes)
 	{
-		mChildrens.add (children);
+		mChildrens.add (childrenNodes);
 	}
 
 
-	public void setParent (GroupsTreeNode parent)
+	public void setParent (GroupsTreeNode parentNode)
 	{
-		mParent = parent;
+		mParent = parentNode;
 	}
 
 
@@ -60,14 +57,14 @@ public class GroupsTreeNode
 	}
 
 
-	public ArrayList <PlayerObject> getPlayerObjects ()
+	public ArrayList <PlayerObject> getPlayer ()
 	{
-		return mPlayerObjects;
+		return mPlayer;
 	}
 
 
-	public void setPlayerObjects (ArrayList <PlayerObject> mPlayerObjects)
+	public void setPlayerObjects (ArrayList <PlayerObject> player)
 	{
-		this.mPlayerObjects = mPlayerObjects;
+		mPlayer = player;
 	}
 }

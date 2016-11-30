@@ -1,40 +1,32 @@
-package GameController;
+package TournamentGameController;
 
-import GameController.GUI.GameControlGuiForm;
-import GameController.GUI.GameDisplayGuiForm;
+import TournamentGameController.GUI.TournamentGameControlGuiForm;
+import TournamentGameController.GUI.TournamentGameDisplayGuiForm;
 import MatchController.Objects.PlayerObject;
 import MatchController.MatchController;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * Created by vladislavs on 07.09.2016..
- */
-
-// TODO Refactor
 // TODO May me can split on game logic and rule logic and Gui logic
 
-public class GameController
+public class TournamentGameController
 {
-	private final Integer               MAX_PLAYER_SHOTS    = 3;
-	private final Integer               WINING_SCORES_COUNT = 0;
-	private final Integer               WINING_LEG_COUNT    = 3;
-	private final Integer               PLAYER_START_SCORES = 301;
+	private final Integer                   MAX_PLAYER_SHOTS    = 3;
+	private final Integer                   WINING_SCORES_COUNT = 0;
+	private final Integer                   WINING_LEG_COUNT    = 3;
+	private final Integer                   PLAYER_START_SCORES = 301;
+	private final MatchController           mMatchController;
 
-	private final MatchController       mMatchController;
-
-	private GameControlGuiForm          mGameControlGuiForm;
-	private GameDisplayGuiForm          mGameDisplayGuiForm;
-
-	private PlayerObject                mCurrentPlayer;
-	private PlayerObject                mPlayer;
-	private PlayerObject                mOpponentPlayer;
-
-	private Integer                     mCurrentPlayerShots;
+	private TournamentGameControlGuiForm    mTournamentGameControlGuiForm;
+	private TournamentGameDisplayGuiForm    mTournamentGameDisplayGuiForm;
+	private PlayerObject                    mCurrentPlayer;
+	private PlayerObject                    mPlayer;
+	private PlayerObject                    mOpponentPlayer;
+	private Integer                         mCurrentPlayerShots;
 
 
-	public GameController (MatchController matchController, ArrayList <PlayerObject> playersList)
+	public TournamentGameController (MatchController matchController, ArrayList <PlayerObject> playersList)
 	{
 		mCurrentPlayerShots     = 0;
 		mMatchController        = matchController;
@@ -49,16 +41,10 @@ public class GameController
 	{
 		setCurrentPlayer (mPlayer);
 
-		mGameDisplayGuiForm     = new GameDisplayGuiForm (mCurrentPlayer, mOpponentPlayer);
-		mGameControlGuiForm     = new GameControlGuiForm (this);
+		mTournamentGameDisplayGuiForm = new TournamentGameDisplayGuiForm (mCurrentPlayer, mOpponentPlayer);
+		mTournamentGameControlGuiForm = new TournamentGameControlGuiForm (this);
 
 		showCurrentPlayerTurn (true);
-	}
-
-
-	private void setCurrentPlayer (PlayerObject player)
-	{
-		mCurrentPlayer = player;
 	}
 
 
@@ -91,15 +77,15 @@ public class GameController
 
 	private void beginNewLeg ()
 	{
-		gameLegUpdate ();
-		mGameDisplayGuiForm.updateGameLegData ();
+		updateGameLeg ();
+		mTournamentGameDisplayGuiForm.updateGameLegData ();
 	}
 
 
-	private void gameLegUpdate ()
+	private void updateGameLeg ()
 	{
 		addWinningLegForCurrentPlayer ();
-		gameLegRuleCheck ();
+		checkGameLegRule ();
 		resetCurrentPlayerShots ();
 		resetPlayersScore ();
 	}
@@ -107,21 +93,15 @@ public class GameController
 
 	private void beginRotation ()
 	{
-		mGameDisplayGuiForm.updatePlayerData ();
-		playerShotsRotation ();
+		mTournamentGameDisplayGuiForm.updatePlayerData ();
+		rotatePlayerShots ();
 		rotatePlayersSequence ();
 	}
 
 
-	private void playerShotsRotation ()
+	private void rotatePlayerShots ()
 	{
 		mCurrentPlayerShots++;
-	}
-
-
-	private boolean hasPlayerWonLeg ()
-	{
-		return mCurrentPlayer.getScore().equals (WINING_SCORES_COUNT);
 	}
 
 
@@ -138,26 +118,20 @@ public class GameController
 	}
 
 
-	private void gameLegRuleCheck ()
+	private void checkGameLegRule ()
 	{
 		if (mCurrentPlayer.getLeg().equals (WINING_LEG_COUNT))
 		{
-			destroyGuiForms ();
-			mMatchController.runActionsAfterGameController (mCurrentPlayer);
+			destroyTournamentGameGuiForms ();
+			mMatchController.runActionsAfterTournamentGameController (mCurrentPlayer);
 		}
 	}
 
 
-	private void destroyGuiForms ()
+	private void destroyTournamentGameGuiForms ()
 	{
-		mGameDisplayGuiForm.destroy ();
-		mGameControlGuiForm.destroy ();
-	}
-
-
-	private boolean isScoreNegativeOrNumberOne (Integer scores)
-	{
-		return (scores == 1 || scores < 0);
+		mTournamentGameDisplayGuiForm.destroy ();
+		mTournamentGameControlGuiForm.destroy ();
 	}
 
 
@@ -172,7 +146,7 @@ public class GameController
 	}
 
 
-	public void showCurrentPlayerTurn ()
+	private void showCurrentPlayerTurn ()
 	{
 		hidePlayersArrows ();
 		showCurrentPlayerTurn (true);
@@ -205,16 +179,34 @@ public class GameController
 	}
 
 
+	private boolean hasPlayerWonLeg ()
+	{
+		return mCurrentPlayer.getScore().equals (WINING_SCORES_COUNT);
+	}
+
+
+	private boolean isScoreNegativeOrNumberOne (Integer scores)
+	{
+		return (scores == 1 || scores < 0);
+	}
+
+
+	private void setCurrentPlayer (PlayerObject player)
+	{
+		mCurrentPlayer = player;
+	}
+
+
 	// Communication methods between forms
 	// =============================================================================================================
 	public Dimension getGameDisplayGuiSize ()
 	{
-		return mGameDisplayGuiForm.getSize ();
+		return mTournamentGameDisplayGuiForm.getSize ();
 	}
 
 
 	public Point getGameDisplayGuiLocation ()
 	{
-		return mGameDisplayGuiForm.getLocation ();
+		return mTournamentGameDisplayGuiForm.getLocation ();
 	}
 }

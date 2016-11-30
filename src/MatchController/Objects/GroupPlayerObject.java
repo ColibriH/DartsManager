@@ -1,7 +1,6 @@
 package MatchController.Objects;
 
 import MatchController.Gui.Components.GroupTournamentTableGroupPanel;
-import MatchController.Gui.Components.TournamentTableGroupPanel;
 
 public class GroupPlayerObject
 {

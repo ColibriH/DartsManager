@@ -3,16 +3,11 @@ package MainController;
 import Constants.Constats;
 import MainController.Menu.Menu;
 import MatchController.MatchController;
-import MainController.Menu.MenuGui;
 
-/**
- * Created by vladislavs on 30.09.2016..
- */
 public class MainController
 {
-	public static boolean DEBUG_MODE;
-    private static MatchController matchController;
-
+    private static  MatchController  matchController;
+	public static   boolean           DEBUG_MODE;
 
 	public static void openMenuGui ()
 	{

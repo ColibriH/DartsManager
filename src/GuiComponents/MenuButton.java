@@ -9,9 +9,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Created by vladislavs on 30.09.2016..
- */
 public class MenuButton extends JButton
 {
 	private int mWidth;
@@ -23,7 +20,6 @@ public class MenuButton extends JButton
 	{
 		mWidth  = width;
 		mHeight = height;
-
 		initialize ();
 	}
 
@@ -32,7 +28,6 @@ public class MenuButton extends JButton
 	{
 		mWidth  = width;
 		mHeight = height;
-
 		setText (txt);
 		initialize ();
 	}
@@ -47,23 +42,18 @@ public class MenuButton extends JButton
 
 	private void initialize ()
 	{
-		setPreferredSize (new Dimension (mWidth, mHeight));
-		setFont (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 12));
-
-		setBackground (new Color (255, 255, 0, 0));
-		setForeground (Color.WHITE);
-
-		setHorizontalTextPosition (SwingConstants.CENTER);
-		setOpaque (false);
-
-		setBorder (new EmptyBorder (0, 0, 0, 0));
-		setBorderPainted (false);
-
-		setContentAreaFilled (false);
-		setFocusPainted (false);
-
-		setIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC)));
-		setRolloverIcon (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC)));
+		setFont                     (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 12));
+		setIcon                     (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC)));
+		setOpaque                   (false);
+		setBorder                   (new EmptyBorder (0, 0, 0, 0));
+		setBackground               (new Color (255, 255, 0, 0));
+		setForeground               (Color.WHITE);
+		setPreferredSize            (new Dimension (mWidth, mHeight));
+		setBorderPainted            (false);
+		setFocusPainted             (false);
+		setRolloverIcon             (new ImageIcon (ImageLoader.getImage (Constats.BTN_FILLER_PIC)));
+		setContentAreaFilled        (false);
+		setHorizontalTextPosition   (SwingConstants.CENTER);
 
 		initializeListeners ();
 	}
@@ -95,8 +85,8 @@ public class MenuButton extends JButton
 	}
 
 
-	public void setFontSize (int mFontSize)
+	public void setFontSize (int fontSize)
 	{
-		this.mFontSize = mFontSize;
+		mFontSize = fontSize;
 	}
 }

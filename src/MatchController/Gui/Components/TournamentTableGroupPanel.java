@@ -12,19 +12,16 @@ import java.util.ArrayList;
 
 public class TournamentTableGroupPanel extends JPanel
 {
-	private JPanel mFirstPlayerPanel;
-	private JPanel mSecondPlayerPanel;
-	private JPanel mVersusPanel;
-	private JPanel mPlayingTxtPanel;
-
-	private JLabel mNameLabel;
-	private JLabel mSNameLabel;
-	private JLabel mPlayingLabel;
-
-	private JLabel vsLabel;
-	private JLabel lArrow;
-	private JLabel rArrow;
-
+	private JPanel  mFirstPlayerPanel;
+	private JPanel  mSecondPlayerPanel;
+	private JPanel  mVersusPanel;
+	private JPanel  mPlayingTxtPanel;
+	private JLabel  mNameLabel;
+	private JLabel  mSNameLabel;
+	private JLabel  mPlayingLabel;
+	private JLabel  vsLabel;
+	private JLabel  lArrow;
+	private JLabel  rArrow;
 	private int     mRow;
 	private int     mColumn;
 	private double  mWeightX;
@@ -68,10 +65,10 @@ public class TournamentTableGroupPanel extends JPanel
 	}
 
 
-	private void initialization (String fPlayer, String sPlayer)
+	private void initialization (String firstPlayer, String secondPlayer)
 	{
 		initializeComponents ();
-		buildMainPanel (fPlayer, sPlayer);
+		buildMainPanel (firstPlayer, secondPlayer);
 		buildPanels ();
 	}
 
@@ -90,23 +87,23 @@ public class TournamentTableGroupPanel extends JPanel
 	}
 
 
-	private void buildMainPanel (String fPlayer, String sPlayer)
+	private void buildMainPanel (String firstPlayer, String secondPlayer)
 	{
-		GridBagConstraints mPanelGbc = new GridBagConstraints ();
-		setLayout (new GridBagLayout ());
-		setBackground (new Color (255, 255, 255, 0));
-		setOpaque (false);
-		setForeground (Color.WHITE);
+		setLayout       (new GridBagLayout ());
+		setOpaque       (false);
+		setBackground   (new Color (255, 255, 255, 0));
+		setForeground   (Color.WHITE);
 
 		buildPanels ();
 		styleLabels ();
 		stylePanels ();
-		setPlayersNames (fPlayer, sPlayer);
+		setPlayersNames (firstPlayer, secondPlayer);
 
-		addComponentToPanel (this, mPlayingTxtPanel,    0, 0, new Insets (0, 2, 0, 2), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
-		addComponentToPanel (this, mFirstPlayerPanel,   0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
-		addComponentToPanel (this, mVersusPanel,        0, 2, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
-		addComponentToPanel (this, mSecondPlayerPanel,  0, 3, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER,       mPanelGbc, GridBagConstraints.HORIZONTAL);
+		GridBagConstraints mPanelGbc = new GridBagConstraints ();
+		addComponentToPanel (this, mPlayingTxtPanel,    0, 0, new Insets (0, 2, 0, 2), 0, 0, 0, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (this, mFirstPlayerPanel,   0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (this, mVersusPanel,        0, 2, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (this, mSecondPlayerPanel,  0, 3, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
@@ -141,24 +138,14 @@ public class TournamentTableGroupPanel extends JPanel
 	}
 
 
-	private void setPlayersNames (String fPlayer, String sPlayer)
-	{
-		mNameLabel.setText (fPlayer);
-		mSNameLabel.setText (sPlayer);
-	}
-
-
 	private void styleLabels ()
 	{
 		vsLabel         .setHorizontalAlignment (SwingConstants.CENTER);
 		mPlayingLabel   .setHorizontalAlignment (SwingConstants.CENTER);
-
 		mNameLabel      .setOpaque (true);
 		mSNameLabel     .setOpaque (false);
-
 		mNameLabel      .setBackground (new Color(255, 255, 255, 0));
 		mSNameLabel     .setBackground (new Color(255, 255, 255, 0));
-
 		mNameLabel      .setForeground (Color.WHITE);
 		mSNameLabel     .setForeground (Color.WHITE);
 		vsLabel         .setForeground (Color.WHITE);
@@ -166,15 +153,21 @@ public class TournamentTableGroupPanel extends JPanel
 	}
 
 
+	private void setPlayersNames (String firstPlayer, String secondPlayer)
+	{
+		mNameLabel.setText  (firstPlayer);
+		mSNameLabel.setText (secondPlayer);
+	}
+
+
 	private void setImages ()
 	{
-		Image leftImage = ImageLoader.getImage(Constats.LEFT_DART_PIC);
-		Icon leftIcon = new ImageIcon(leftImage);
-		lArrow = new JLabel(leftIcon);
-
-		Image rightImage = ImageLoader.getImage(Constats.RIGHT_DART_PIC);
-		Icon rightIcon = new ImageIcon(rightImage);
-		rArrow = new JLabel(rightIcon);
+		Image leftImage     = ImageLoader.getImage(Constats.LEFT_DART_PIC);
+		Icon leftIcon       = new ImageIcon(leftImage);
+		lArrow              = new JLabel(leftIcon);
+		Image rightImage    = ImageLoader.getImage(Constats.RIGHT_DART_PIC);
+		Icon rightIcon      = new ImageIcon(rightImage);
+		rArrow              = new JLabel(rightIcon);
 	}
 
 
@@ -186,18 +179,14 @@ public class TournamentTableGroupPanel extends JPanel
 		mSecondPlayerPanel  .setOpaque (false);
 		mVersusPanel        .setOpaque (false);
 		mPlayingTxtPanel    .setOpaque (false);
-
 		mFirstPlayerPanel   .setBackground (new Color(255, 255, 255, 0));
 		mSecondPlayerPanel  .setBackground (new Color(255, 255, 255, 0));
 		mVersusPanel        .setBackground (new Color(255, 255, 255, 0));
 		mPlayingTxtPanel    .setBackground (new Color(255, 255, 255, 0));
-
 		mPlayingTxtPanel    .setBorder (new MatteBorder (0, 1, 1, 1, Color.GRAY));
 		mFirstPlayerPanel   .setBorder (new MatteBorder (0, 0, 1, 0, Color.LIGHT_GRAY));
 		mSecondPlayerPanel  .setBorder (new MatteBorder (1, 0, 0, 0, Color.LIGHT_GRAY));
-
-
-		mPlayingTxtPanel.setVisible (false);
+		mPlayingTxtPanel    .setVisible (false);
 	}
 
 

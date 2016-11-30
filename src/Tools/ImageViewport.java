@@ -3,9 +3,6 @@ package Tools;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by vladislavs on 12.09.2016..
- */
 public class ImageViewport extends JViewport
 {
 	private Image mBackGroundImage;

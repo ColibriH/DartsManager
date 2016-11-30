@@ -25,7 +25,6 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 	private JPanel                                              mGroupsPanel;
 	private GroupPanelLines                                     mGlassPanel;
 	private JScrollPane                                         mGroupsScrollPane;
-
 	private JButton                                             mGameStartBtn;
 	private JButton                                             mBackBtn;
 
@@ -44,12 +43,11 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 
 		mGroupsPanel        = new JPanel ();
 		mControlJPanel      = new JPanel ();
-		mGroupsPanelContent = new JPanel ();
 		mGlassPanel 		= new GroupPanelLines (null);
-		mGroupsScrollPane   = new JScrollPane (mGroupsPanelContent, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
+		mGroupsPanelContent = new JPanel ();
 		mGameStartBtn   	= new MenuButton ("Start Game");
 		mBackBtn        	= new MenuButton ("Back");
+		mGroupsScrollPane   = new JScrollPane (mGroupsPanelContent, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
 
 
@@ -64,15 +62,15 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 	@Override
 	protected void buildMainPanel ()
 	{
-		GridBagConstraints mPanelGbc = new GridBagConstraints ();
-		getMainJPanel ().setLayout (new GridBagLayout ());
-		getMainJPanel ().setPreferredSize (new Dimension (Constats.MAIN_WIDTH + 200, Constats.MAIN_HEIGHT + 100));
+		getMainJPanel ().setLayout          (new GridBagLayout ());
+		getMainJPanel ().setPreferredSize   (new Dimension (Constats.MAIN_WIDTH + 200, Constats.MAIN_HEIGHT + 100));
 
 		buildControlPanel ();
 		buildGroupsPanel ();
 
-		addComponentToPanel (getMainJPanel (), mGroupsScrollPane,   0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.BOTH);
-		addComponentToPanel (getMainJPanel (), mControlJPanel,      0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.HORIZONTAL);
+		GridBagConstraints mPanelGbc = new GridBagConstraints ();
+		addComponentToPanel (getMainJPanel (), mGroupsScrollPane, 0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.BOTH);
+		addComponentToPanel (getMainJPanel (), mControlJPanel,    0, 1, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
@@ -80,11 +78,11 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 	{
 		buildGroupsScrollPane ();
 
-		mGroupsPanelContent.setLayout (new GridBagLayout ());
-		mGroupsPanelContent.setOpaque (false);
-		mGroupsPanelContent.setBackground (new Color (255, 255, 255, 0));
-		mGroupsPanel.setLayout (new GridBagLayout ());
-		mGroupsPanel.setBackground (new Color (255, 255, 255, 0));
+		mGroupsPanel.setLayout              (new GridBagLayout ());
+		mGroupsPanel.setBackground          (new Color (255, 255, 255, 0));
+		mGroupsPanelContent.setLayout       (new GridBagLayout ());
+		mGroupsPanelContent.setOpaque       (false);
+		mGroupsPanelContent.setBackground   (new Color (255, 255, 255, 0));
 
 		addGroupsToMainPanel ();
 		drawGroupsLines ();
@@ -98,20 +96,20 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 
 	private void buildGroupsScrollPane ()
 	{
-		mGroupsScrollPane.getVerticalScrollBar ().setUnitIncrement (20);
-		mGroupsScrollPane.getVerticalScrollBar ().setUI (new TableScrollBar ());
-		mGroupsScrollPane.getVerticalScrollBar ().setBackground (Color.GRAY);
-		mGroupsScrollPane.getVerticalScrollBar ().setPreferredSize (new Dimension(10, 0));
-		mGroupsScrollPane.setOpaque (false);
-		mGroupsScrollPane.getViewport ().setOpaque (false);
-		mGroupsScrollPane.setBackground (new Color (255, 255, 255, 0));
+		mGroupsScrollPane.setOpaque                                 (false);
+		mGroupsScrollPane.getViewport                               ().setOpaque (false);
+		mGroupsScrollPane.setBackground                             (new Color (255, 255, 255, 0));
+		mGroupsScrollPane.getVerticalScrollBar ().setUI             (new TableScrollBar ());
+		mGroupsScrollPane.getVerticalScrollBar ().setBackground     (Color.GRAY);
+		mGroupsScrollPane.getVerticalScrollBar ().setUnitIncrement  (20);
+		mGroupsScrollPane.getVerticalScrollBar ().setPreferredSize  (new Dimension(10, 0));
 	}
 
 
 	private void buildControlPanel ()
 	{
-		mControlJPanel.setLayout (new GridBagLayout ());
-		mControlJPanel.setBackground (Color.DARK_GRAY);
+		mControlJPanel.setLayout        (new GridBagLayout ());
+		mControlJPanel.setBackground    (Color.DARK_GRAY);
 
 		modifyControlPanelComponents ();
 
@@ -123,8 +121,8 @@ abstract class TournamentTableGui extends DartsGuiFormBase
 
 	private void modifyControlPanelComponents ()
 	{
-		mGameStartBtn   .setPreferredSize (new Dimension (100, 50));
 		mBackBtn        .setPreferredSize (new Dimension (100, 50));
+		mGameStartBtn   .setPreferredSize (new Dimension (100, 50));
 	}
 
 
