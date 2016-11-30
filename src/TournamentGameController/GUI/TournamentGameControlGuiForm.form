@@ -38,7 +38,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Calculate"/>
+              <text value="&amp;Calculate"/>
             </properties>
           </component>
           <component id="f6af8" class="javax.swing.JLabel">
