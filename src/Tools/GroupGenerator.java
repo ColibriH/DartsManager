@@ -49,23 +49,25 @@ public class GroupGenerator
 		int added = 0;
 		while (mPlayingGroups.size () != 0)
 		{
-			Random rand = new Random ();
-			int n = rand.nextInt (mPlayingGroups.size ());
+			int randomNumber = new Random ().nextInt (mPlayingGroups.size ());
 
 			if (returnMap.get (i) == null)
 			{
 				returnMap.put (i, new ArrayList <GroupPlayerObject> ()
 				{{
-					add (mPlayingGroups.get (n));
+					add (mPlayingGroups.get (randomNumber));
 				}});
-				mPlayingGroups.remove (n);
+				mPlayingGroups.remove (randomNumber);
 				added++;
 			}
 			else
 			{
-				returnMap.get (i).add (mPlayingGroups.get (n));
-				mPlayingGroups.remove (n);
-				added++;
+				if (GroupPlayersIsDifferent (returnMap.get (i).get (0), mPlayingGroups.get (randomNumber)))
+				{
+					returnMap.get (i).add (mPlayingGroups.get (randomNumber));
+					mPlayingGroups.remove (randomNumber);
+					added++;
+				}
 			}
 
 			if (added == 2)
@@ -76,6 +78,16 @@ public class GroupGenerator
 		}
 
 		return returnMap;
+	}
+
+
+	private static boolean GroupPlayersIsDifferent (GroupPlayerObject groupPlayerObject, GroupPlayerObject playerObject)
+	{
+		if (groupPlayerObject.getSecondPlayer () != playerObject.getSecondPlayer ())
+			if (groupPlayerObject.getFirstPlayer () != playerObject.getFirstPlayer ())
+				return true;
+
+		return false;
 	}
 
 

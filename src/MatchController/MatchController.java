@@ -7,15 +7,18 @@ import GroupsController.TournamentGroupsController;
 import MainController.MainController;
 import MatchController.Gui.Components.TournamentTableGroupPanel;
 import MatchController.Gui.GroupTournamentTable.GroupTournamentTable;
+import MatchController.Gui.GroupTournamnetWinnerFrame.GroupTournamentWinnerFrame;
 import MatchController.Gui.PlayersRegistration.PlayersRegistration;
 import MatchController.Gui.TournamentTable.TournamentTable;
-import MatchController.Gui.WinnerFrame.WinnerFrame;
+import MatchController.Gui.TournamentWinnerFrame.TournamentWinnerFrame;
 import MatchController.Objects.GroupPlayerObject;
 import MatchController.Objects.GroupsTreeNode;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
 
 import javax.swing.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,7 +30,8 @@ public class MatchController
 	private GroupTournamentGroupsController mGroupsTournamentGroupsController;
 	private TournamentTable                 mTournamentTable;
 	private GroupTournamentTable            mGroupTournamentTable;
-	private WinnerFrame                     mWinnerGuiFrame;
+	private TournamentWinnerFrame           mTournamentWinnerFrame;
+	private GroupTournamentWinnerFrame      mGroupTournamentWinnerFrame;
 	private GameController                  mGameController;
 
 
@@ -51,7 +55,6 @@ public class MatchController
 		mPlayerList.add(new PlayerObject("1", 1));
 		mPlayerList.add(new PlayerObject("2", 2));
 		mPlayerList.add(new PlayerObject("3", 3));
-
 		mPlayerList.add(new PlayerObject("4", 4));
 		mPlayerList.add(new PlayerObject("5", 5));
 		mPlayerList.add(new PlayerObject("6", 6));
@@ -138,7 +141,7 @@ public class MatchController
 
 	private void showMatchWinner (PlayerObject winner)
 	{
-		mWinnerGuiFrame = new WinnerFrame (this, winner);
+		mTournamentWinnerFrame = new TournamentWinnerFrame (this, winner);
 	}
 
 
@@ -248,10 +251,20 @@ public class MatchController
 	}
 
 
+
+	public void proceedGroupTournamentWinnerForm ()
+	{
+		mGroupTournamentTable.destroy ();
+		mGroupTournamentTable = null;
+
+		mGroupTournamentWinnerFrame = new GroupTournamentWinnerFrame (this);
+	}
+
+
 	public void newMatch ()
 	{
-		if (mWinnerGuiFrame != null)
-			mWinnerGuiFrame = null;
+		if (mTournamentWinnerFrame != null)
+			mTournamentWinnerFrame = null;
 
 		initializeNewMatch (mGameType);
 	}
@@ -267,8 +280,17 @@ public class MatchController
 
 	public void openPlayerRegistration ()
 	{
-		mTournamentTable.destroy ();
-		mTournamentTable = null;
+		if (isGameTypeTournament ())
+		{
+			mTournamentTable.destroy ();
+			mTournamentTable = null;
+		}
+		else
+		{
+			mGroupTournamentTable.destroy ();
+			mGroupTournamentTable = null;
+		}
+
 		mPlayersRegistration = new PlayersRegistration (this);
 	}
 
@@ -284,8 +306,22 @@ public class MatchController
 				mGroupsTournamentGroupsController.removePlayersFromMatchGroup (losers);
 
 			mGroupsTournamentGroupsController.rotateGame ();
-			mGroupTournamentTable.reloadGroupPanel ();
+
+			if (mGroupTournamentTable != null)
+				mGroupTournamentTable.reloadGroupPanel ();
 		}
+	}
+
+
+	public double roundHalfUp (double d)
+	{
+		return new BigDecimal (d).setScale (0, RoundingMode.UP).doubleValue ();
+	}
+
+
+	private void orderPlayersArrayList ()
+	{
+		mPlayerList.sort ((o1, o2) -> o2.getWinPoints ().compareTo(o1.getWinPoints ()));
 	}
 
 
@@ -340,6 +376,18 @@ public class MatchController
 	public Integer getMaxPlayerLosePoints ()
 	{
 		return mMaxPlayerLosePoints;
+	}
+
+
+	public String getTopThreeWinnersString ()
+	{
+		orderPlayersArrayList ();
+
+		String returnString = "";
+		for (int i = 0; i < 3; i++)
+			returnString += (i + 1) + ". " + mPlayerList.get (i).getName () + " ";
+
+		return returnString.trim ();
 	}
 
 

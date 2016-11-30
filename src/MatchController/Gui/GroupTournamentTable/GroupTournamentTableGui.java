@@ -3,6 +3,7 @@ package MatchController.Gui.GroupTournamentTable;
 import BaseAbstractClasses.DartsGuiFormBase;
 import GuiComponents.ImagedPanel;
 import GuiComponents.MenuButton;
+import MatchController.Gui.Components.GroupTournamentMethod;
 import MatchController.Gui.Components.GroupTournamentTableGroupPanel;
 import MatchController.Gui.Components.TableScrollBar;
 import MatchController.MatchController;
@@ -11,31 +12,25 @@ import Constants.Constats;
 import Tools.ImageLoader;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-// TODO REFACTOR
 
 abstract class GroupTournamentTableGui extends DartsGuiFormBase
 {
 	protected abstract void updateTable ();
 	protected abstract void initializePlayerTableDataModel ();
 
-	private final String            COLUMN_ID                       = "Id";
+	private final String            COLUMN_WIN_POINTS               = "WinPoints";
 	private final String            COLUMN_NAME                     = "Name";
 	private final String            COLUMN_LOSES                    = "Loses";
 
 	private JPanel                                              mControlJPanel;
 	private JPanel                                              mGroupsPanelContent;
 	private JPanel                                              mGroupsPanel;
-
 	private JTable                                              mPlayersTable;
-
 	private JScrollPane                                         mGroupsScrollPane;
 	private JScrollPane                                         mPlayerTableJScrollPane;
-
 	private JButton                                             mBackBtn;
 
 
@@ -55,32 +50,32 @@ abstract class GroupTournamentTableGui extends DartsGuiFormBase
 		mControlJPanel              = new JPanel ();
 		mGroupsPanelContent         = new JPanel ();
 		mPlayersTable               = new JTable ();
-		mPlayerTableJScrollPane     = new JScrollPane (mPlayersTable,       ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		mGroupsScrollPane           = new JScrollPane (mGroupsPanelContent, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		mBackBtn        	        = new MenuButton ("Back");
+		mBackBtn        	        = new MenuButton    ("Back");
+		mPlayerTableJScrollPane     = new JScrollPane   (mPlayersTable,       ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		mGroupsScrollPane           = new JScrollPane   (mGroupsPanelContent, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
 
 
 	@Override
 	protected void addComponentsListener ()
 	{
-		mBackBtn.       addActionListener (e -> getMatchController ().openPlayerRegistration ());
+		mBackBtn.addActionListener (e -> getMatchController ().openPlayerRegistration ());
 	}
 
 
 	@Override
 	protected void buildMainPanel ()
 	{
+		getMainJPanel ().setLayout          (new GridBagLayout ());
+		getMainJPanel ().setPreferredSize   (new Dimension (Constats.MAIN_WIDTH + 200, Constats.MAIN_HEIGHT + 100));
+
+		buildControlPanel   ();
+		buildGroupsPanel    ();
+
 		GridBagConstraints mPanelGbc = new GridBagConstraints ();
-		getMainJPanel ().setLayout (new GridBagLayout ());
-		getMainJPanel ().setPreferredSize (new Dimension (Constats.MAIN_WIDTH + 200, Constats.MAIN_HEIGHT + 100));
-
-		buildControlPanel ();
-		buildGroupsPanel ();
-
-		addComponentToPanel (getMainJPanel (), mPlayerTableJScrollPane, 0, 0, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.BOTH);
+		addComponentToPanel (getMainJPanel (), mPlayerTableJScrollPane, 0, 0, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, mPanelGbc, null);
 		addComponentToPanel (getMainJPanel (), mGroupsScrollPane,       0, 1, new Insets (0, 0, 0, 0), 0, 1, 1, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.BOTH);
-		addComponentToPanel (getMainJPanel (), mControlJPanel,          0, 2, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (getMainJPanel (), mControlJPanel,          0, 2, new Insets (0, 0, 0, 0), 0, 1, 0, 1, GridBagConstraints.CENTER, mPanelGbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
@@ -89,19 +84,19 @@ abstract class GroupTournamentTableGui extends DartsGuiFormBase
 		buildTableScrollPane ();
 		buildGroupsScrollPane ();
 
-		mGroupsPanelContent.setLayout (new GridBagLayout ());
-		mGroupsPanelContent.setOpaque (false);
-		mGroupsPanelContent.setBackground (new Color (255, 255, 255, 0));
+		mGroupsPanelContent.setLayout       (new GridBagLayout ());
+		mGroupsPanelContent.setOpaque       (false);
+		mGroupsPanelContent.setBackground   (new Color (255, 255, 255, 0));
 
-		mPlayersTable.setLayout (new GridBagLayout ());
+		mPlayersTable.setLayout     (new GridBagLayout ());
+		mPlayersTable.setOpaque     (false);
 		mPlayersTable.setBackground (new Color (255, 255, 255, 0));
-		mPlayersTable.setOpaque (false);
 
 		initializePlayerTableDataModel ();
 		setTableStyle ();
 
-		mGroupsPanel.setLayout (new GridBagLayout ());
-		mGroupsPanel.setBackground (new Color (255, 255, 255, 0));
+		mGroupsPanel.setLayout      (new GridBagLayout ());
+		mGroupsPanel.setBackground  (new Color (255, 255, 255, 0));
 
 		addGroupsToMainPanel ();
 
@@ -114,54 +109,59 @@ abstract class GroupTournamentTableGui extends DartsGuiFormBase
 	{
 		Color transparentColor = new Color (255, 255, 255 ,0);
 
-		mPlayerTableJScrollPane.setViewportView                         (mPlayersTable);
-		mPlayerTableJScrollPane.setBorder                               (new EmptyBorder (0, 0, 0, 0));
-		mPlayerTableJScrollPane.getVerticalScrollBar().setUI            (new TableScrollBar ());
-		mPlayerTableJScrollPane.getVerticalScrollBar().setBackground    (Color.GRAY);
-		mPlayerTableJScrollPane.getVerticalScrollBar().setPreferredSize (new Dimension(10, 0));
-		mPlayerTableJScrollPane.setHorizontalScrollBarPolicy    (ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		mPlayerTableJScrollPane.setPreferredSize                (new Dimension (161, 275));
+		mPlayersTable.setFont                                           (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 12));
+		mPlayersTable.setOpaque                                         (false);
+		mPlayersTable.setBackground                                     (transparentColor);
+		mPlayersTable.setForeground                                     (Color.WHITE);
+		mPlayersTable.setAutoResizeMode                                 (JTable.AUTO_RESIZE_OFF);
+		mPlayersTable.setIntercellSpacing                               (new Dimension (5, 0));
+		mPlayersTable.setRowSelectionAllowed                            (false);
+		mPlayersTable.setCellSelectionEnabled                           (false);
+		mPlayersTable.getTableHeader ().setFont                         (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 14));
+		mPlayersTable.getTableHeader ().setBackground                   (transparentColor);
+		mPlayersTable.getTableHeader ().setForeground                   (Color.WHITE);
+		mPlayersTable.getTableHeader ().setResizingAllowed              (false);
+		mPlayersTable.getTableHeader ().setReorderingAllowed            (false);
 
-		mPlayersTable.setFont                    (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 9));
-		mPlayersTable.setForeground              (Color.WHITE);
-		mPlayersTable.setAutoResizeMode          (JTable.AUTO_RESIZE_OFF);
-		mPlayersTable.setOpaque                  (false);
-		mPlayersTable.setBackground              (transparentColor);
-		mPlayersTable.setIntercellSpacing        (new Dimension (5, 0));
+		setColumnWidth ();
 	}
 
 
 	private void buildTableScrollPane ()
 	{
-		mPlayerTableJScrollPane.getVerticalScrollBar ().setUI (new TableScrollBar ());
-		mPlayerTableJScrollPane.getVerticalScrollBar ().setBackground (Color.GRAY);
-		mPlayerTableJScrollPane.setOpaque (false);
-		mPlayerTableJScrollPane.getViewport ().setOpaque (false);
-		mPlayerTableJScrollPane.setBackground (new Color (255, 255, 255, 0));
+		Color transparentColor = new Color (255, 255, 255 ,0);
+
+		mPlayerTableJScrollPane.setOpaque                                   (false);
+		mPlayerTableJScrollPane.setBackground                               (transparentColor);
+		mPlayerTableJScrollPane.setPreferredSize                            (new Dimension (300, 200));
+		mPlayerTableJScrollPane.getViewport ().setOpaque                    (false);
+		mPlayerTableJScrollPane.getVerticalScrollBar ().setUI               (new TableScrollBar ());
+		mPlayerTableJScrollPane.getVerticalScrollBar ().setBackground       (Color.GRAY);
+		mPlayerTableJScrollPane.getVerticalScrollBar ().setPreferredSize    (new Dimension(10, 0));
 	}
 
 
 	private void buildGroupsScrollPane ()
 	{
-		mGroupsScrollPane.getVerticalScrollBar ().setUnitIncrement (20);
-		mGroupsScrollPane.getVerticalScrollBar ().setUI (new TableScrollBar ());
-		mGroupsScrollPane.getVerticalScrollBar ().setBackground (Color.GRAY);
-		mGroupsScrollPane.getVerticalScrollBar ().setPreferredSize (new Dimension(10, 0));
-		mGroupsScrollPane.setOpaque (false);
-		mGroupsScrollPane.getViewport ().setOpaque (false);
-		mGroupsScrollPane.setBackground (new Color (255, 255, 255, 0));
+		mGroupsScrollPane.setOpaque                                 (false);
+		mGroupsScrollPane.setBackground                             (new Color (255, 255, 255, 0));
+		mGroupsScrollPane.getViewport ().setOpaque                  (false);
+		mGroupsScrollPane.getVerticalScrollBar ().setUI             (new TableScrollBar ());
+		mGroupsScrollPane.getVerticalScrollBar ().setBackground     (Color.GRAY);
+		mGroupsScrollPane.getVerticalScrollBar ().setUnitIncrement  (20);
+		mGroupsScrollPane.getVerticalScrollBar ().setPreferredSize  (new Dimension(10, 0));
 	}
 
 
 	private void buildControlPanel ()
 	{
-		mControlJPanel.setLayout (new GridBagLayout ());
-		mControlJPanel.setBackground (Color.DARK_GRAY);
+		mControlJPanel.setLayout        (new GridBagLayout ());
+		mControlJPanel.setBackground    (Color.DARK_GRAY);
 
 		modifyControlPanelComponents ();
 
 		GridBagConstraints mControlPanelGbc = new GridBagConstraints ();
-		addComponentToPanel (mControlJPanel, mBackBtn,      0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
+		addComponentToPanel (mControlJPanel, mBackBtn, 0, 0, new Insets (0, 0, 0, 0), 0, 0.5, 0, 1, GridBagConstraints.SOUTH, mControlPanelGbc, GridBagConstraints.HORIZONTAL);
 	}
 
 
@@ -177,14 +177,6 @@ abstract class GroupTournamentTableGui extends DartsGuiFormBase
 	}
 
 
-	public void reloadGroupPanel ()
-	{
-		mGroupsPanel.removeAll ();
-		addGroupsToMainPanel ();
-		repaintMainFrame ();
-	}
-
-
 	private void repaintMainFrame ()
 	{
 		getMainJFrame ().revalidate ();
@@ -197,19 +189,75 @@ abstract class GroupTournamentTableGui extends DartsGuiFormBase
 		GridBagConstraints gbc = new GridBagConstraints ();
 		HashMap <Integer, ArrayList <GroupPlayerObject>> matchGroups = getMatchController ().getGroupTournamentGameGroups ();
 
-		int size = matchGroups.size ();
+		int size                = matchGroups.size ();
+		int groupCountInColumn  = (int) getMatchController ().roundHalfUp (size / 2.0);
+		int column              = 0;
+		int row                 = 0;
+
 		for (int i = 0; i < size; i++)
 		{
-			int row = i;
+			if (row >= groupCountInColumn)
+			{
+				row = 0;
+				column++;
+			}
 
 			GroupPlayerObject groups = matchGroups.get (i).get (0);
 			GroupTournamentTableGroupPanel dgp = groups.getGroupTournamentGroupPanel ();
 
-			dgp.setTableUpdateMethod (this::updateTable);
-			dgp.setTableNotifyGroupPlayedMethod (this::notifyGroupPlayed);
+			dgp.setTableUpdateMethod (new GroupTournamentMethod ()
+			{
+				@Override
+				public void execute ()
+				{
+					updateTable ();
+				}
 
-			addComponentToPanel (mGroupsPanel, dgp, 0, row, new Insets (0, 0, 0, 0), 0, 0, 0, 1, GridBagConstraints.NORTHWEST, gbc, null);
+
+				@Override
+				public void execute (GroupPlayerObject loserGroup, GroupPlayerObject winnerGroup)
+				{
+
+				}
+			});
+			dgp.setTableNotifyGroupPlayedMethod (new GroupTournamentMethod ()
+			{
+				@Override
+				public void execute ()
+				{
+					notifyGroupPlayed ();
+				}
+
+
+				@Override
+				public void execute (GroupPlayerObject loserGroup, GroupPlayerObject winnerGroup)
+				{
+
+				}
+			});
+
+			addComponentToPanel (mGroupsPanel, dgp, column, row, new Insets (45, 30, 45, 30), 0, 0, 0, 1, GridBagConstraints.NORTHWEST, gbc, null);
+
+			row++;
 		}
+	}
+
+
+	public void reloadGroupPanel ()
+	{
+		mGroupsPanel.removeAll ();
+		addGroupsToMainPanel ();
+		repaintMainFrame ();
+	}
+
+
+	public void setColumnWidth ()
+	{
+		mPlayersTable.getColumnModel ().getColumn (0).setPreferredWidth (99);
+		mPlayersTable.getColumnModel ().getColumn (1).setPreferredWidth (99);
+		mPlayersTable.getColumnModel ().getColumn (2).setPreferredWidth (99);
+
+		repaintMainFrame ();
 	}
 
 
@@ -219,9 +267,9 @@ abstract class GroupTournamentTableGui extends DartsGuiFormBase
 	}
 
 
-	public String getCOLUMN_ID ()
+	public String getCOLUMN_WIN_POINTS ()
 	{
-		return COLUMN_ID;
+		return COLUMN_WIN_POINTS;
 	}
 
 

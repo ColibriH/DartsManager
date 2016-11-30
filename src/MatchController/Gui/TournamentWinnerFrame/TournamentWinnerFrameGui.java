@@ -1,4 +1,4 @@
-package MatchController.Gui.WinnerFrame;
+package MatchController.Gui.TournamentWinnerFrame;
 
 import BaseAbstractClasses.DartsGuiFormBase;
 import Constants.Constats;
@@ -9,10 +9,7 @@ import Tools.ImageLoader;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by vladislavs on 14.11.2016..
- */
-abstract class WinnerFrameGui extends DartsGuiFormBase
+abstract class TournamentWinnerFrameGui extends DartsGuiFormBase
 {
 	protected abstract void menuButtonAction ();
 	protected abstract void exitButtonAction ();
@@ -28,7 +25,7 @@ abstract class WinnerFrameGui extends DartsGuiFormBase
 	private PlayerObject    mWinner;
 
 
-	WinnerFrameGui (MatchController matchController, PlayerObject winner)
+	TournamentWinnerFrameGui (MatchController matchController, PlayerObject winner)
 	{
 		super (matchController);
 		mWinner = winner;

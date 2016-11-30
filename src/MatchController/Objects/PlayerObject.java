@@ -4,9 +4,6 @@ import MatchController.Gui.Components.TournamentTableGroupPanel;
 
 import javax.swing.*;
 
-/**
- * Created by vladislavs on 07.09.2016..
- */
 public class PlayerObject
 {
 	private String               		mName;
@@ -18,6 +15,7 @@ public class PlayerObject
 	private Integer             		mScore     = 301;
 	private Integer             		mPrevScore = 301;
 	private Integer                     mLooses    = 0;
+	private Integer                     mWinPoints = 0;
 
 
 	public PlayerObject (String name, Integer id)
@@ -29,11 +27,12 @@ public class PlayerObject
 
 	public PlayerObject (PlayerObject playerObject)
 	{
-		mName   = playerObject.mName;
-		mId     = playerObject.mId;
-		mLeg    = playerObject.mLeg;
-		mScore  = playerObject.mScore;
-		mLooses  = playerObject.mLooses;
+		mName       = playerObject.mName;
+		mId         = playerObject.mId;
+		mLeg        = playerObject.mLeg;
+		mScore      = playerObject.mScore;
+		mLooses     = playerObject.mLooses;
+		mWinPoints  = playerObject.mWinPoints;
 	}
 
 
@@ -67,9 +66,9 @@ public class PlayerObject
 	}
 
 
-	public void setName (String mName)
+	public void setName (String name)
 	{
-		this.mName = mName;
+		mName = name;
 	}
 
 
@@ -79,9 +78,9 @@ public class PlayerObject
 	}
 
 
-	public void setId (Integer mId)
+	public void setId (Integer id)
 	{
-		this.mId = mId;
+		mId = id;
 	}
 
 
@@ -91,9 +90,9 @@ public class PlayerObject
 	}
 
 
-	public void setLeg (Integer mLeg)
+	public void setLeg (Integer leg)
 	{
-		this.mLeg = mLeg;
+		mLeg = leg;
 	}
 
 
@@ -103,9 +102,9 @@ public class PlayerObject
 	}
 
 
-	public void setScore (Integer mScore)
+	public void setScore (Integer score)
 	{
-		this.mScore = mScore;
+		mScore = score;
 	}
 
 
@@ -115,9 +114,9 @@ public class PlayerObject
 	}
 
 
-	public void setPrevScore (Integer mPrevScore)
+	public void setPrevScore (Integer prevScore)
 	{
-		this.mPrevScore = mPrevScore;
+		mPrevScore = prevScore;
 	}
 
 
@@ -127,8 +126,20 @@ public class PlayerObject
 	}
 
 
-	public void setLooses (Integer mLooses)
+	public void setLooses (Integer looses)
 	{
-		this.mLooses = mLooses;
+		mLooses = looses;
+	}
+
+
+	public Integer getWinPoints ()
+	{
+		return mWinPoints;
+	}
+
+
+	public void setWinPoints (Integer winPoints)
+	{
+		mWinPoints = winPoints;
 	}
 }

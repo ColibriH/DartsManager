@@ -31,19 +31,19 @@ public class GroupTournamentTableGroupPanel extends JPanel
 	private JLabel lArrow;
 	private JLabel rArrow;
 
-	private TableUpdateMethod updateTable;
+	private GroupTournamentMethod updateTable;
 	private GroupTournamentMethod notifyGroupPlayed;
 
 	private boolean isGamePlayed = false;
 
 
-	public GroupTournamentTableGroupPanel (ArrayList <GroupPlayerObject> mGroupList, GroupLoserMethod method)
+	public GroupTournamentTableGroupPanel (ArrayList <GroupPlayerObject> mGroupList, GroupTournamentMethod proceedWinnerAndLoserGroup)
 	{
-		initialization (mGroupList.get (0), mGroupList.get (1), method);
+		initialization (mGroupList.get (0), mGroupList.get (1), proceedWinnerAndLoserGroup);
 	}
 
 
-	private void initialization (GroupPlayerObject fGroup, GroupPlayerObject sGroup, GroupLoserMethod method)
+	private void initialization (GroupPlayerObject fGroup, GroupPlayerObject sGroup, GroupTournamentMethod proceedWinnerAndLoserGroup)
 	{
 		initializeComponents ();
 
@@ -53,7 +53,7 @@ public class GroupTournamentTableGroupPanel extends JPanel
 		buildMainPanel ();
 		buildPanels ();
 
-		addComponentsListeners (method);
+		addComponentsListeners (proceedWinnerAndLoserGroup);
 	}
 
 
@@ -70,7 +70,7 @@ public class GroupTournamentTableGroupPanel extends JPanel
 	}
 
 
-	private void addComponentsListeners (GroupLoserMethod proceedLoserGroup)
+	private void addComponentsListeners (GroupTournamentMethod proceedWinnerAndLoserGroup)
 	{
 		mFirstPlayerPanel.addMouseListener (new MouseAdapter ()
 		{
@@ -81,7 +81,7 @@ public class GroupTournamentTableGroupPanel extends JPanel
 				{
 					isGamePlayed = true;
 					changeWinnerPanelStyle (mFirstPlayerPanel);
-					proceedLoserGroup.execute (mSecondGroup);
+					proceedWinnerAndLoserGroup.execute (mSecondGroup, mFirstGroup);
 					updateTable.execute ();
 					notifyGroupPlayed.execute ();
 				}
@@ -97,7 +97,7 @@ public class GroupTournamentTableGroupPanel extends JPanel
 				{
 					isGamePlayed = true;
 					changeWinnerPanelStyle (mSecondPlayerPanel);
-					proceedLoserGroup.execute (mFirstGroup);
+					proceedWinnerAndLoserGroup.execute (mFirstGroup, mSecondGroup);
 					updateTable.execute ();
 					notifyGroupPlayed.execute ();
 				}
@@ -183,6 +183,10 @@ public class GroupTournamentTableGroupPanel extends JPanel
 		mNameLabel      .setForeground (Color.WHITE);
 		mSNameLabel     .setForeground (Color.WHITE);
 		vsLabel         .setForeground (Color.WHITE);
+
+		mNameLabel      .setFont (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 12));
+		mSNameLabel     .setFont (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 12));
+		vsLabel         .setFont (new Font ("Eraser Regular", Font.TRUETYPE_FONT, 12));
 	}
 
 
@@ -221,7 +225,7 @@ public class GroupTournamentTableGroupPanel extends JPanel
 	}
 
 
-	public void setTableUpdateMethod (TableUpdateMethod tableUpdateMethod)
+	public void setTableUpdateMethod (GroupTournamentMethod tableUpdateMethod)
 	{
 		updateTable = tableUpdateMethod;
 	}

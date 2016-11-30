@@ -1,23 +1,38 @@
-package MatchController.Gui.GroupTournamentTable;
+package MatchController.Gui.GroupTournamnetWinnerFrame;
 
+import MainController.MainController;
 import MatchController.MatchController;
 import MatchController.Objects.PlayerObject;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
-// TODO REFACTOR
-
-public class GroupTournamentTable extends GroupTournamentTableGui
+public class GroupTournamentWinnerFrame extends GroupTournamentWinnerFrameGui
 {
 	private DefaultTableModel       mDefaultTableModel;
 	private String []               mPlayerTableHeaders;
 
 
-	@Override
-	protected void updateTable ()
+	public GroupTournamentWinnerFrame (MatchController matchController)
 	{
-		initializePlayerTableDataModel ();
+		super (matchController);
+	}
+
+
+	@Override
+	protected void menuButtonAction ()
+	{
+		MainController.openMenuGui ();
+		getMainJFrame ().setVisible (false);
+		getMainJFrame ().dispose ();
+	}
+
+
+	@Override
+	protected void exitButtonAction ()
+	{
+		menuButtonAction ();
+		getMatchController ().exitFromApplication ();
 	}
 
 
@@ -25,26 +40,17 @@ public class GroupTournamentTable extends GroupTournamentTableGui
 	protected void initializePlayerTableDataModel ()
 	{
 		mPlayerTableHeaders = new String[] {getCOLUMN_NAME (), getCOLUMN_LOSES (), getCOLUMN_WIN_POINTS ()};
-		mDefaultTableModel = new DefaultTableModel ();
+		mDefaultTableModel  = new DefaultTableModel ();
 
 		mDefaultTableModel.setDataVector (new Object[][]{}, mPlayerTableHeaders);
-
 		populateTableModelWithPlayersData (getMatchController ().getPlayerList ());
-
 		getPlayersTable ().setModel (mDefaultTableModel);
-		setColumnWidth ();
 	}
 
 
-	private void populateTableModelWithPlayersData (ArrayList <PlayerObject> playerObjectArrayList)
+	private void populateTableModelWithPlayersData (ArrayList<PlayerObject> playerObjectArrayList)
 	{
 		for (PlayerObject playerObject : playerObjectArrayList)
 			mDefaultTableModel.addRow (new String [] {playerObject.getName(), playerObject.getLooses ().toString (), playerObject.getWinPoints ().toString ()});
-	}
-
-
-	public GroupTournamentTable (MatchController matchController)
-	{
-		super (matchController);
 	}
 }

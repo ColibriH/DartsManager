@@ -1,12 +1,12 @@
 package GroupsController;
 
+import MatchController.Gui.Components.GroupTournamentMethod;
 import MatchController.Gui.Components.GroupTournamentTableGroupPanel;
 import MatchController.MatchController;
 import MatchController.Objects.GroupPlayerObject;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
 
-import javax.swing.*;
 import java.util.*;
 
 // TODO BIG REFACTOR
@@ -20,6 +20,7 @@ public class GroupTournamentGroupsController
 
 	private int groupsPlayed;
 	private int mMinimumPlayers = 3;
+
 
 	public GroupTournamentGroupsController (MatchController matchController, HashMap <PlayerObject, ArrayList <PlayerObject>> matchGroups)
 	{
@@ -35,15 +36,16 @@ public class GroupTournamentGroupsController
 
 		if (isLeftMinimumPlayers ())
 		{
-			JOptionPane.showMessageDialog (null, "Game ends");
+			mMatchController.proceedGroupTournamentWinnerForm ();
 			return;
-			// todo winner panel
 		}
 
 		generateGameGroups ();
 		linkGroupsWithPlayersAndCreatePanelObject ();
 	}
-	
+
+
+	@SuppressWarnings ("unchecked")
 	private void ifExistHasMapKeyRemove ()
 	{
 		Iterator iterator = mMatchGroups.entrySet ().iterator ();
@@ -67,22 +69,67 @@ public class GroupTournamentGroupsController
 
 		if (generatedPlayingGroups.size () % 2 != 0)
 		{
-			int randomNumber = new Random ().nextInt (generatedPlayingGroups2.size ());
-			GroupPlayerObject groupFromSecondGeneratedGroups = generatedPlayingGroups2.get (randomNumber);
+			GroupPlayerObject groupFromSecondGeneratedGroups;
+			if (generatedPlayingGroups2.size () == 1)
+				groupFromSecondGeneratedGroups = generatedPlayingGroups2.get (0);
+			else
+				groupFromSecondGeneratedGroups = getGroupWithLessLoses (generatedPlayingGroups2);
 
 			generatedPlayingGroups.add (groupFromSecondGeneratedGroups);
+			generatedPlayingGroups2.remove (groupFromSecondGeneratedGroups);
 		}
 
-		if (generatedPlayingGroups2.size () % 2 != 0)
+		if ((generatedPlayingGroups2.size () % 2 != 0) && (generatedPlayingGroups2.size () != 0))
 		{
-			int randomNumber = new Random ().nextInt (generatedPlayingGroups2.size ());
-			generatedPlayingGroups2.remove (randomNumber);
+			if (generatedPlayingGroups2.size () == 1)
+				generatedPlayingGroups2.remove (0);
+			else
+				generatedPlayingGroups2.remove (getGroupIndexWithMostLoses (generatedPlayingGroups2));
 		}
 
 		mGameGroups.putAll (GroupGenerator.generateGroupTournamentRandomGroups (mGameGroups.size (), generatedPlayingGroups));
 
 		if (generatedPlayingGroups2.size () != 0)
 			mGameGroups.putAll (GroupGenerator.generateGroupTournamentRandomGroups (mGameGroups.size (), generatedPlayingGroups2));
+	}
+
+
+	private int getGroupIndexWithMostLoses (ArrayList <GroupPlayerObject> generatedPlayingGroups)
+	{
+		int returnIndex = 0;
+		int maxLoses = -1;
+		int i = 0;
+		for (GroupPlayerObject playerGroup : generatedPlayingGroups)
+		{
+			int loopMaxLoses = playerGroup.getFirstPlayer ().getLooses () + playerGroup.getSecondPlayer ().getLooses ();
+			if (loopMaxLoses > maxLoses)
+			{
+				maxLoses = loopMaxLoses;
+				returnIndex = i;
+			}
+
+			i++;
+		}
+		return returnIndex;
+	}
+
+
+	private GroupPlayerObject getGroupWithLessLoses (ArrayList<GroupPlayerObject> generatedPlayingGroups)
+	{
+		int minimumLoses = -1;
+		GroupPlayerObject returnGroup = null;
+		for (GroupPlayerObject playerGroup : generatedPlayingGroups)
+		{
+			int loopMinimumLoses = playerGroup.getFirstPlayer ().getLooses () + playerGroup.getSecondPlayer ().getLooses ();
+
+			if (minimumLoses == -1 || loopMinimumLoses < minimumLoses)
+			{
+				minimumLoses = loopMinimumLoses;
+				returnGroup = playerGroup;
+			}
+		}
+
+		return returnGroup;
 	}
 
 
@@ -151,7 +198,7 @@ public class GroupTournamentGroupsController
 
 	private boolean isLeftMinimumPlayers ()
 	{
-		return mMatchGroups.size () == 2 && getLeftPlayerCount () <= mMinimumPlayers;
+		return mMatchGroups.size () <= 2 && getLeftPlayerCount () <= mMinimumPlayers;
 	}
 
 
@@ -194,7 +241,21 @@ public class GroupTournamentGroupsController
 	{
 		for (int i = 0; i < mGameGroups.size (); i++)
 		{
-			GroupTournamentTableGroupPanel gp = new GroupTournamentTableGroupPanel (mGameGroups.get (i), this::proceedLoserGroup);
+			GroupTournamentTableGroupPanel gp = new GroupTournamentTableGroupPanel (mGameGroups.get (i), new GroupTournamentMethod ()
+			{
+				@Override
+				public void execute ()
+				{
+
+				}
+
+
+				@Override
+				public void execute (GroupPlayerObject loserGroup, GroupPlayerObject winnerGroup)
+				{
+					proceedWinnerLoserGroup (loserGroup, winnerGroup);
+				}
+			});
 			GroupPlayerObject fGroup = mGameGroups.get (i).get (0);
 			GroupPlayerObject sGroup = mGameGroups.get (i).get (1);
 
@@ -204,13 +265,19 @@ public class GroupTournamentGroupsController
 	}
 
 
-	private void proceedLoserGroup (GroupPlayerObject loserGroup)
+	private void proceedWinnerLoserGroup (GroupPlayerObject loserGroup, GroupPlayerObject winnerGroup)
 	{
 		PlayerObject fLoser = loserGroup.getFirstPlayer ();
 		PlayerObject sLoser = loserGroup.getSecondPlayer ();
 
+		PlayerObject fWinner = winnerGroup.getFirstPlayer ();
+		PlayerObject sWinner = winnerGroup.getSecondPlayer ();
+
 		fLoser.setLooses (fLoser.getLooses () + 1);
 		sLoser.setLooses (sLoser.getLooses () + 1);
+
+		fWinner.setWinPoints (fLoser.getWinPoints () + 1);
+		sWinner.setWinPoints (sLoser.getWinPoints () + 1);
 	}
 
 

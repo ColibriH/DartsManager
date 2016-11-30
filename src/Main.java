@@ -1,10 +1,6 @@
 import MainController.MainController;
 
 
-// TODO 4 more than 2 people in one group -> little bit changes in rules check this! (for this need huge refactor and logic changes) AND Create more game types
-
-// TODO On/Off Game interface
-
 // TODO REFACTOR GLOBAL
 
 // Additional features
@@ -17,6 +13,7 @@ import MainController.MainController;
 // TODO In game menu
 //===================================
 
+// TODO On/Off Game interface
 // TODO Go through try catch blocks
 // TODO How to style playing forms.... and use abstract class
 // TODO Create documentation

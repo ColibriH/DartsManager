@@ -1,14 +1,11 @@
-package MatchController.Gui.WinnerFrame;
+package MatchController.Gui.TournamentWinnerFrame;
 
 import MatchController.MatchController;
 import MatchController.Objects.PlayerObject;
 
-/**
- * Created by vladislavs on 14.11.2016..
- */
-public class WinnerFrame extends WinnerFrameGui
+public class TournamentWinnerFrame extends TournamentWinnerFrameGui
 {
-	public WinnerFrame (MatchController matchController, PlayerObject winner)
+	public TournamentWinnerFrame (MatchController matchController, PlayerObject winner)
 	{
 		super (matchController, winner);
 	}
