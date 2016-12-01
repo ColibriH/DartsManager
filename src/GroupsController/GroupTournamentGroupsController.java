@@ -1,6 +1,6 @@
 package GroupsController;
 
-import MatchController.Gui.Components.GroupTournamentMethod;
+import MatchController.Objects.GroupTournamentMethod;
 import MatchController.Gui.Components.GroupTournamentTableGroupPanel;
 import MatchController.MatchController;
 import MatchController.Objects.GroupPlayerObject;

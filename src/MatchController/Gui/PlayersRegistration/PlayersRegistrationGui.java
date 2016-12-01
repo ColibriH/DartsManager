@@ -179,24 +179,25 @@ abstract class PlayersRegistrationGui extends DartsGuiFormBase
 	{
 		Font scratchFont = new Font ("Nail Scratch", Font.TRUETYPE_FONT, 12);
 
-		mPlayerNameLabel.setFont                (scratchFont);
-		mPlayerNameTxtField.setFont             (scratchFont);
-		mPlayerNameTxtField.setText             (mPlayerNameTxtFieldDefaultValue);
-		mPlayerLooseCntLabel.setFont            (scratchFont);
-		mBackButton.setPreferredSize            (new Dimension (150, 25));
-		mPlayerNameTxtField.setOpaque           (false);
-		mPlayerNameTxtField.setBorder           (new EmptyBorder (0, 0, 0, 0));
-		mPlayerLooseCntTxtField.setFont         (scratchFont);
-		mPlayerAddBtn.setPreferredSize          (new Dimension (150, 25));
-		mPlayerNameLabel.setForeground          (Color.white);
-		mMatchStartBtn.setPreferredSize         (new Dimension (150, 25));
-		mPlayerLooseCntTxtField.setOpaque       (false);
-		mPlayerLooseCntTxtField.setBorder       (new EmptyBorder (0, 0, 0, 0));
-		mPlayerNameTxtField.setBackground       (new Color (255, 255, 255, 0));
-		mPlayerNameTxtField.setForeground       (Color.WHITE);
-		mPlayerLooseCntLabel.setForeground      (Color.white);
-		mPlayerLooseCntTxtField.setForeground   (Color.WHITE);
-		mPlayerLooseCntTxtField.setBackground   (new Color (255, 255, 255, 0));
+		mPlayerNameLabel.setFont                    (scratchFont);
+		mPlayerNameTxtField.setFont                 (scratchFont);
+		mPlayerNameTxtField.setText                 (mPlayerNameTxtFieldDefaultValue);
+		mPlayerLooseCntLabel.setFont                (scratchFont);
+		mBackButton.setPreferredSize                (new Dimension (150, 25));
+		mPlayerNameTxtField.setOpaque               (false);
+		mPlayerNameTxtField.setBorder               (new EmptyBorder (0, 0, 0, 0));
+		mPlayerLooseCntTxtField.setFont             (new Font ("Nail Scratch", Font.TRUETYPE_FONT, 14));
+		mPlayerAddBtn.setPreferredSize              (new Dimension (150, 25));
+		mPlayerNameLabel.setForeground              (Color.white);
+		mMatchStartBtn.setPreferredSize             (new Dimension (150, 25));
+		mPlayerLooseCntTxtField.setOpaque           (false);
+		mPlayerLooseCntTxtField.setBorder           (new EmptyBorder (0, 0, 0, 0));
+		mPlayerNameTxtField.setBackground           (new Color (255, 255, 255, 0));
+		mPlayerNameTxtField.setForeground           (Color.WHITE);
+		mPlayerLooseCntLabel.setForeground          (Color.white);
+		mPlayerLooseCntTxtField.setForeground       (Color.WHITE);
+		mPlayerLooseCntTxtField.setBackground       (new Color (255, 255, 255, 0));
+		mPlayerLooseCntTxtField.setPreferredSize    (new Dimension (20, 15));
 
 
 		mBackButton.setIcon                 (new ImageIcon (ImageLoader.getImage (Constats.BTN_TEXTURE_PIC_150x25)));

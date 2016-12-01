@@ -2,6 +2,7 @@ package MatchController.Gui.Components;
 
 import Constants.Constats;
 import MatchController.Objects.GroupPlayerObject;
+import MatchController.Objects.GroupTournamentMethod;
 import Tools.ImageLoader;
 
 import javax.swing.*;
@@ -25,7 +26,7 @@ public class GroupTournamentTableGroupPanel extends JPanel
 	private JLabel                  rArrow;
 	private GroupPlayerObject       mFirstGroup;
 	private GroupPlayerObject       mSecondGroup;
-	private GroupTournamentMethod   updateTable;
+	private GroupTournamentMethod updateTable;
 	private GroupTournamentMethod   notifyGroupPlayed;
 	private boolean                 isGamePlayed = false;
 
@@ -67,6 +68,24 @@ public class GroupTournamentTableGroupPanel extends JPanel
 	{
 		mFirstPlayerPanel.addMouseListener (new MouseAdapter ()
 		{
+
+			@Override
+			public void mouseEntered (MouseEvent e)
+			{
+				mouseEnterAction (mFirstPlayerPanel);
+			}
+
+
+			@Override
+			public void mouseExited (MouseEvent e)
+			{
+				System.out.println ("exit");
+				mouseExitAction (mFirstPlayerPanel);
+			}
+		});
+
+		mFirstPlayerPanel.addMouseListener (new MouseAdapter ()
+		{
 			@Override
 			public void mouseClicked (MouseEvent e)
 			{
@@ -82,6 +101,18 @@ public class GroupTournamentTableGroupPanel extends JPanel
 				clickedOnPlayersGroupPanel (proceedWinnerAndLoserGroupMethod, mSecondPlayerPanel, mFirstGroup , mSecondGroup);
 			}
 		});
+	}
+
+
+	private void mouseEnterAction (JPanel panel)
+	{
+		//panel.setBackground (Color.LIGHT_GRAY);
+	}
+
+
+	private void mouseExitAction (JPanel panel)
+	{
+		//panel.setBackground (new Color (255, 255, 255, 0));
 	}
 
 

@@ -1,6 +1,4 @@
-package MatchController.Gui.Components;
-
-import MatchController.Objects.GroupPlayerObject;
+package MatchController.Objects;
 
 public interface GroupTournamentMethod
 {

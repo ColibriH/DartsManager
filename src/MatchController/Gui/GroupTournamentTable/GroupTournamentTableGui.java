@@ -3,7 +3,7 @@ package MatchController.Gui.GroupTournamentTable;
 import BaseAbstractClasses.DartsGuiFormBase;
 import GuiComponents.ImagedPanel;
 import GuiComponents.MenuButton;
-import MatchController.Gui.Components.GroupTournamentMethod;
+import MatchController.Objects.GroupTournamentMethod;
 import MatchController.Gui.Components.GroupTournamentTableGroupPanel;
 import MatchController.Gui.Components.TableScrollBar;
 import MatchController.MatchController;
