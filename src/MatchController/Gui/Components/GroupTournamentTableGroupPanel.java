@@ -70,7 +70,7 @@ public class GroupTournamentTableGroupPanel extends JPanel
 			@Override
 			public void mouseClicked (MouseEvent e)
 			{
-				clickedOnPlayersGroupPanel (proceedWinnerAndLoserGroupMethod, mSecondPlayerPanel, mSecondGroup, mFirstGroup);
+				clickedOnPlayersGroupPanel (proceedWinnerAndLoserGroupMethod, mFirstPlayerPanel, mSecondGroup,  mFirstGroup);
 			}
 		});
 
@@ -79,19 +79,19 @@ public class GroupTournamentTableGroupPanel extends JPanel
 			@Override
 			public void mouseClicked (MouseEvent e)
 			{
-				clickedOnPlayersGroupPanel (proceedWinnerAndLoserGroupMethod, mSecondPlayerPanel, mFirstGroup, mSecondGroup);
+				clickedOnPlayersGroupPanel (proceedWinnerAndLoserGroupMethod, mSecondPlayerPanel, mFirstGroup , mSecondGroup);
 			}
 		});
 	}
 
 
-	private void clickedOnPlayersGroupPanel (GroupTournamentMethod proceedWinnerAndLoserGroupMethod, JPanel winnerGroupPanel,  GroupPlayerObject mFirstGroup,  GroupPlayerObject mSecondGroup)
+	private void clickedOnPlayersGroupPanel (GroupTournamentMethod proceedWinnerAndLoserGroupMethod, JPanel winnerGroupPanel,  GroupPlayerObject looserGroup,  GroupPlayerObject winnerGroup)
 	{
 		if (! isGamePlayed)
 		{
 			isGamePlayed = true;
 			changeWinnerPanelStyle (winnerGroupPanel);
-			proceedWinnerAndLoserGroupMethod.execute (mFirstGroup, mSecondGroup);
+			proceedWinnerAndLoserGroupMethod.execute (looserGroup, winnerGroup);
 			updateTable.execute ();
 			notifyGroupPlayed.execute ();
 		}

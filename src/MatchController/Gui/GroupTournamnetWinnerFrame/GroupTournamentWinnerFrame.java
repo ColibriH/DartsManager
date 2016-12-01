@@ -4,6 +4,7 @@ import MainController.MainController;
 import MatchController.MatchController;
 import MatchController.Objects.PlayerObject;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
@@ -33,6 +34,16 @@ public class GroupTournamentWinnerFrame extends GroupTournamentWinnerFrameGui
 	{
 		menuButtonAction ();
 		getMatchController ().exitFromApplication ();
+	}
+
+
+	@Override
+	protected void saveResultAction ()
+	{
+		if (getMatchController ().savePlayersResult ())
+			JOptionPane.showMessageDialog (null, "File successfully saved!");
+		else
+			JOptionPane.showMessageDialog (null, "Error: occurred: file can be saved!");
 	}
 
 

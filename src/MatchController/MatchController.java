@@ -15,11 +15,26 @@ import MatchController.Objects.GroupPlayerObject;
 import MatchController.Objects.GroupsTreeNode;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class MatchController
@@ -322,6 +337,70 @@ public class MatchController
 	}
 
 
+	public static String getCurrentTimeStamp()
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd_HH-mm");
+		return sdf.format(new Date());
+	}
+
+
+	private void writeBook (Object obj, Row row)
+	{
+		if (obj instanceof PlayerObject)
+		{
+			PlayerObject player = (PlayerObject) obj;
+			Cell cell = row.createCell (1);
+			cell.setCellValue (player.getName ());
+
+			cell = row.createCell (2);
+			cell.setCellValue (player.getWinPoints ());
+
+			cell = row.createCell (3);
+			cell.setCellValue (player.getLooses ());
+		}
+		else if (obj instanceof String[])
+		{
+			String[] player = (String[]) obj;
+			Cell cell = row.createCell (1);
+			cell.setCellValue (player[0]);
+
+			cell = row.createCell (2);
+			cell.setCellValue (player[1]);
+
+			cell = row.createCell (3);
+			cell.setCellValue (player[2]);
+		}
+	}
+
+
+	private boolean saveResultInDirectoryFile (Workbook workbook)
+	{
+		String workingDir = System.getProperty("user.dir");
+		java.nio.file.Path resultDir = Paths.get(workingDir, "Result");
+
+		File file = new File(resultDir.toString ());
+
+		if (! file.exists ())
+		{
+			//noinspection ResultOfMethodCallIgnored
+			file.mkdir ();
+		}
+
+		java.nio.file.Path resultFilePath = Paths.get(resultDir.toString (), getCurrentTimeStamp() + ".xls");
+
+		try (FileOutputStream outputStream = new FileOutputStream (resultFilePath.toString ()))
+		{
+			workbook.write (outputStream);
+			return true;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace ();
+		}
+		return false;
+	}
+
+
 	private boolean isGameTypeTournament ()
 	{
 		return mGameType == Constats.GameType.Tournament;
@@ -391,5 +470,27 @@ public class MatchController
 	public void exitFromApplication ()
 	{
 		System.exit (0);
+	}
+
+
+	public boolean savePlayersResult ()
+	{
+		String[] header = {"Name", "Win Points" , "Lose Points"};
+
+		Workbook workbook = new HSSFWorkbook ();
+		Sheet sheet = workbook.createSheet("Result Sheet");
+
+		int rowCount = 0;
+		Row row = sheet.createRow(++rowCount);
+
+		writeBook (header, row);
+
+		for (PlayerObject player : mPlayerList)
+		{
+			row = sheet.createRow(++rowCount);
+			writeBook(player, row);
+		}
+
+		return saveResultInDirectoryFile (workbook);
 	}
 }

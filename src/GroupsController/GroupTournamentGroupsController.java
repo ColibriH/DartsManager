@@ -194,7 +194,7 @@ public class GroupTournamentGroupsController
 
 	private boolean isLeftMinimumPlayers ()
 	{
-		return mMatchGroups.size () <= 2 && getLeftPlayerCount () <= mMinimumPlayers;
+		return mMatchGroups.size () <= 2;
 	}
 
 

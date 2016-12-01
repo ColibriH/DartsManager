@@ -11,6 +11,7 @@ abstract class GroupTournamentWinnerFrameGui extends DartsGuiFormBase
 {
 	protected abstract void menuButtonAction ();
 	protected abstract void exitButtonAction ();
+	protected abstract void saveResultAction ();
 	protected abstract void initializePlayerTableDataModel ();
 
 	private final String            COLUMN_WIN_POINTS               = "WinPoints";
@@ -50,8 +51,9 @@ abstract class GroupTournamentWinnerFrameGui extends DartsGuiFormBase
 	@Override
 	protected void addComponentsListener ()
 	{
-		mMenuButton.addActionListener (e -> menuButtonAction ());
-		mExitButton.addActionListener (e -> exitButtonAction ());
+		mMenuButton.        addActionListener (e -> menuButtonAction ());
+		mExitButton.        addActionListener (e -> exitButtonAction ());
+		mSaveResultButton.  addActionListener (e -> saveResultAction ());
 	}
 
 

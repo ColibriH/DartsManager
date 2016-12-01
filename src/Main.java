@@ -1,8 +1,6 @@
 import MainController.MainController;
 
-
-// TODO TEST GroupTournament
-// TODO CREATE GroupTournament result save function in file
+// TODO Create loose cnt input
 // Additional features
 // ==================================
 // TODO Create logging system

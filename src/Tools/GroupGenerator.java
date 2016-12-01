@@ -5,6 +5,8 @@ import MatchController.Objects.PlayerObject;
 
 import java.util.*;
 
+// Comment - I regret for this shit code!!!
+
 public class GroupGenerator
 {
 	public static HashMap <Integer, ArrayList <PlayerObject>> generateTournamentRandomGroups (Integer playersNumberInGroup, ArrayList <PlayerObject> playerList)
@@ -43,41 +45,157 @@ public class GroupGenerator
 
 	public static HashMap <Integer, ArrayList <GroupPlayerObject>> generateGroupTournamentRandomGroups (int startPos, ArrayList <GroupPlayerObject> mPlayingGroups) // TODO Make statements for uniqueness of players in playing groups
 	{
-		HashMap <Integer, ArrayList <GroupPlayerObject>> returnMap = new HashMap <> ();
+		ArrayList <ArrayList <GroupPlayerObject>> randomGroupsArray = getRepeatedPlayerGroupsAtSeparatePositions (mPlayingGroups);
 
-		Integer i = startPos;
-		int added = 0;
+		if (randomGroupsArray.size () != 0)
+			ifExistRepeatedPlayersAddToDifferentGroup (randomGroupsArray, mPlayingGroups);
+
 		while (mPlayingGroups.size () != 0)
 		{
 			int randomNumber = new Random ().nextInt (mPlayingGroups.size ());
+			GroupPlayerObject groupToAdd = mPlayingGroups.get (randomNumber);
+			addGroupToArray (randomGroupsArray, groupToAdd);
+			mPlayingGroups.remove (groupToAdd);
+		}
 
-			if (returnMap.get (i) == null)
+		return convertGroupArrayToGroupMap (randomGroupsArray, startPos);
+	}
+
+
+	private static void ifExistRepeatedPlayersAddToDifferentGroup (ArrayList <ArrayList<GroupPlayerObject>> randomGroupsArray, ArrayList <GroupPlayerObject> mPlayingGroups)
+	{
+
+		for (ArrayList<GroupPlayerObject> randomGroups : randomGroupsArray)
+		{
+			for (Iterator <GroupPlayerObject> it = mPlayingGroups.iterator (); it.hasNext (); )
 			{
-				returnMap.put (i, new ArrayList <GroupPlayerObject> ()
-				{{
-					add (mPlayingGroups.get (randomNumber));
-				}});
-				mPlayingGroups.remove (randomNumber);
-				added++;
-			}
-			else
-			{
-				if (GroupPlayersIsDifferent (returnMap.get (i).get (0), mPlayingGroups.get (randomNumber)))
+				GroupPlayerObject group = it.next ();
+				if (randomGroups.get (0).getFirstPlayer ().equals (group.getFirstPlayer ()) || randomGroups.get (0).getSecondPlayer ().equals (group.getSecondPlayer ()))
 				{
-					returnMap.get (i).add (mPlayingGroups.get (randomNumber));
-					mPlayingGroups.remove (randomNumber);
-					added++;
+					getFreeCorrectGroup (randomGroupsArray, randomGroups).add (group);
+					it.remove ();
+				}
+			}
+		}
+	}
+
+
+	private static ArrayList<GroupPlayerObject> getFreeCorrectGroup (ArrayList <ArrayList <GroupPlayerObject>> randomGroupsArray, ArrayList <GroupPlayerObject> randomGroups)
+	{
+		ArrayList <ArrayList <GroupPlayerObject>> localRandomGroupsArray = new ArrayList <> (randomGroupsArray);
+		localRandomGroupsArray.remove (randomGroups);
+
+		int index = 0;
+		if (localRandomGroupsArray.size () > 1)
+			index = new Random ().nextInt (localRandomGroupsArray.size ());
+
+		return localRandomGroupsArray.get (index);
+	}
+
+
+	private static HashMap <Integer, ArrayList <GroupPlayerObject>> convertGroupArrayToGroupMap (ArrayList <ArrayList <GroupPlayerObject>> randomGroupsArray, int startPos)
+	{
+		HashMap <Integer, ArrayList <GroupPlayerObject>> returnArray = new HashMap <> ();
+		for (ArrayList <GroupPlayerObject> groupArray : randomGroupsArray)
+		{
+			returnArray.put (startPos, groupArray);
+			startPos++;
+		}
+
+		return returnArray;
+	}
+
+
+	private static void addGroupToArray (ArrayList <ArrayList <GroupPlayerObject>> randomGroupsArray, GroupPlayerObject group)
+	{
+		int maxGroupCount = 2;
+		int trys = 0;
+
+		if (randomGroupsArray.size () == 0)
+		{
+			randomGroupsArray.add (new ArrayList <GroupPlayerObject> ()
+			{{
+				add (group);
+			}});
+			return;
+		}
+
+		for (ArrayList <GroupPlayerObject> groupArray : randomGroupsArray)
+		{
+			if (groupArray.size () != maxGroupCount)
+			{
+				if (GroupPlayersIsDifferent (groupArray.get (0), group))
+				{
+					groupArray.add (group);
+					return;
 				}
 			}
 
-			if (added == 2)
+			if (trys >= randomGroupsArray.size () - 1)
 			{
-				added = 0;
-				i++;
+				randomGroupsArray.add (new ArrayList <GroupPlayerObject> (){{add (group);}});
+				return;
+			}
+
+			trys++;
+		}
+	}
+
+
+	private static ArrayList <GroupPlayerObject> getRepeatedPlayerGroups (ArrayList <GroupPlayerObject> playingGroups)
+	{
+		ArrayList <GroupPlayerObject> returnArray = new ArrayList <> ();
+
+		for (int i = 0; i < playingGroups.size (); i++)
+		{
+			PlayerObject firstPlayer = playingGroups.get (i).getFirstPlayer ();
+			PlayerObject secondPlayer = playingGroups.get (i).getSecondPlayer ();
+
+			GroupPlayerObject repGroup = isPlayerRepeatedReturnGroup (playingGroups, firstPlayer, i);
+
+			if (repGroup == null)
+				repGroup = isPlayerRepeatedReturnGroup (playingGroups, secondPlayer, i);
+
+			if (repGroup != null)
+			{
+				returnArray.add (playingGroups.get (i));
+				returnArray.add (repGroup);
+				playingGroups.remove (repGroup);
+				playingGroups.remove (i);
+				i = 0;
 			}
 		}
 
-		return returnMap;
+		return returnArray;
+	}
+
+
+	private static ArrayList <ArrayList <GroupPlayerObject>> getRepeatedPlayerGroupsAtSeparatePositions (ArrayList <GroupPlayerObject> playingGroups)
+	{
+		ArrayList <ArrayList <GroupPlayerObject>> returnArray = new ArrayList <> ();
+
+		for (GroupPlayerObject group : getRepeatedPlayerGroups (playingGroups))
+			returnArray.add (new ArrayList <GroupPlayerObject> (){{add (group);}});
+
+		return returnArray;
+	}
+
+
+	private static GroupPlayerObject isPlayerRepeatedReturnGroup (ArrayList<GroupPlayerObject> playingGroups, PlayerObject player, int startPos)
+	{
+		if (startPos + 1 >= playingGroups.size ())
+			return null;
+
+		for (int i = startPos + 1; i < playingGroups.size (); i++)
+		{
+			PlayerObject firstPlayer = playingGroups.get (i).getFirstPlayer ();
+			PlayerObject secondPlayer = playingGroups.get (i).getSecondPlayer ();
+
+			if (player.equals (firstPlayer) || player.equals (secondPlayer))
+				return playingGroups.get (i);
+		}
+
+		return null;
 	}
 
 
