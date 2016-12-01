@@ -15,14 +15,11 @@ import MatchController.Objects.GroupPlayerObject;
 import MatchController.Objects.GroupsTreeNode;
 import MatchController.Objects.PlayerObject;
 import Tools.GroupGenerator;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.*;
 import java.io.File;
@@ -30,7 +27,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -452,6 +448,12 @@ public class MatchController
 	public Integer getMaxPlayerLosePoints ()
 	{
 		return mMaxPlayerLosePoints;
+	}
+
+
+	public void setMaxPlayerLosePoints (Integer maxPlayerLosePoints)
+	{
+		this.mMaxPlayerLosePoints = maxPlayerLosePoints;
 	}
 
 

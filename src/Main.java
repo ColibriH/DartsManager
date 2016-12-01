@@ -1,13 +1,12 @@
 import MainController.MainController;
 
-// TODO Create loose cnt input
+// TODO On/Off Game interface
 // Additional features
 // ==================================
 // TODO Create logging system
+// TODO Go through try catch blocks
 // TODO Game Save for unexpected exit
 //===================================
-// TODO On/Off Game interface
-// TODO Go through try catch blocks
 // TODO How to style playing forms.... and use abstract class
 // TODO Create documentation
 // TODO check memory leak

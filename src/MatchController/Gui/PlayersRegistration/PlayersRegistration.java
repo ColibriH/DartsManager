@@ -54,6 +54,7 @@ public class PlayersRegistration extends PlayersRegistrationGui
 			return;
 		}
 
+		getMatchController ().setMaxPlayerLosePoints (Integer.parseInt (getPlayerLooseCntTxtField ().getText ()));
 		getMatchController ().runActionsAfterPlayerRegistration (createdPlayers);
 	}
 
